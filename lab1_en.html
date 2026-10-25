@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab 1 – Python for Machine Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header><div class="wrap">
+<div class="lang"><a href="lab1_fr.html" hreflang="fr">Français</a></div>
+<h1>Lab 1 – Python for Machine Learning</h1>
+<p>Anaconda, Jupyter, Pandas, Matplotlib and Scikit-Learn</p>
+<div class="meta"><span>Course: Machine Learning 1</span><span>Level: M1 BDDS</span><span>Duration: 3 hours</span><span>Instructor: Olfa BESBES, PhD</span></div>
+</div></header>
+
+<main><div class="wrap">
+<nav class="toc" aria-label="Contents"><a href="#goals">Objectives</a><a href="#p1">1 · Anaconda</a><a href="#p2">2 · Pandas</a><a href="#p3">3 · Matplotlib</a><a href="#p4">4 · Scikit-Learn</a><a href="#bonus">Bonus</a><a href="#solutions">All solutions</a></nav>
+
+<h2 id="goals">Objectives</h2>
+<div class="goal">
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Install packages and manage virtual environments with <code>conda</code>.</li>
+<li>Work in a Jupyter Notebook with code and markdown cells.</li>
+<li>Load, explore, clean and describe a dataset with Pandas.</li>
+<li>Draw the main plot types with Matplotlib.</li>
+<li>Build, train and evaluate a Scikit-Learn pipeline.</li>
+</ul>
+<p><b>Files needed:</b> <code>test.jpg</code> (any image), <code>Cars.csv</code>, <code>50_Startups.csv</code> (provided by your instructor). Put them in the same folder as your notebook.</p>
+<p><b>Deliverable:</b> the notebook <code>Lab1_Introduction.ipynb</code>, with every answer in its own cell, preceded by a markdown cell giving the question number.</p>
+</div>
+
+<h2 id="p1">Part 1 – Anaconda, environments and Jupyter</h2>
+<p>Anaconda is a Python distribution for data science. It ships with NumPy, SciPy, Pandas, Matplotlib and Scikit-Learn, with Jupyter and Spyder, and with the <code>conda</code> package manager. Anaconda Navigator is its graphical interface.</p>
+
+<h3>Reminder: conda commands</h3>
+<pre><code>conda create -n TEST          # create an environment
+conda activate TEST           # activate it
+conda deactivate              # leave it
+conda env list                # list all environments
+conda env remove -n TEST      # delete it and its packages
+
+conda install opencv          # install a package
+conda install opencv=4.6.0    # a specific version
+conda install -c conda-forge opencv   # from a specific channel
+pip install opencv-python     # pip also works
+conda update opencv
+conda remove opencv</code></pre>
+
+<div class="task"><b class="q">Q1</b>Launch the <b>CMD.exe Prompt</b> from Anaconda Navigator.</div>
+<div class="task"><b class="q">Q2</b>Create an environment named <code>ML1Labs</code> and activate it.
+<details><summary>Show command</summary><pre><code>conda create -n ML1Labs
+conda activate ML1Labs</code></pre></details></div>
+<div class="task"><b class="q">Q3</b>Install OpenCV with conda. In the same environment, also install the packages needed for the rest of the lab.
+<details><summary>Show command</summary><pre><code>conda install opencv
+conda install pandas matplotlib scikit-learn notebook</code></pre></details></div>
+<div class="task"><b class="q">Q4</b>In Anaconda Navigator, select the <code>ML1Labs</code> environment (the "Applications on" list) and launch <b>Jupyter Notebook</b>.</div>
+<div class="task"><b class="q">Q5</b>Create a notebook named <code>Lab1_Introduction.ipynb</code>.</div>
+<div class="task"><b class="q">Q6</b>In a code cell, import the <code>cv2</code> module and print its version.
+<details><summary>Show solution</summary><pre><code>import cv2
+print(cv2.__version__)</code></pre></details></div>
+<div class="task"><b class="q">Q7</b>In a <b>markdown</b> cell, write: <code>## Read, Display and Save an Image</code> (change the cell type in the toolbar drop-down, then press Ctrl + Enter).</div>
+<div class="task"><b class="q">Q8</b>In a code cell, test this code and explain what each OpenCV function does.
+<pre class="sol"><code>import cv2
+
+img_grayscale = cv2.imread('test.jpg', 0)       # 0 = read as grayscale
+cv2.imshow('grayscale image', img_grayscale)    # display in a window
+cv2.waitKey(0)                                  # wait for a key press
+cv2.destroyAllWindows()                         # close all windows
+cv2.imwrite('grayscale.jpg', img_grayscale)     # save the image</code></pre>
+<div class="note">The slides write <code>print cv2.__version__</code> without parentheses. That is Python 2 syntax. In Python 3 you must write <code>print(cv2.__version__)</code>.</div>
+<div class="note">If <code>cv2.imread</code> returns <code>None</code>, the file was not found: check the file name and that <code>test.jpg</code> is in the notebook folder. Click on the image window and press a key to close it, otherwise the notebook stays blocked.</div></div>
+
+<h2 id="p2">Part 2 – Data exploration and cleaning with Pandas</h2>
+<p>A Pandas <b>Series</b> is a one-dimensional labelled array. A <b>DataFrame</b> is a table of rows and columns.</p>
+
+<h3>Warm-up</h3>
+<div class="task"><b class="q">W1</b>Create the Series <code>calories = {"day1": 300, "day2": 200, "day3": 100}</code> and print it. Then print the value of <code>"day2"</code>.</div>
+<div class="task"><b class="q">W2</b>Create a DataFrame with columns <code>calories = [300, 200, 100]</code> and <code>duration = [40, 50, 60]</code>, indexed by <code>day1</code>, <code>day2</code>, <code>day3</code>. Use <code>loc</code> to display only <code>day1</code> and <code>day2</code>.
+<details><summary>Show solution</summary><pre><code>import pandas as pd
+
+sr = pd.Series({"day1": 300, "day2": 200, "day3": 100})
+print(sr)
+print(sr["day2"])
+
+data = {"calories": [300, 200, 100], "duration": [40, 50, 60]}
+df = pd.DataFrame(data, index=["day1", "day2", "day3"])
+print(df.loc[["day1", "day2"]])</code></pre></details></div>
+
+<h3>Exercise on <code>Cars.csv</code></h3>
+<p>Write a Pandas program to answer the following questions.</p>
+<div class="task"><b class="q">Q1</b>Show the first 10 rows. Get the number of rows, the number of columns and the datatype of each column.
+<details><summary>Show solution</summary><pre><code>import pandas as pd
+df = pd.read_csv('Cars.csv')
+
+print(df.head(10))
+print(df.shape)      # (rows, columns)
+print(df.dtypes)
+df.info()</code></pre></details></div>
+<div class="task"><b class="q">Q2</b>Compute the descriptive statistics of each column.
+<details><summary>Show solution</summary><pre><code>print(df.describe())              # numeric columns
+print(df.describe(include='all')) # all columns</code></pre></details></div>
+<div class="task"><b class="q">Q3</b>Check whether the DataFrame has any missing values.
+<details><summary>Show solution</summary><pre><code>print(df.isnull().values.any())</code></pre></details></div>
+<div class="task"><b class="q">Q4</b>Count the missing values in each column.
+<details><summary>Show solution</summary><pre><code>print(df.isnull().sum())</code></pre></details></div>
+<div class="task"><b class="q">Q5</b>Replace the missing values with the median of their column.
+<details><summary>Show solution</summary><pre><code>medians = df.median(numeric_only=True)
+df = df.fillna(medians)
+print(df.isnull().sum())   # should now be 0 for numeric columns</code></pre>
+<p>The median only exists for numeric columns. Decide how to handle text columns (for example with the most frequent value, <code>df[col].mode()[0]</code>).</p></details></div>
+<div class="task"><b class="q">Q6</b>Compute the correlation between features and plot their scatter diagrams. What are your conclusions?
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+
+print(df.corr(numeric_only=True))
+
+pd.plotting.scatter_matrix(df.select_dtypes('number'), figsize=(10, 10))
+plt.show()
+
+# one pair at a time, e.g. (use your real column names):
+# df.plot(kind='scatter', x='Duration', y='Calories'); plt.show()</code></pre>
+<p>Guide for your conclusions: a coefficient close to +1 or -1 means a strong linear relationship; close to 0 means little or no linear relationship. Look for pairs of features that are almost redundant, and for features strongly related to the one you may want to predict. Correlation does not imply causation.</p></details></div>
+
+<h3>Cleaning toolbox (reference)</h3>
+<div class="scroll"><table>
+<tr><th>Problem</th><th>Pandas tool</th></tr>
+<tr><td>Empty cells</td><td><code>df.dropna()</code> returns a new DataFrame; <code>df.fillna(value)</code> replaces them</td></tr>
+<tr><td>Duplicates</td><td><code>df.duplicated()</code> then <code>df.drop_duplicates(inplace=True)</code></td></tr>
+<tr><td>Wrong values</td><td><code>df.loc[row, 'col'] = new_value</code>, or drop the rows</td></tr>
+<tr><td>Wrong format</td><td><code>df['Date'] = pd.to_datetime(df['Date'])</code></td></tr>
+</table></div>
+
+<h2 id="p3">Part 3 – Visualization with Matplotlib</h2>
+<p>Most of Matplotlib lives in the <code>pyplot</code> submodule, imported as <code>plt</code>. Use <code>plt.plot()</code> for lines, <code>plt.scatter()</code>, <code>plt.bar()</code>, <code>plt.hist()</code> and <code>plt.pie()</code> for the other plot types. In a notebook, add <code>%matplotlib inline</code> if figures do not appear.</p>
+
+<div class="task"><b class="q">M1</b>Draw the line from point (0, 0) to point (10, 100) with the title "Line from pt1(0, 0) to pt2(10, 100)".</div>
+<div class="task"><b class="q">M2</b>Plot <code>[3, 8, 20, 5, 10, 1, 30]</code> with star markers of size 30, a red dashed line of width 3, a title, labels on both axes and a grid.</div>
+<div class="task"><b class="q">M3</b>Display two plots side by side with <code>subplot()</code> and a common title.</div>
+<div class="task"><b class="q">M4</b>Draw 40 random points with random colors and sizes (<code>scatter</code> with a colorbar), a bar chart, a histogram of 1000 samples of a normal distribution (mean 0, std 0.5, 10 bins), and a pie chart of <code>[40, 10, 20, 30]</code> labelled A to D.
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+# M1
+plt.plot(np.array([0, 10]), np.array([0, 100]))
+plt.title("Line from pt1(0, 0) to pt2(10, 100)")
+plt.show()
+
+# M2
+ypts = np.array([3, 8, 20, 5, 10, 1, 30])
+f1 = {'family': 'serif', 'color': 'blue', 'size': 20}
+f2 = {'family': 'serif', 'color': 'red', 'size': 14}
+plt.plot(ypts, marker='*', ms=30, mfc='b', mec='k', ls='--', color='r', linewidth=3)
+plt.title("MyTitle", fontdict=f1)
+plt.xlabel("Label x-axis", fontdict=f2)
+plt.ylabel("Label y-axis", fontdict=f2)
+plt.grid(color='y', linestyle='--', linewidth=0.5)
+plt.show()
+
+# M3
+plt.subplot(1, 2, 1)
+plt.plot([0, 1, 2, 3], [2, 9, 2, 12]); plt.title("Title 1")
+plt.subplot(1, 2, 2)
+plt.plot([0, 1, 2, 3], [5, 25, 30, 45]); plt.title("Title 2")
+plt.suptitle("MY SUPER Title")
+plt.show()
+
+# M4
+x = np.random.randint(100, size=40)
+y = np.random.randint(100, size=40)
+colors = np.random.randint(100, size=40)
+sizes = 5 * np.random.randint(100, size=40)
+plt.scatter(x, y, c=colors, s=sizes, alpha=0.5, cmap='jet')
+plt.colorbar(); plt.show()
+
+plt.bar(["F1", "F2", "F3", "F4"], [2, 9, 2, 12], color="red", width=0.5)
+plt.show()
+
+plt.hist(np.random.normal(0, 0.5, 1000), 10, color='r')
+plt.title('Gaussian Distribution'); plt.legend(['Frequency'])
+plt.show()
+
+plt.pie([40, 10, 20, 30], labels=["A", "B", "C", "D"])
+plt.legend(); plt.show()</code></pre></details></div>
+
+<h2 id="p4">Part 4 – Machine learning with Scikit-Learn</h2>
+<p>A Scikit-Learn <b>pipeline</b> chains preprocessing (for example <code>StandardScaler</code>), optional feature extraction (for example <code>PCA</code>) and a learning algorithm. The same pipeline is fitted on the training data, then applied to the test data. This avoids <em>data leakage</em>: the scaler never sees the test set when it learns its mean and standard deviation.</p>
+
+<h3>Worked example</h3>
+<p>Read it, run it, and explain each line.</p>
+<pre class="sol" data-label="Worked example"><code>from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import accuracy_score
+
+X, y = make_classification(random_state=42)  # random 2-class problem
+print("Dataset:", X.shape, y.shape)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)    # 80% train, 20% test
+
+pipe = make_pipeline(StandardScaler(), PCA(n_components=2), LogisticRegression())
+pipe.fit(X_train, y_train)                   # scale + PCA + train on training data
+
+y_pred = pipe.predict(X_test)                # same preparation applied to test data
+print('accuracy score:', accuracy_score(y_test, y_pred))
+print(pipe.score(X_test, y_test))            # same result</code></pre>
+<div class="note">The slide writes <code>y_pred = pipe(X_test)</code>. A pipeline is not callable: use <code>pipe.predict(X_test)</code>. Also note that <code>accuracy_score</code> expects <code>(y_true, y_pred)</code>, in that order. We added <code>random_state=42</code> so that everyone gets the same result.</div>
+
+<h3>Exercise on <code>50_Startups.csv</code></h3>
+<p>Goal: build a model that predicts the <b>Profit</b> of a company from its R&amp;D Spend, Administration cost and Marketing Spend.</p>
+<div class="task"><b class="q">Q1</b>What is the Machine Learning task?</div>
+<div class="task"><b class="q">Q2</b>What is the type of learning?
+<details><summary>Show answers to Q1 and Q2</summary><p>Q1: <b>Regression</b>, because the target (Profit) is a continuous numeric value.</p><p>Q2: <b>Supervised learning</b>, because each training example comes with its known target value (label).</p></details></div>
+<div class="task"><b class="q">Q3</b>Show information and compute descriptive statistics about this dataset.
+<details><summary>Show solution</summary><pre><code>import pandas as pd
+df = pd.read_csv('50_Startups.csv')
+df.info()
+print(df.describe())
+print(df.isnull().sum())</code></pre></details></div>
+<div class="task"><b class="q">Q4</b>Split the data into an 80% training set and a 20% testing set.
+<details><summary>Show solution</summary><pre><code>from sklearn.model_selection import train_test_split
+
+X = df[['R&amp;D Spend', 'Administration', 'Marketing Spend']]
+y = df['Profit']
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)</code></pre>
+<p>Check the exact column names with <code>df.columns</code>. The column <code>State</code> is categorical and is not used here.</p></details></div>
+<div class="task"><b class="q">Q5</b>Build a pipeline that performs standardization, then prediction with Linear Regression.
+<details><summary>Show solution</summary><pre><code>from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+pipe = make_pipeline(StandardScaler(), LinearRegression())</code></pre></details></div>
+<div class="task"><b class="q">Q6</b>Train, test and evaluate the pipeline with the Mean Squared Error (MSE) and the R² score.
+<details><summary>Show solution</summary><pre><code>from sklearn.metrics import mean_squared_error, r2_score
+
+pipe.fit(X_train, y_train)
+y_pred = pipe.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+print('MSE :', mse)
+print('RMSE:', mse ** 0.5)
+print('R2  :', r2_score(y_test, y_pred))</code></pre></details></div>
+
+<h2 id="bonus">Bonus questions</h2>
+<ul>
+<li>Compare the MSE of the pipeline with and without <code>StandardScaler</code>. Does it change for Linear Regression? Why?</li>
+<li>Add the <code>State</code> column using <code>OneHotEncoder</code> (with <code>ColumnTransformer</code>) and see whether the error decreases.</li>
+<li>Change the split seed (<code>random_state</code>) to other values. How stable is the MSE?</li>
+</ul>
+
+<h2 id="solutions">Complete code solutions</h2>
+<p>All the code of this lab, grouped by part. Each block can be pasted into a notebook cell by cell, or run as a whole.</p>
+<div id="allsol"></div>
+<noscript><p>Enable JavaScript to display the complete solutions, or open the "Show solution" toggles above.</p></noscript>
+
+</div></main>
+<footer>Horizon School of Digital Technologies · Machine Learning 1 · Lab 1</footer>
+<script src="assets/lab.js"></script>
+</body>
+</html>
