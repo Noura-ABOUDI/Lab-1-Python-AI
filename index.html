@@ -3,21 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Machine Learning 1 – Lab 1 / TP 1</title>
+<title>Machine Learning 1 – Course materials</title>
+<meta name="description" content="Machine Learning 1: labs and sessions. Supports de cours: TP et séances.">
 <style>
-:root{--bg:#fbfaf6;--ink:#17233a;--blue:#054489;--yellow:#fdc913;--line:#dfe3ea;--surface:#fff}
-@media (prefers-color-scheme:dark){:root{--bg:#0d1526;--ink:#e8eefc;--blue:#7fb2ff;--line:#26365a;--surface:#14203a}}
-body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--ink);font:400 18px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px}
-main{max-width:520px;width:100%;text-align:center}
-h1{font-size:28px;margin:0 0 6px;color:var(--blue)}
-a.b{display:block;margin:12px 0;padding:16px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--yellow);border-radius:6px;color:var(--ink);text-decoration:none;font-weight:700}
-a.b:hover,a.b:focus-visible{border-color:var(--blue);outline:none}
+:root{--bg:#fbfaf6;--ink:#17233a;--muted:#5b6679;--blue:#054489;--yellow:#fdc913;--line:#dfe3ea;--surface:#fff;--onblue:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1526;--ink:#e8eefc;--muted:#9aa8c4;--blue:#7fb2ff;--line:#26365a;--surface:#14203a;--onblue:#0d1526}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 17px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;padding:max(24px,env(safe-area-inset-top)) 20px max(32px,env(safe-area-inset-bottom))}
+main{max-width:640px;margin:0 auto}
+header{border-left:6px solid var(--yellow);padding-left:16px;margin:16px 0 36px}
+.kick{margin:0 0 6px;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(1.9rem,6vw,2.6rem);line-height:1.1;margin:0 0 8px;color:var(--blue)}
+header p{margin:0;color:var(--muted)}
+h2{font-size:1.05rem;margin:32px 0 4px}
+h2 small{display:block;font-weight:400;color:var(--muted);font-size:.9rem}
+.card{display:flex;align-items:center;gap:14px;margin:10px 0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--ink);text-decoration:none;transition:transform .15s,border-color .15s}
+.card:hover,.card:focus-visible{border-color:var(--blue);transform:translateY(-2px);outline:none}
+.card:focus-visible{box-shadow:0 0 0 3px var(--yellow)}
+.tag{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:8px;background:var(--blue);color:var(--onblue);font-weight:800;font-size:.95rem}
+.tag.y{background:var(--yellow);color:#17233a}
+.txt{flex:1;min-width:0}
+.txt b{display:block}
+.txt span{display:block;color:var(--muted);font-size:.92rem}
+.go{flex:none;color:var(--blue);font-size:1.3rem;font-weight:700}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.pills i{font-style:normal;font-size:.75rem;font-weight:600;padding:1px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
 </style>
 </head>
-<body><main>
-<h1>Machine Learning 1 – Lab 1</h1>
-<p>Python for Machine Learning · Python pour le Machine Learning</p>
-<a class="b" href="lab1_en.html">English version</a>
-<a class="b" href="lab1_fr.html">Version française</a>
-</main></body>
+<body>
+<main>
+<header>
+  <p class="kick">Course materials · Supports de cours</p>
+  <h1>Machine Learning 1</h1>
+  <p>Labs and sessions · TP et séances</p>
+</header>
+
+<h2>Lab 1 · TP 1
+  <small>Python for Machine Learning · Python pour le Machine Learning</small></h2>
+<a class="card" href="lab1_en.html">
+  <span class="tag">EN</span>
+  <span class="txt"><b>English version</b><span>Lab 1 in English</span></span>
+  <span class="go" aria-hidden="true">→</span>
+</a>
+<a class="card" href="lab1_fr.html">
+  <span class="tag">FR</span>
+  <span class="txt"><b>Version française</b><span>TP 1 en français</span></span>
+  <span class="go" aria-hidden="true">→</span>
+</a>
+
+<h2>Session 1 · Séance 1
+  <small>Introduction to Machine Learning · Introduction au Machine Learning</small></h2>
+<a class="card" href="session1_ml_paradigms.html">
+  <span class="tag y">S1</span>
+  <span class="txt"><b>Supervised, unsupervised and reinforcement learning</b>
+    <span>Labeled vs unlabeled data, classification, regression, clustering, dimensionality reduction.</span>
+    <span class="pills"><i>Animated demos</i><i>Examples</i><i>Quiz</i></span></span>
+  <span class="go" aria-hidden="true">→</span>
+</a>
+
+<footer>More labs and sessions will be added here. · D'autres TP et séances seront ajoutés ici.</footer>
+</main>
+</body>
 </html>

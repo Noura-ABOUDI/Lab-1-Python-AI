@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 1 review: supervised, unsupervised and reinforcement learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f4;--ink:#12202b;--muted:#566975;--panel:#fff;--line:#cbd6dc;--sup:#2f5bea;--uns:#d98200;--rl:#0e9f6e;--bad:#d6455d;--accent:var(--sup);--onacc:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1a22;--ink:#e6eef2;--muted:#93a7b3;--panel:#17252f;--line:#2b3d49;--sup:#6f93ff;--uns:#f0a31f;--rl:#2fd197;--bad:#ff6b82;--onacc:#0f1a22}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 "Bricolage Grotesque",system-ui,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:40px 20px 80px}
+h1{font-size:clamp(2rem,6vw,3.6rem);line-height:1.02;font-weight:800;letter-spacing:-.03em;margin:0 0 12px;max-width:16ch}
+h2{font-size:1.6rem;letter-spacing:-.02em;margin:56px 0 14px}
+h3{font-size:1.05rem;margin:0 0 6px}
+p{margin:0 0 12px;max-width:68ch}
+.lead{color:var(--muted);font-size:1.15rem;max-width:58ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 12px}
+.tabs.sub{margin:0 0 12px}
+.tab{font:inherit;font-weight:600;padding:9px 18px;border-radius:999px;border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.sub .tab{padding:6px 14px;font-size:.95rem;border-radius:8px}
+.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:var(--onacc)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.stage{background:var(--panel);border:2px solid var(--accent);border-radius:14px;padding:12px}
+canvas{width:100%;height:auto;display:block;aspect-ratio:16/9;border-radius:8px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 4px 2px}
+#stat{color:var(--muted);font-size:.95rem}
+.btns button{font:inherit;font-size:.9rem;font-weight:600;padding:6px 14px;margin-left:6px;border-radius:8px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:24px}
+.grid>div{border-left:4px solid var(--accent);padding-left:14px}
+ul{margin:0;padding-left:1.1em}li{margin-bottom:4px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-bottom:10px}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-weight:600}
+.cmp{min-width:640px}.cmp td:first-child{font-weight:600;color:var(--muted)}
+th.s{color:var(--sup)}th.u{color:var(--uns)}th.r{color:var(--rl)}
+th.lab{background:var(--accent);color:var(--onacc)}
+td.lab{font-weight:700;color:var(--accent)}
+.off{opacity:.35}
+.cap{font-size:.93rem;color:var(--muted)}
+html{scroll-behavior:smooth}[id]{scroll-margin-top:70px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.kick{font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-size:.8rem;margin:0 0 8px}
+.nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;padding:10px 0;margin:0 0 20px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px)}
+.nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:.9rem;padding:5px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel)}
+.nav a:hover{border-color:var(--ink)}
+.rc{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.rc>div{background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--c);border-radius:10px;padding:14px 16px}
+.rc h3{color:var(--c)}
+.rc p{margin:0 0 6px;font-size:.96rem}
+.flowq{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+.flowq ol{margin:6px 0 0;padding-left:1.2em}
+.qz{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.qz p{font-weight:600;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:.96rem;padding:9px 14px;margin-bottom:7px;border-radius:8px;border:2px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--rl);background:color-mix(in srgb,var(--rl) 14%,transparent)}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.ex{margin:6px 0 0;font-size:.93rem;color:var(--muted)}
+#qzscore{font-weight:700;font-size:1.1rem;margin:0 0 12px}
+#xybox{margin-top:34px}#xybox{margin-top:0}
+#xybox[data-m=uns]{--accent:var(--uns)}
+.xy{background:var(--panel);border:2px solid var(--accent);border-radius:14px;padding:14px}
+.x{background:color-mix(in srgb,var(--sup) 14%,transparent)}
+.y{background:color-mix(in srgb,var(--uns) 18%,transparent)}
+.g{background:color-mix(in srgb,var(--rl) 14%,transparent)}
+th.x{color:var(--sup)}th.y{color:var(--uns)}th.g{color:var(--rl)}
+.gone{opacity:.3;text-decoration:line-through}
+.newr td{border-top:2px dashed var(--line);font-weight:700}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 10px}
+.chip{padding:6px 12px;border-radius:8px;border:2px solid var(--line);font-weight:600;font-size:.93rem;opacity:.55;transition:all .3s}
+.chip.on{opacity:1;border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.flow .pl{color:var(--muted);font-weight:600}
+.xycap{min-height:3.4em;font-size:1.02rem;margin:0 0 8px}
+.dots{display:flex;gap:8px}
+.dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+.dot[aria-current=true]{background:var(--accent);border-color:var(--accent);color:var(--onacc)}
+.badge{display:inline-block;padding:0 10px;border-radius:999px;font-weight:700;color:var(--onacc)}
+.bA{background:var(--rl)}.bB{background:var(--uns)}
+#extra h2{margin-top:44px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;align-items:center;margin-bottom:12px}
+.mail{position:relative;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);font-size:.9rem}
+.mbar{display:flex;gap:5px;padding:7px 10px;background:var(--line)}
+.mbar i{width:9px;height:9px;border-radius:50%;background:var(--muted);opacity:.6}
+.mrow{padding:5px 12px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.mbody{padding:10px 12px 40px;min-height:100px;overflow-wrap:anywhere}
+mark{color:inherit;border-radius:3px;padding:0 2px}
+mark.mw{background:color-mix(in srgb,var(--bad) 32%,transparent)}
+mark.ml{background:color-mix(in srgb,var(--uns) 38%,transparent)}
+.stamp{position:absolute;right:10px;bottom:8px;border:3px solid;border-radius:8px;padding:1px 10px;font-weight:800;transform:rotate(-7deg);background:var(--panel)}
+.mid{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.feat,.model{border:2px solid var(--line);border-radius:10px;padding:8px 14px;min-width:150px;opacity:.5;transition:all .3s}
+.feat.on,.model.on{opacity:1;border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.folders{display:flex;flex-direction:column;gap:10px}
+.fold{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;opacity:.5;transition:all .3s;font-weight:600}
+.fold svg{width:34px;height:34px;flex:none}
+.fold.hamok{opacity:1;border-color:var(--sup);color:var(--sup);background:color-mix(in srgb,var(--sup) 12%,transparent)}
+.fold.spamok{opacity:1;border-color:var(--bad);color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+</style>
+</head>
+<body>
+<main>
+<p class="kick">AI course · Session 1 · Review</p>
+<h1>Three ways a machine learns</h1>
+<p class="lead">You already saw this session. Test yourself first, then read the recap. The animations further down are there if you want to look again.</p>
+
+<nav class="nav" aria-label="Sections"><a href="#quiz">Quiz</a><a href="#recap">Recap</a><a href="#xybox">Revisit</a><a href="#tasks">Task by task</a><a href="#compare">Compare</a></nav>
+<h2 id="quiz" style="margin-top:32px">Quiz: answer from memory first</h2>
+<p id="qzscore" aria-live="polite"></p>
+<div id="qzbox"></div>
+<div class="tabs sub"><button class="tab" id="qzretry" hidden>Retry only the missed questions</button><button class="tab" id="qzreset">Restart the whole quiz</button></div>
+
+<h2 id="recap">Recap in 30 seconds: fill the gaps</h2>
+<div class="rc">
+<div style="--c:var(--sup)"><h3>Supervised</h3><p><b>Has labels y.</b> The model learns y = f(X) from examples with the right answer.</p><p>Category → <b>classification</b> (spam or not, sick or not).</p><p>Number → <b>regression</b> (house price, days in hospital).</p></div>
+<div style="--c:var(--uns)"><h3>Unsupervised</h3><p><b>No labels.</b> The algorithm finds structure in X by itself.</p><p>Groups → <b>clustering</b>.</p><p>Fewer columns → <b>dimensionality reduction</b>: extraction (new mixed columns, PCA) or selection (keep some original columns).</p></div>
+<div style="--c:var(--rl)"><h3>Reinforcement</h3><p><b>No dataset.</b> An agent acts in an environment and receives rewards or penalties.</p><p>It learns a <b>policy</b> by trial and error: the best action in each situation.</p></div>
+</div>
+<div class="flowq"><b>Which family? Ask in this order:</b>
+<ol><li>Is there a label column y? Yes → <b>supervised</b>. Is y a category or a number? Classification or regression.</li>
+<li>No label, but you want groups or fewer columns? → <b>unsupervised</b>.</li>
+<li>No data yet, an agent learns from rewards by acting? → <b>reinforcement</b>.</li></ol></div>
+
+<h2 id="revisit" style="margin-top:56px">Revisit the session</h2>
+<p class="cap" style="margin-bottom:18px">Same examples as in class. Use them only for the parts you missed in the quiz.</p>
+<section id="xybox" data-m="sup">
+  <h3 style="margin:0 0 10px;font-size:1.3rem">The same patients, with and without labels</h3>
+  <div class="tabs" role="tablist" aria-label="With or without labels" id="xytabs">
+    <button class="tab" role="tab" data-m="sup" aria-selected="true">With labels: supervised</button>
+    <button class="tab" role="tab" data-m="uns" aria-selected="false">Without labels: unsupervised</button>
+  </div>
+  <div class="tabs sub" role="tablist" aria-label="Task" id="xytask"></div>
+  <div class="xy">
+    <div class="tw"><table id="xytbl"></table></div>
+    <div class="flow" id="xyflow"></div>
+    <p class="xycap" id="xycap" aria-live="polite"></p>
+    <div class="dots" id="xydots" role="group" aria-label="Steps"></div>
+  </div>
+</section>
+<h2 id="tasks" style="margin-top:44px">Now see it work, task by task</h2>
+<div class="tabs" role="tablist" aria-label="Learning family" id="tops">
+  <button class="tab" role="tab" data-g="sup" aria-selected="true">Supervised</button>
+  <button class="tab" role="tab" data-g="uns" aria-selected="false">Unsupervised</button>
+  <button class="tab" role="tab" data-g="rl" aria-selected="false">Reinforcement</button>
+</div>
+<div class="tabs sub" role="tablist" aria-label="Task" id="subs"></div>
+
+<div class="stage">
+  <canvas id="cv" width="640" height="360" role="img" aria-label="Live animation of the selected learning task"></canvas>
+  <div class="bar"><span id="stat"></span>
+    <span class="btns"><button id="pp">Pause</button><button id="rs">Restart</button></span></div>
+</div>
+
+<div class="grid" id="info"></div>
+<div id="extra"></div>
+
+<h2 id="compare">Side by side</h2>
+<div class="tw"><table class="cmp">
+<tr><th></th><th class="s">Supervised</th><th class="u">Unsupervised</th><th class="r">Reinforcement</th></tr>
+<tr><td>The data</td><td>Rows with the right answer (labels)</td><td>Rows without any answer</td><td>No dataset: the agent collects its own experience</td></tr>
+<tr><td>The idea</td><td>Learn from examples with a teacher</td><td>Discover structure alone</td><td>Learn by trial, error and rewards</td></tr>
+<tr><td>Two main tasks</td><td>Classification (a category, like spam or not spam) and regression (a number)</td><td>Clustering (groups) and dimensionality reduction (fewer columns: extraction or selection)</td><td>Learn a policy: which action in which situation</td></tr>
+<tr><td>Same example</td><td>Houses: category or price. Emails: spam or not spam</td><td>Customers: groups, one combined column, or fewer original columns</td><td>A robot in a grid</td></tr>
+</table></div>
+
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const cv=$('#cv'),ctx=cv.getContext('2d'),W=640,H=360;
+const col={};
+function readCols(){const s=getComputedStyle(document.documentElement);['ink','muted','panel','line','sup','uns','rl','bad'].forEach(k=>col[k]=s.getPropertyValue('--'+k).trim())}
+readCols();matchMedia('(prefers-color-scheme:dark)').addEventListener('change',readCols);
+function rng(a){a=a%2147483647||1;const f=()=>(a=(a*16807)%2147483647)/2147483647;for(let i=0;i<8;i++)f();return f}
+function gauss(r){return Math.sqrt(-2*Math.log(r()||1e-9))*Math.cos(2*Math.PI*r())}
+function dot(x,y,r,c){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=c;ctx.fill()}
+function txt(t,x,y,c,sz,al){ctx.font=`600 ${sz||14}px system-ui,sans-serif`;ctx.fillStyle=c||col.ink;ctx.textAlign=al||'left';ctx.fillText(t,x,y)}
+function line(a,b,c,w,dash){ctx.strokeStyle=c;ctx.lineWidth=w;ctx.setLineDash(dash||[]);ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();ctx.setLineDash([])}
+const ease=t=>t<0?0:t>1?1:t*t*(3-2*t);
+
+/* ================= Data shared inside a family ================= */
+const R=rng(1234567);
+// Houses (supervised): features size + distance, labels category + price
+const HS=[];for(let i=0;i<36;i++){const s=40+R()*160,d=1+R()*19;HS.push({s,d,price:1.4*s-5*d+60+gauss(R)*15})}
+const pr=HS.map(h=>h.price),pmin=Math.min(...pr),pmax=Math.max(...pr),med=[...pr].sort((a,b)=>a-b)[18];
+HS.forEach(h=>{h.x=60+(h.s-40)/160*520;h.y=320-(h.d-1)/19*250;h.ry=320-(h.price-pmin)/(pmax-pmin)*250;h.c=h.price>med?1:0});
+// Customers (unsupervised): income + spending
+const CS=[];{const cs=[[130,260],[320,175],[510,90]];for(let i=0;i<60;i++){const c=cs[i%3];CS.push({x:Math.min(590,Math.max(50,c[0]+gauss(R)*30)),y:Math.min(290,Math.max(60,c[1]+gauss(R)*30))})}}
+const mx=CS.reduce((s,p)=>s+p.x,0)/CS.length,my=CS.reduce((s,p)=>s+p.y,0)/CS.length;
+let sxx=0,syy=0,sxy=0;CS.forEach(p=>{sxx+=(p.x-mx)**2;syy+=(p.y-my)**2;sxy+=(p.x-mx)*(p.y-my)});
+const TH=0.5*Math.atan2(2*sxy,sxx-syy),DV=[Math.cos(TH),Math.sin(TH)];
+CS.forEach(p=>p.s=(p.x-mx)*DV[0]+(p.y-my)*DV[1]);
+const smin=Math.min(...CS.map(p=>p.s)),smax=Math.max(...CS.map(p=>p.s));
+CS.forEach(p=>{p.income=Math.round(20+(p.x-50)/540*80);p.spend=Math.round(Math.max(1,Math.min(100,(300-p.y)/250*100)));p.score=Math.round((p.s-smin)/(smax-smin)*100)});
+CS.forEach((p,i)=>{p.age=22+((i*11)%35);p.usd=Math.round(p.income*1.08)});
+// Emails (supervised): features = spam words + links, label = spam or not
+const EM=[];for(let i=0;i<44;i++){const sp=i%2,w=Math.max(0,Math.min(12,sp?8+gauss(R)*2.2:2+gauss(R)*1.4)),l=Math.max(0,Math.min(10,sp?6+gauss(R)*1.8:1.8+gauss(R)*1.2));EM.push({w,l,c:sp,x:60+w/12*520,y:320-l/10*250})}
+
+let S={},view='cls',paused=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const newR=()=>rng(Math.floor(Math.random()*1e6)+1000);
+
+/* ================= Supervised: classification (houses and emails) ================= */
+const sig=z=>1/(1+Math.exp(-z));
+let CD;
+const DS_HOUSE={pts:HS,names:['cheap','expensive'],keys:['sup','uns'],t1:'Each dot = one house. Blue = cheap, orange = expensive (the labels we give).',xl:'size (m²) →',yl:'↑ farther from center (km)',what:'houses'};
+const DS_SPAM={pts:EM,names:['not spam','spam'],keys:['sup','bad'],t1:'Each dot = one email. Blue = not spam, red = spam (labels given by users).',xl:'number of spam words (free, win, urgent…) →',yl:'↑ number of links',what:'emails'};
+function resetCls(){S={w:[-0.4,0.5],b:0.2,it:0,tests:[],wait:0,r:newR()}}
+function initCls(){CD=DS_HOUSE;resetCls()}
+function initSpam(){CD=DS_SPAM;resetCls()}
+const pCls=(x,y)=>sig(S.w[0]*(x-320)/260+S.w[1]*(y-180)/150+S.b);
+function stepCls(){
+  if(S.it<360){let g0=0,g1=0,gb=0;
+    for(const h of CD.pts){const e=pCls(h.x,h.y)-h.c;g0+=e*(h.x-320)/260;g1+=e*(h.y-180)/150;gb+=e}
+    const n=CD.pts.length;S.w[0]-=3*g0/n;S.w[1]-=3*g1/n;S.b-=3*gb/n;S.it++}
+  else{S.wait++;
+    if(S.wait%60==1&&S.tests.length<5){const x=80+S.r()*480,y=90+S.r()*220;S.tests.push({x,y,p:pCls(x,y)>.5?1:0})}
+    if(S.wait>480)resetCls()}
+}
+function drawCls(){
+  const [a,b]=S.w,c=S.b,m=a*a+b*b||1e-6,px=-c*a/m,py=-c*b/m,L=Math.hypot(a,b)||1,dx=-b/L,dy=a/L;
+  const P=t=>[320+(px+dx*t)*260,180+(py+dy*t)*150];
+  line(P(-8),P(8),col.ink,2.5,[8,6]);
+  for(const h of CD.pts)dot(h.x,h.y,7,col[CD.keys[h.c]]);
+  for(const t of S.tests){const k=col[CD.keys[t.p]];ctx.lineWidth=3;ctx.strokeStyle=k;ctx.beginPath();ctx.arc(t.x,t.y,11,0,7);ctx.stroke();txt('?',t.x,t.y+5,col.ink,14,'center');txt(CD.names[t.p],t.x,t.y-18,k,13,'center')}
+  txt(CD.t1,14,20,col.muted,13);
+  txt('The model moves a boundary until it separates the two labels.',14,38,col.muted,13);
+  txt(CD.xl,W/2,352,col.muted,13,'center');txt(CD.yl,14,60,col.muted,13);
+  $('#stat').textContent=S.it<360?`Learning from labeled ${CD.what}… step ${S.it}`:`Learned. New ${CD.what} (?) get a label: ${S.tests.length} so far`;
+}
+
+/* ================= Supervised: regression ================= */
+function initReg(){S={a:-0.2,b:0.7,it:0,tests:[],wait:0,r:newR()}}
+function stepReg(){
+  if(S.it<320){let ga=0,gb=0;
+    for(const h of HS){const x=(h.x-320)/260,y=(h.ry-180)/150,e=S.a*x+S.b-y;ga+=2*e*x;gb+=2*e}
+    S.a-=0.25*ga/HS.length;S.b-=0.25*gb/HS.length;S.it++}
+  else{S.wait++;
+    if(S.wait%60==1&&S.tests.length<4){S.tests.push({x:90+S.r()*470})}
+    if(S.wait>440)initReg()}
+}
+const lineY=x=>180+150*(S.a*(x-320)/260+S.b);
+function drawReg(){
+  for(const h of HS)line([h.x,h.ry],[h.x,lineY(h.x)],col.line,1.5);
+  line([40,lineY(40)],[610,lineY(610)],col.ink,3);
+  for(const h of HS)dot(h.x,h.ry,6,col.sup);
+  for(const t of S.tests){const y=lineY(t.x),size=Math.round(40+(t.x-60)/520*160),price=Math.round(pmin+(320-y)/250*(pmax-pmin));
+    line([t.x,332],[t.x,y],col.ink,1.5,[4,4]);dot(t.x,y,8,col.uns);txt(`${size} m² → about ${price} k€`,Math.min(t.x,500),y-14,col.uns,13,'left')}
+  txt('Each dot = one house. Its label is the exact price (a number).',14,20,col.muted,13);
+  txt('The model moves a line until it follows the prices.',14,38,col.muted,13);
+  txt('size (m²) →',W/2,352,col.muted,13,'center');txt('↑ price (k€)',14,60,col.muted,13);
+  $('#stat').textContent=S.it<320?`Learning from labeled houses… step ${S.it}`:`Learned. Orange points are predicted prices for new houses: ${S.tests.length}`;
+}
+
+/* ================= Unsupervised: clustering (k-means) ================= */
+function initClu(){
+  const r=newR(),pts=CS.map(p=>({x:p.x,y:p.y,k:-1})),idx=new Set();
+  while(idx.size<3)idx.add(Math.floor(r()*pts.length));
+  S={pts,cen:[...idx].map(i=>({x:pts[i].x,y:pts[i].y,tx:pts[i].x,ty:pts[i].y})),phase:0,t:0,iter:0,still:0,wait:0};
+}
+function stepClu(){
+  for(const c of S.cen){c.x+=(c.tx-c.x)*.12;c.y+=(c.ty-c.y)*.12}
+  if(S.still>=2){if(++S.wait>170)initClu();return}
+  if(++S.t<55)return;S.t=0;
+  if(S.phase==0){for(const p of S.pts){let b=0,d=1e9;S.cen.forEach((c,i)=>{const e=(p.x-c.tx)**2+(p.y-c.ty)**2;if(e<d){d=e;b=i}});p.k=b}S.phase=1}
+  else{let mv=0;S.cen.forEach((c,i)=>{const m=S.pts.filter(p=>p.k==i);if(!m.length)return;
+    const x=m.reduce((s,p)=>s+p.x,0)/m.length,y=m.reduce((s,p)=>s+p.y,0)/m.length;mv+=Math.hypot(x-c.tx,y-c.ty);c.tx=x;c.ty=y});
+    S.iter++;S.phase=0;S.still=mv<1?S.still+1:0}
+}
+function drawClu(){
+  const cl=[col.sup,col.uns,col.rl];
+  for(const p of S.pts)dot(p.x,p.y,6,p.k<0?col.line:cl[p.k]);
+  S.cen.forEach((c,i)=>{ctx.lineWidth=3;ctx.strokeStyle=col.ink;ctx.fillStyle=cl[i];ctx.beginPath();ctx.rect(c.x-9,c.y-9,18,18);ctx.fill();ctx.stroke()});
+  txt('Each dot = one customer (x: income, y: spending). No labels at all.',14,20,col.muted,13);
+  txt(S.iter==0&&S.phase==0?'Squares are 3 random starting centers.':S.still>=2?'Stable: three groups found. A human now names them.':S.phase==0?'Step 1: each customer joins the nearest center.':'Step 2: each center moves to the middle of its group.',14,38,col.muted,13);
+  $('#stat').textContent=S.still>=2?`Done after ${S.iter} rounds`:`Round ${S.iter+1}`;
+}
+
+/* ================= Unsupervised: dimensionality reduction (PCA) ================= */
+function initPca(){S={t:0}}
+function stepPca(){if(++S.t>560)S.t=0}
+function drawPca(){
+  const t=S.t,ang=TH*ease(t/90),e=ease((t-110)/90),o=ease((t-210)/50);
+  const d=[Math.cos(ang),Math.sin(ang)];
+  line([mx-d[0]*420,my-d[1]*420],[mx+d[0]*420,my+d[1]*420],col.ink,2,[8,6]);
+  for(const p of CS){const s=(p.x-mx)*DV[0]+(p.y-my)*DV[1],qx=mx+DV[0]*s,qy=my+DV[1]*s;
+    if(t>110&&t<260)line([p.x,p.y],[p.x+(qx-p.x)*e,p.y+(qy-p.y)*e],col.line,1);
+    dot(p.x+(qx-p.x)*e,p.y+(qy-p.y)*e,6,col.uns)}
+  if(o>0){ctx.globalAlpha=o;line([40,344],[600,344],col.muted,2);
+    for(const p of CS)dot(320+p.s*.95,344,5,col.uns);ctx.globalAlpha=1;txt('one number per customer',320,334,col.muted,13,'center')}
+  txt('Each dot = one customer with 2 columns: income and spending.',14,20,col.muted,13);
+  txt(t<110?'Step 1: find the direction where customers differ the most.':t<210?'Step 2: slide every customer onto that direction.':'Step 3: 2 columns became 1, most of the information is kept.',14,38,col.muted,13);
+  $('#stat').textContent=t<110?'2 columns':t<210?'2 columns → 1 column':'1 column';
+}
+
+/* ================= Unsupervised: dimensionality reduction (feature selection) ================= */
+const FC=[['Customer ID',0,'unique per row, no pattern',i=>'C00'+(i+1)],['Income (k€)',1,'',i=>CS[i].income],['Income (k$)',0,'same info as Income (k€)',i=>CS[i].usd],['Country',0,'same value for everyone',()=>'Tunisia'],['Age',1,'',i=>CS[i].age],['Spending (1-100)',1,'',i=>CS[i].spend]];
+function initFsel(){S={t:0}}
+function stepFsel(){if(++S.t>620)S.t=0}
+function drawFsel(){
+  const t=S.t;let kept=0,checked=0;
+  FC.forEach((c,i)=>{
+    const cx=24+(i%3)*204,cy=70+Math.floor(i/3)*130,w=190,h=110,dec=t>70+i*45;
+    if(dec){checked++;if(c[1])kept++}
+    ctx.globalAlpha=dec&&!c[1]?.55:1;ctx.fillStyle=col.panel;ctx.fillRect(cx,cy,w,h);
+    ctx.lineWidth=3;ctx.strokeStyle=dec?(c[1]?col.rl:col.bad):col.line;ctx.strokeRect(cx,cy,w,h);
+    txt(c[0],cx+12,cy+26,col.ink,15);
+    txt([0,1,2].map(k=>c[3](k)).join(', ')+'…',cx+12,cy+48,col.muted,12);
+    if(dec){txt(c[1]?'keep':'drop',cx+12,cy+76,c[1]?col.rl:col.bad,14);if(!c[1])txt(c[2],cx+12,cy+96,col.muted,12);
+      if(!c[1])line([cx+6,cy+h-6],[cx+w-6,cy+6],col.bad,2)}
+    ctx.globalAlpha=1});
+  txt('Each customer has 6 columns. Which ones are worth keeping?',14,20,col.muted,13);
+  txt('No labels here, so we use simple rules: drop IDs, constant columns and copies.',14,38,col.muted,13);
+  if(t>70+6*45)txt('6 columns → 3 columns. Nothing new is created: we keep original columns.',W/2,346,col.ink,14,'center');
+  $('#stat').textContent=checked<6?`Checking columns… ${checked}/6`:`Kept ${kept} original columns`;
+}
+
+/* ================= Reinforcement: Q-learning ================= */
+const GW=6,GH=4,TR=[[1,2],[3,1],[3,2],[4,3]],GOAL=[5,0],ST=[0,3],DX=[0,1,0,-1],DY=[-1,0,1,0];
+function initRl(){S={Q:new Array(GW*GH*4).fill(0),x:0,y:3,ep:0,eps:1,steps:0,t:0,wins:0}}
+const isTrap=(x,y)=>TR.some(t=>t[0]==x&&t[1]==y);
+const best=s=>{let b=0;for(let a=1;a<4;a++)if(S.Q[s*4+a]>S.Q[s*4+b])b=a;return b};
+function stepRl(){
+  if(++S.t<3)return;S.t=0;
+  const s=S.y*GW+S.x,a=Math.random()<S.eps?Math.floor(Math.random()*4):best(s);
+  const x=Math.min(GW-1,Math.max(0,S.x+DX[a])),y=Math.min(GH-1,Math.max(0,S.y+DY[a]));
+  let r=-0.1,done=false;
+  if(x==GOAL[0]&&y==GOAL[1]){r=10;done=true;S.wins++}else if(isTrap(x,y)){r=-10;done=true}
+  const s2=y*GW+x,mxq=Math.max(...S.Q.slice(s2*4,s2*4+4));
+  S.Q[s*4+a]+=0.3*(r+(done?0:0.95*mxq)-S.Q[s*4+a]);
+  S.x=x;S.y=y;S.steps++;
+  if(done||S.steps>45){S.ep++;S.steps=0;S.x=ST[0];S.y=ST[1];S.eps=Math.max(.05,S.eps*.965)}
+}
+function drawRl(){
+  const cw=W/GW,ch=(H-30)/GH,oy=30;
+  for(let y=0;y<GH;y++)for(let x=0;x<GW;x++){
+    const X=x*cw,Y=oy+y*ch,s=y*GW+x,v=Math.max(...S.Q.slice(s*4,s*4+4));
+    ctx.fillStyle=col.panel;ctx.fillRect(X,Y,cw,ch);
+    if(isTrap(x,y)){ctx.globalAlpha=.85;ctx.fillStyle=col.bad;ctx.fillRect(X+2,Y+2,cw-4,ch-4);ctx.globalAlpha=1;txt('trap −10',X+cw/2,Y+ch/2+5,'#fff',13,'center')}
+    else if(x==GOAL[0]&&y==GOAL[1]){ctx.fillStyle=col.rl;ctx.fillRect(X+2,Y+2,cw-4,ch-4);txt('goal +10',X+cw/2,Y+ch/2+5,'#fff',13,'center')}
+    else{ctx.globalAlpha=Math.min(.7,Math.max(0,v/9));ctx.fillStyle=col.rl;ctx.fillRect(X+2,Y+2,cw-4,ch-4);ctx.globalAlpha=1;
+      if(v!=0){const a=best(s),cx=X+cw/2,cy=Y+ch/2,ex=cx+DX[a]*20,ey=cy+DY[a]*20;line([cx,cy],[ex,ey],col.muted,2);dot(ex,ey,3,col.muted)}}
+    ctx.strokeStyle=col.line;ctx.lineWidth=1;ctx.strokeRect(X+.5,Y+.5,cw,ch)}
+  const ax=S.x*cw+cw/2,ay=oy+S.y*ch+ch/2;dot(ax,ay,14,col.sup);ctx.lineWidth=3;ctx.strokeStyle=col.ink;ctx.beginPath();ctx.arc(ax,ay,14,0,7);ctx.stroke();
+  txt('The agent (blue) starts knowing nothing. Green = places it learned are good. Arrows = best move so far.',14,20,col.muted,13);
+  $('#stat').textContent=`Try number ${S.ep+1} · random moves: ${Math.round(S.eps*100)}% · goal reached ${S.wins} times`;
+}
+
+/* ================= Text content ================= */
+const fix=h=>({size:Math.round(h.s),dist:Math.round(h.d),price:Math.round(h.price),cat:h.c?'expensive':'cheap'});
+function tbl(heads,rows,cls){return `<div class="tw"><table><tr>${heads.map((h,i)=>`<th class="${cls[i]=='lab'?'lab':cls[i]=='off'?'off':''}">${h}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map((v,i)=>`<td class="${cls[i]=='lab'?'lab':cls[i]=='off'?'off':''}">${v}</td>`).join('')}</tr>`).join('')}</table></div>`}
+const hrows=HS.slice(0,5).map(fix),crows=CS.slice(0,5);
+const HH=['Size (m²)','Distance (km)','Price (k€)','Category'];
+const INFO={
+cls:{def:'<b>Supervised learning</b> = learning from <b>labeled data</b>: every row comes with the correct answer, the label. The model learns the link between the features and the label, then predicts the label of a new row.<br><br><b>Classification</b>: the label is a <b>category</b>. Here: is the house cheap or expensive?',
+  data:()=>tbl(HH,hrows.map(r=>[r.size,r.dist,r.price,r.cat]),['f','f','off','lab']),
+  cap:'Features: size and distance. Label: the category. The price column is not used in this task.',
+  ex:['Loan request: accepted or refused','Patient scan: sick or healthy','Bank transaction: fraud or normal','Photo: cat, dog or bird']},
+reg:{def:'<b>Supervised learning</b> again, same houses, same kind of labeled rows. This time the label is a <b>number</b>, so the task is called <b>regression</b>. Here: what is the price of this house?',
+  data:()=>tbl(HH,hrows.map(r=>[r.size,r.dist,r.price,r.cat]),['f','off','lab','off']),
+  cap:'Feature: size. Label: the exact price. The category column is not used in this task.',
+  ex:['House size → price','Day and weather → ice cream sales','Car age and mileage → resale value','Study hours → exam grade']},
+clu:{def:'<b>Unsupervised learning</b> = data <b>without labels</b>. Nobody tells the algorithm the right answer. It looks for structure by itself.<br><br><b>Clustering</b>: put similar rows in the same <b>group</b>. Here: which customers behave alike?',
+  data:()=>tbl(['Income (k€)','Spending (1-100)','Group'],crows.map(r=>[r.income,r.spend,'?']),['f','f','lab']),
+  cap:'There is no answer column. The algorithm creates the groups, then a human names them (for example: big spenders, savers).',
+  ex:['Shop customers → segments','Songs → playlists of similar songs','News articles → topics','Network logs → normal and unusual behavior']},
+pca:{def:'<b>Unsupervised learning</b> again, same customers, still no labels. This time the goal is <b>dimensionality reduction</b>: fewer columns, same important information. There are two ways.<br><br><b>1. Feature extraction</b>: build <b>new</b> columns by mixing the old ones. PCA is the classic method. Here: 2 columns become 1 new column that mixes income and spending.',
+  data:()=>tbl(['Income (k€)','Spending (1-100)','New single column'],crows.map(r=>[r.income,r.spend,r.score]),['f','f','lab']),
+  cap:'Income and spending move together, so one combined number describes each customer almost as well as two. Real data can have 100 columns reduced to 2 or 3 to draw a picture.',
+  ex:['100 survey questions → 2 axes to plot','Face images with thousands of pixels → a few key features','Compress data before another model','Remove columns that repeat the same information']},
+spam:{def:'<b>Supervised learning</b>, <b>classification</b> again, now with text. Users clicked “report spam” on thousands of emails, so every email has a label: spam or not spam. We turn each email into numbers (features), like how many spam words and links it contains. Only two possible labels = <b>binary classification</b>.',
+  data:()=>tbl(['Email subject','Spam words','Links','Label'],[['“Win a FREE phone now!!!”',3,2,'spam'],['“Meeting moved to 10am”',0,0,'not spam'],['“URGENT: verify your account”',2,1,'spam'],['“Lecture notes for week 3”',0,1,'not spam'],['“Your invoice is attached”',1,1,'not spam']],['f','f','f','lab']),
+  cap:'Features: counts computed from the email text. Label: spam or not spam. Real filters use thousands of word counts, not only two. A new email is classified in the same way.',
+  ex:['Review: positive or negative','SMS: spam or not spam','Support ticket → billing, technical or sales (more than 2 labels)','News article → sport, politics or economy']},
+fsel:{def:'<b>2. Feature selection</b>: the second family of dimensionality reduction. Instead of mixing columns into new ones (extraction), you <b>keep only the original columns that are worth it</b> and drop the others. Nothing new is created, so the columns keep their meaning.<br><br>Without labels, simple rules already help: drop columns that are unique IDs, always the same, or copies of another column.',
+  data:()=>tbl(['ID','Income (k€)','Income (k$)','Country','Age','Spending'],crows.map((r,i)=>['C00'+(i+1),r.income,r.usd,'Tunisia',r.age,r.spend]),['off','lab','off','off','lab','lab']),
+  cap:'Colored headers = kept (3 columns). Faded = dropped. Extraction gives new mixed columns, selection gives a smaller subset of the old ones.',
+  ex:['Survey: remove questions that everybody answers the same way','Sensors: drop the ones that always read the same value','Dataset: remove ID, name and duplicated columns before modeling','Text: keep only words that appear often enough']},
+rl:{def:'<b>Reinforcement learning</b>: there is no dataset and no labels. An <b>agent</b> acts in an <b>environment</b>, gets a <b>reward</b> or a penalty after each action, and learns by trial and error which actions lead to the most reward in the long run.',
+  data:()=>tbl(['Term','In this grid'],[['Agent','The blue ball'],['Environment','The grid'],['State','The cell where the ball is'],['Action','Up, right, down or left'],['Reward','+10 goal, −10 trap, −0.1 per step so it hurries'],['Policy','The arrows: best action in each cell']],['f','f']),
+  cap:'At first the agent moves at random (exploration). With time it uses what it learned (exploitation).',
+  ex:['Robot learning to walk','Game player (chess, Go, video games)','Self-driving: when to brake or turn','Choosing which offer to show to a user']}
+};
+const GROUPS={sup:{views:[['cls','Classification: houses'],['spam','Classification: spam email'],['reg','Regression: houses']],c:'--sup'},uns:{views:[['clu','Clustering'],['pca','Reduction: extraction (PCA)'],['fsel','Reduction: selection']],c:'--uns'},rl:{views:[['rl','Reinforcement']],c:'--rl'}};
+const V={cls:[initCls,stepCls,drawCls],spam:[initSpam,stepCls,drawCls],reg:[initReg,stepReg,drawReg],clu:[initClu,stepClu,drawClu],pca:[initPca,stepPca,drawPca],fsel:[initFsel,stepFsel,drawFsel],rl:[initRl,stepRl,drawRl]};
+
+/* ================= Intro: X and y on one patient table ================= */
+// rows: id, age, glucose, blood pressure, sick (classification label), days in hospital (regression label)
+const PT=[[1,45,110,80,0,3],[2,56,150,90,1,9],[3,60,140,85,1,7],[4,35,100,75,0,2]],NEWR=['New',69,145,90],GRP=['A','B','B','A'];
+const mix=r=>Math.round(((r[2]-100)/50+(r[3]-75)/15)/2*100);
+const XYC={
+cls:['Training data: every patient has features X (age, glucose, blood pressure) and the right answer y, already known.',
+ 'y is the label (étiquette / cible): a doctor already decided 1 = sick, 0 = healthy. A category label = classification.',
+ 'Training: the model studies many rows and approximates a function f such that y = f(X).',
+ 'A new patient arrives with features X only. We do not know y yet.',
+ 'Prediction: the model applies f to X and answers 1, so this patient is predicted sick (a category).'],
+reg:['Same patients, same features X. But now the label is a number: how many days the patient stayed in hospital.',
+ 'y is still the label, but a number instead of a category: 3, 9, 7, 2 days. A number label = regression.',
+ 'Training: the model approximates f such that y = f(X), and f now returns a number.',
+ 'A new patient arrives with features X only. How long will they stay? We do not know y yet.',
+ 'Prediction: f(X) gives about 8 days (a number, not a category).'],
+clu:['Same patients, same features. But the label column is removed: nobody tells us who is sick.',
+ 'We only have X (features). No y, no teacher.',
+ 'Training: the algorithm searches for structure in X. Which patients look alike?',
+ 'Result: groups. The algorithm says A and B, not “sick” or “healthy”. It does not know what the groups mean.',
+ 'A human gives the meaning: group B has high glucose and pressure (maybe “at risk”). A new patient is put in the closest group.'],
+red:['Same patients. The label column is removed. We have 3 feature columns: age, glucose and blood pressure.',
+ 'We only have X. No y, no teacher.',
+ 'Training: the algorithm looks for columns that carry almost the same information. Glucose and blood pressure move together.',
+ 'Result: 3 columns became 2. Glucose and pressure are mixed into one new column (feature extraction). Feature selection would instead keep some of the original columns.',
+ 'The new patient is converted the same way. Later work uses 2 columns instead of 3, and it is easier to plot.']};
+const XYA={sup:[['x'],['y'],['tr','f'],['f'],['f']],uns:[['x'],['x'],['tr'],['res'],['res']]};
+const XYT={sup:[['cls','Classification: sick or not'],['reg','Regression: days in hospital']],uns:[['clu','Clustering'],['red','Dimensionality reduction']]};
+let xyMode='sup',xyTask='cls',xyStep=0,xyTimer=null;
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function renderXY(){
+  const T=xyTask,sup=xyMode=='sup',st=xyStep,isReg=T=='reg',isClu=T=='clu',isRed=T=='red';
+  const showY=sup||st==0,gc=sup?'':'gone',showG=isClu&&st>=3,newRow=sup?st>=3:st>=4,red3=isRed&&st>=3;
+  const cols=red3?[['Age',r=>r[1]],['Mix (new)',r=>mix(r)]]:[['Age',r=>r[1]],['Glucose',r=>r[2]],['Blood pressure',r=>r[3]]];
+  const yH=isReg?['y: label (a number)','Stay (days)']:['y: label (étiquette)','Sick (0 / 1)'],yv=r=>isReg?r[5]:r[4],newY=st==3?'?':(isReg?'≈ 8 days':'1 = sick');
+  let h=`<tr><th></th><th colspan="${cols.length}" class="x">${red3?'X: only 2 columns now':'X: features (caractéristiques)'}</th>${showY?`<th class="y ${gc}">${sup?yH[0]:'y: removed'}</th>`:''}${showG?'<th class="g">found by algorithm</th>':''}</tr>`;
+  h+=`<tr><th>Patient ID</th>${cols.map(c=>`<th class="x">${c[0]}</th>`).join('')}${showY?`<th class="y ${gc}">${yH[1]}</th>`:''}${showG?'<th class="g">Group</th>':''}</tr>`;
+  PT.forEach((r,i)=>{h+=`<tr><td>${r[0]}</td>${cols.map(c=>`<td class="x">${c[1](r)}</td>`).join('')}${showY?`<td class="y ${gc}">${yv(r)}</td>`:''}${showG?`<td class="g"><span class="badge b${GRP[i]}">${GRP[i]}</span></td>`:''}</tr>`});
+  if(newRow)h+=`<tr class="newr"><td>New</td>${cols.map(c=>`<td class="x">${c[1](NEWR)}</td>`).join('')}${showY?`<td class="y">${newY}</td>`:''}${showG?'<td class="g"><span class="badge bB">B (closest)</span></td>':''}</tr>`;
+  $('#xytbl').innerHTML=h;
+  const act=XYA[xyMode][st],c=(k,t)=>`<span class="chip ${act.includes(k)?'on':''}">${t}</span>`,pl=t=>`<span class="pl">${t}</span>`;
+  $('#xyflow').innerHTML=sup?c('x','X features')+pl('+')+c('y','y labels')+pl('→')+c('tr','Training')+pl('→')+c('f','f : y = f(X)'):c('x','X features')+pl('→')+c('tr','Training')+pl('→')+c('res',isClu?'groups / structure':'fewer columns');
+  $('#xycap').textContent=`${st+1}. ${XYC[T][st]}`;
+  document.querySelectorAll('#xydots .dot').forEach((d,i)=>d.setAttribute('aria-current',i==st));
+}
+function xyAuto(){clearInterval(xyTimer);if(!reduced)xyTimer=setInterval(()=>{xyStep=(xyStep+1)%5;renderXY()},3400)}
+function setTask(t){xyTask=t;xyStep=0;
+  document.querySelectorAll('#xytask .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t==t));renderXY();xyAuto()}
+function setXY(m){xyMode=m;$('#xybox').dataset.m=m;
+  document.querySelectorAll('#xytabs .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.m==m));
+  $('#xytask').innerHTML=XYT[m].map(t=>`<button class="tab" role="tab" data-t="${t[0]}" aria-selected="false">${t[1]}</button>`).join('');
+  document.querySelectorAll('#xytask .tab').forEach(b=>b.onclick=()=>setTask(b.dataset.t));
+  setTask(XYT[m][0][0])}
+$('#xydots').innerHTML=[0,1,2,3,4].map(i=>`<button class="dot" aria-label="Step ${i+1}" data-i="${i}">${i+1}</button>`).join('');
+document.querySelectorAll('#xydots .dot').forEach(d=>d.onclick=()=>{clearInterval(xyTimer);xyStep=+d.dataset.i;renderXY()});
+document.querySelectorAll('#xytabs .tab').forEach(b=>b.onclick=()=>setXY(b.dataset.m));
+
+/* ================= Spam: how one email is classified ================= */
+const MAILS=[
+ {from:'promo@win-prize.biz',sub:'Win a FREE phone now!!!',body:'Click http://phone-deal.biz or http://bit.ly/x1 now.'},
+ {from:'sara.k@univ.tn',sub:'Meeting moved to 10am',body:'Hi team, the meeting is now at 10am in room B. See you there.'},
+ {from:'support@secure-bank.top',sub:'URGENT: verify your account',body:'Your account may be locked. Open http://secure-bank.top/login now.'},
+ {from:'prof.ahmed@univ.tn',sub:'Lecture notes for week 3',body:'Notes are here: http://univ.tn/week3 See you on Monday.'}];
+const SPW=/\b(win|free|click|urgent|verify|prize)\b/gi,LNK=/https?:\/\/\S+/g;
+const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const mark=(t,on)=>esc(t).replace(/(https?:\/\/\S+)|\b(win|free|click|urgent|verify|prize)\b/gi,(m,l)=>on?`<mark class="${l?'ml':'mw'}">${m}</mark>`:m);
+function mailInfo(m){const f=m.sub+' '+m.body,links=(f.match(LNK)||[]).length,words=(f.replace(LNK,'').match(SPW)||[]).length;return{links,words,spam:links+words>=3}}
+let mi=0,ms=0,mt=null;
+const ICON_IN='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M6 28l6-16h24l6 16v10H6z"/><path d="M6 28h12l2 4h8l2-4h12"/></svg>';
+const ICON_SP='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"><path d="M6 12h14l4 5h18v21H6z"/><path d="M24 22v7M24 33.5v.5"/></svg>';
+function renderMail(){
+  const m=MAILS[mi],f=mailInfo(m),hl=ms>=1,sh=ms>=2;
+  $('#mgrid').innerHTML=`<div class="mail"><div class="mbar"><i></i><i></i><i></i></div><div class="mrow"><b>From:</b> ${esc(m.from)}</div><div class="mrow"><b>Subject:</b> ${mark(m.sub,hl)}</div><div class="mbody">${mark(m.body,hl)}</div>${ms>=4?`<div class="stamp" style="color:${f.spam?'var(--bad)':'var(--sup)'}">${f.spam?'SPAM':'NOT SPAM'}</div>`:''}</div>
+  <div class="mid"><div class="feat ${sh?'on':''}"><b>Features X</b><br>spam words: <b>${sh?f.words:'?'}</b><br>links: <b>${sh?f.links:'?'}</b></div><div>↓</div><div class="model ${ms>=3?'on':''}"><b>Trained model f</b><br>learned from labeled emails</div></div>
+  <div class="folders"><div class="fold ${ms>=4&&!f.spam?'hamok':''}">${ICON_IN}<span>Inbox<br><small>not spam</small></span></div><div class="fold ${ms>=4&&f.spam?'spamok':''}">${ICON_SP}<span>Spam folder<br><small>spam</small></span></div></div>`;
+  const caps=['An email arrives. We do not know yet if it is spam or not.',
+   'Step 1: read the text. Red = suspicious words (free, win, click, urgent, verify, prize). Orange = links.',
+   `Step 2: turn the text into numbers, the features X: spam words = ${f.words}, links = ${f.links}. This email becomes one dot in the scatter plot above.`,
+   'Step 3: the trained model f compares these numbers with the boundary it learned from labeled emails.',
+   `Step 4: decision. ${f.spam?'Many suspicious words and links, so SPAM: it goes to the Spam folder.':'Few suspicious words and links, so NOT SPAM: it stays in the Inbox.'}`];
+  $('#mcap').textContent=caps[ms];
+  document.querySelectorAll('#mdots .dot').forEach((d,i)=>d.setAttribute('aria-current',i==ms));
+  document.querySelectorAll('#mtabs .tab').forEach((b,i)=>b.setAttribute('aria-selected',i==mi));
+}
+function mailAuto(){clearInterval(mt);if(!reduced)mt=setInterval(()=>{ms++;if(ms>4){ms=0;mi=(mi+1)%MAILS.length}renderMail()},2800)}
+function setExtra(v){
+  clearInterval(mt);const el=$('#extra');
+  if(v!='spam'){el.innerHTML='';return}
+  mi=0;ms=0;
+  el.innerHTML=`<h2>How is one email classified?</h2>
+  <div class="tabs sub" id="mtabs" role="tablist" aria-label="Choose an email">${MAILS.map((m,i)=>`<button class="tab" role="tab" data-i="${i}" aria-selected="false">Email ${i+1}</button>`).join('')}</div>
+  <div class="xy"><div class="mgrid" id="mgrid"></div><p class="xycap" id="mcap" aria-live="polite"></p>
+  <div class="dots" id="mdots" role="group" aria-label="Steps">${[0,1,2,3,4].map(i=>`<button class="dot" data-i="${i}" aria-label="Step ${i}">${i}</button>`).join('')}</div></div>`;
+  document.querySelectorAll('#mdots .dot').forEach(d=>d.onclick=()=>{clearInterval(mt);ms=+d.dataset.i;renderMail()});
+  document.querySelectorAll('#mtabs .tab').forEach(b=>b.onclick=()=>{mi=+b.dataset.i;ms=0;renderMail();mailAuto()});
+  renderMail();mailAuto();
+}
+
+/* ================= Quiz ================= */
+const QZ=[
+{q:'A table of emails where every row already has the column “spam / not spam”. Which task is this?',o:['Unsupervised: clustering','Supervised: classification','Supervised: regression','Reinforcement learning'],a:1,e:'There is a label y and it is a category: supervised classification.'},
+{q:'You predict the price of a house from its size, using houses with known prices. Which task?',o:['Supervised: regression','Supervised: classification','Unsupervised: dimensionality reduction','Reinforcement learning'],a:0,e:'The label (price) is a number: regression.'},
+{q:'You have customers with income and spending, and no label. You want groups of similar customers.',o:['Classification','Regression','Clustering','Feature selection'],a:2,e:'No label and you want groups: clustering (for example K-means).'},
+{q:'A dataset has 6 columns. You drop an ID column, a copy of another column and a constant column. What is this?',o:['Feature extraction (PCA)','Feature selection','Clustering','Regression'],a:1,e:'You keep a subset of the original columns and create nothing new: feature selection.'},
+{q:'You mix glucose and blood pressure into one new column. What is this?',o:['Feature selection','Classification','Feature extraction (like PCA)','Reinforcement learning'],a:2,e:'A new column built from old ones is feature extraction. Extraction and selection are both dimensionality reduction.'},
+{q:'A robot gets +10 for reaching the goal and −10 for hitting a trap, and learns by trying. Which family?',o:['Supervised','Unsupervised','Reinforcement','None of them'],a:2,e:'No dataset, an agent, actions and rewards: reinforcement learning.'},
+{q:'Patient table: age, glucose, blood pressure, and a column “sick (0/1)”. A new patient has only age, glucose and pressure. What must the model predict?',o:['X, the features','y, the label “sick”','f, the function','A group A or B'],a:1,e:'X is given. The model uses f to predict y, the label.'},
+{q:'You remove the “sick” column from the patient table and run a clustering algorithm. What do you get?',o:['Sick or healthy for each patient','A price for each patient','Groups, without knowing what they mean','A policy'],a:2,e:'Without labels the algorithm only finds groups (A, B). A human gives them a meaning.'},
+{q:'Which one is NOT a goal of dimensionality reduction?',o:['Draw 100 columns as a 2D plot','Remove columns that repeat the same information','Predict a category from labeled examples','Simplify the data before another model'],a:2,e:'Predicting a category from labeled examples is classification, a supervised task.'},
+{q:'In reinforcement learning, what does the agent try to maximize?',o:['The number of labeled examples','The total reward over time','The number of groups','The number of columns'],a:1,e:'It learns a policy that gets the most reward in the long run, not only right now.'}];
+let qzIdx=[],qzDone=0,qzScore=0,qzMissed=[];
+function buildQuiz(idx){
+  qzIdx=idx&&idx.length?idx:QZ.map((_,i)=>i);qzDone=0;qzScore=0;qzMissed=[];
+  $('#qzretry').hidden=true;
+  $('#qzbox').innerHTML=qzIdx.map((qi,k)=>`<div class="qz" data-i="${qi}"><p>${k+1}. ${QZ[qi].q}</p>${QZ[qi].o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join('')}<p class="ex" aria-live="polite"></p></div>`).join('');
+  document.querySelectorAll('#qzbox .qz').forEach(card=>{
+    const qi=+card.dataset.i,x=QZ[qi];
+    card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const j=+b.dataset.j;
+      card.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(+o.dataset.j==x.a)o.classList.add('right')});
+      if(j!=x.a){b.classList.add('wrong');qzMissed.push(qi)}else qzScore++;
+      card.querySelector('.ex').textContent=(j==x.a?'Correct. ':'Not quite. ')+x.e;
+      qzDone++;
+      if(qzDone<qzIdx.length)$('#qzscore').textContent=`${qzDone} of ${qzIdx.length} answered`;
+      else{$('#qzscore').textContent=qzMissed.length?`Done: ${qzScore} of ${qzIdx.length} correct. Read the recap below for the ones you missed.`:`Done: ${qzScore} of ${qzIdx.length} correct. Well done!`;$('#qzretry').hidden=!qzMissed.length}
+    });
+  });
+  $('#qzscore').textContent=`${qzIdx.length} questions, no time limit`;
+}
+$('#qzreset').onclick=()=>buildQuiz();
+$('#qzretry').onclick=()=>buildQuiz(qzMissed.slice());
+
+/* ================= UI ================= */
+function loop(){if(!paused)V[view][1]();ctx.clearRect(0,0,W,H);V[view][2]();requestAnimationFrame(loop)}
+function setView(v){
+  view=v;V[v][0]();const i=INFO[v];setExtra(v);
+  $('#info').innerHTML=`<div><h3>What it is</h3><p>${i.def}</p></div><div><h3>The data</h3>${i.data()}<p class="cap">${i.cap}</p></div><div><h3>More real-life examples</h3><ul>${i.ex.map(e=>`<li>${e}</li>`).join('')}</ul></div>`;
+  document.querySelectorAll('#subs .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.v==v));
+}
+function setGroup(g){
+  const G=GROUPS[g];document.documentElement.style.setProperty('--accent',`var(${G.c})`);
+  document.querySelectorAll('#tops .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.g==g));
+  $('#subs').innerHTML=G.views.map(v=>`<button class="tab" role="tab" data-v="${v[0]}" aria-selected="false">${v[1]}</button>`).join('');
+  $('#subs').style.display=G.views.length>1?'flex':'none';
+  document.querySelectorAll('#subs .tab').forEach(b=>b.onclick=()=>setView(b.dataset.v));
+  setView(G.views[0][0]);
+}
+document.querySelectorAll('#tops .tab').forEach(b=>b.onclick=()=>setGroup(b.dataset.g));
+$('#pp').onclick=e=>{paused=!paused;e.target.textContent=paused?'Play':'Pause'};
+$('#rs').onclick=()=>V[view][0]();
+$('#pp').textContent=paused?'Play':'Pause';
+setGroup('sup');setXY('sup');buildQuiz();loop();
+</script>
+</body>
+</html>
