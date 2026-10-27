@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TP 1 – Partie 0 : environnements de développement (aperçu)</title>
+
+<!-- ============ APERÇU UNIQUEMENT : supprimez ce bloc quand vous collez dans lab1_fr.html (votre assets/style.css fait déjà ce travail) ============ -->
+<style id="preview-only">
+body{font:17px/1.6 Lato,system-ui,sans-serif;max-width:900px;margin:0 auto;padding:24px 20px;color:#17233a;background:#fbfaf6}
+@media (prefers-color-scheme:dark){body{color:#e8eefc;background:#0d1526}}
+pre{background:#10192c;color:#e8eefc;border-radius:8px;padding:12px 14px;overflow-x:auto;font-size:.88rem}
+code{font-family:ui-monospace,Menlo,Consolas,monospace}
+.task{border:1px solid #dfe3ea;border-left:6px solid #fdc913;border-radius:8px;padding:12px 16px;margin:12px 0}
+.q{background:#054489;color:#fff;border-radius:6px;padding:1px 8px;margin-right:8px}
+.note{border-left:6px solid #054489;background:rgba(5,68,137,.08);padding:10px 16px;border-radius:6px;margin:12px 0}
+.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid #dfe3ea;vertical-align:top}
+summary{cursor:pointer;font-weight:700}
+</style>
+<!-- ============ FIN APERÇU ============ -->
+
+<!-- ============ COLLER 1 : mettez ce <style> dans le <head> de lab1_fr.html, après le lien vers style.css ============ -->
+<style id="envs-css">
+.envs{--ea:#054489;--eon:#fff;margin:18px 0}
+@media (prefers-color-scheme:dark){.envs{--ea:#7fb2ff;--eon:#0d1526}}
+.envs .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.envs .tabs button,.envs .nav button{font:inherit;font-weight:700;cursor:pointer;padding:8px 16px;border-radius:999px;border:2px solid color-mix(in srgb,currentColor 28%,transparent);background:transparent;color:inherit}
+.envs .tabs button[aria-selected=true]{background:var(--ea);border-color:var(--ea);color:var(--eon)}
+.envs button:focus-visible{outline:3px solid #fdc913;outline-offset:2px}
+.envs .panel{border:2px solid var(--ea);border-radius:10px;padding:6px 20px 14px}
+.envs.js .panel{display:none}.envs.js .panel.on{display:block}
+.envs .panel h3{margin-bottom:4px}
+.envs .tag{display:inline-block;font-size:.78rem;font-weight:700;padding:1px 10px;border-radius:999px;background:#fdc913;color:#17233a;margin-bottom:6px}
+.envs .nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
+.envs .nav button{padding:6px 14px}
+.envs .count{font-weight:700}
+.envs:not(.js) .nav{display:none}
+.envs details{margin-top:10px}
+</style>
+<!-- ============ FIN COLLER 1 ============ -->
+</head>
+<body>
+
+<!-- ============ COLLER 2 : mettez ce bloc dans lab1_fr.html juste AVANT <h2 id="p1"> ============ -->
+<h2 id="p0">Partie 0 – Choisir son environnement de développement</h2>
+<p>Avant d’écrire du code, décidez où votre code de Machine Learning va s’exécuter. Cliquez sur un environnement ci-dessous pour voir ce qu’il est, ses avantages et ses limites, et <b>comment l’utiliser</b> (ouvrez «&nbsp;Afficher la méthode&nbsp;»).</p>
+
+<h3>Python, pip, conda et environnements : qui fait quoi&nbsp;?</h3>
+<div class="scroll"><table>
+<tr><th>Composant</th><th>Rôle</th></tr>
+<tr><td>Python</td><td>Langage de programmation et interpréteur</td></tr>
+<tr><td>pip</td><td>Installe les paquets Python</td></tr>
+<tr><td>conda</td><td>Gère les paquets et les environnements isolés ; peut aussi gérer les versions de Python</td></tr>
+<tr><td>Anaconda</td><td>Distribution contenant conda et de nombreux paquets de data science présélectionnés</td></tr>
+<tr><td>Miniconda</td><td>Distribution minimale centrée sur conda</td></tr>
+<tr><td>VS Code</td><td>Éditeur de code et environnement de développement</td></tr>
+<tr><td>Jupyter Notebook</td><td>Document interactif pour le code, les résultats, les visualisations et les explications</td></tr>
+<tr><td>Google Colab</td><td>Environnement Jupyter hébergé, accessible depuis un navigateur</td></tr>
+</table></div>
+<div class="note"><b>Important&nbsp;:</b> Anaconda et Miniconda sont des <b>distributions</b>, tandis que <code>conda</code> est le <b>gestionnaire de paquets et d’environnements</b>. VS Code et Jupyter sont des outils pour écrire et exécuter du code. Ils ne remplacent pas Python lui-même.</div>
+
+<h3>Les quatre principaux environnements de développement</h3>
+<div class="envs" aria-label="Environnements de développement">
+<div class="tabs" role="tablist" aria-label="Choisir un environnement">
+<button role="tab" aria-selected="true">1 · Python + VS Code</button>
+<button role="tab" aria-selected="false">2 · Anaconda</button>
+<button role="tab" aria-selected="false">3 · Miniconda</button>
+<button role="tab" aria-selected="false">4 · Google Colab</button>
+</div>
+
+<div class="panel on" role="tabpanel">
+<h3>1. Python + VS Code</h3><span class="tag">Recommandé pour apprendre la programmation</span>
+<ul><li>Installer Python séparément.</li><li>Installer VS Code et les extensions Python et Jupyter.</li><li>Installer les bibliothèques nécessaires avec <code>pip</code>.</li><li>Fonctionne pour les scripts Python (<code>.py</code>) et les notebooks Jupyter (<code>.ipynb</code>).</li></ul>
+<p><b>Avantages&nbsp;:</b> léger, flexible, adapté à l’apprentissage de Python et du développement logiciel.</p>
+<details><summary>Afficher la méthode : comment l’utiliser</summary>
+<ol>
+<li>Installez Python depuis python.org et vérifiez-le : <code>python --version</code> (sous Windows, essayez <code>py --version</code>).</li>
+<li>Installez VS Code, puis les extensions <b>Python</b> et <b>Jupyter</b> (panneau Extensions, Ctrl + Maj + X).</li>
+<li>Créez un dossier de projet, ouvrez-le avec Fichier → Ouvrir le dossier, puis ouvrez un terminal (Terminal → Nouveau terminal).</li>
+<li>Créez un environnement isolé et installez les bibliothèques :</li></ol>
+<pre><code>python -m venv .venv
+.venv\Scripts\activate           # Windows
+source .venv/bin/activate        # macOS / Linux
+python -m pip install numpy pandas matplotlib scikit-learn jupyter</code></pre>
+<ol start="5"><li>Créez <code>Lab1_Introduction.ipynb</code> (ou un fichier <code>.py</code>). Cliquez sur <b>Select Kernel</b> en haut à droite, choisissez l’interpréteur <code>.venv</code>, puis exécutez une cellule avec Maj + Entrée.</li></ol>
+<div class="note">Si PowerShell bloque le script d’activation, ouvrez plutôt un terminal Invite de commandes. Pour utiliser l’interface classique, lancez <code>jupyter notebook</code> dans le terminal.</div></details>
+</div>
+
+<div class="panel" role="tabpanel">
+<h3>2. Anaconda</h3><span class="tag">Tout-en-un</span>
+<ul><li>Inclut Python, le gestionnaire de paquets et d’environnements <code>conda</code>, et une grande collection de paquets de data science.</li><li>Inclut Anaconda Navigator, une interface graphique pour lancer les outils et gérer les environnements.</li></ul>
+<p><b>Avantages&nbsp;:</b> pratique pour les débutants qui veulent de nombreux outils de data science prêts à l’emploi.</p>
+<p><b>Limite&nbsp;:</b> demande plus d’espace disque et installe plus de paquets que beaucoup de projets n’en ont besoin.</p>
+<details><summary>Afficher la méthode : comment l’utiliser</summary>
+<ol>
+<li>Téléchargez et installez Anaconda depuis anaconda.com.</li>
+<li>Ouvrez <b>Anaconda Navigator</b> (graphique) ou <b>Anaconda Prompt</b> (ligne de commande).</li>
+<li>Créez un environnement dédié pour chaque projet :</li></ol>
+<pre><code>conda create -n ml-project python=3.12
+conda activate ml-project
+conda install numpy pandas matplotlib scikit-learn notebook</code></pre>
+<ol start="4"><li>Dans Navigator, choisissez <code>ml-project</code> dans la liste «&nbsp;Applications on&nbsp;» et cliquez sur <b>Launch</b> sous Jupyter Notebook. Ou, dans l’invite de commandes, lancez <code>jupyter notebook</code>.</li></ol>
+<div class="note">C’est le déroulement le plus courant avec Anaconda.</div></details>
+</div>
+
+<div class="panel" role="tabpanel">
+<h3>3. Miniconda</h3><span class="tag">Minimal</span>
+<ul><li>Un installateur minimal pour Python et conda.</li><li>Vous installez uniquement les bibliothèques dont chaque projet a besoin.</li></ul>
+<p><b>Avantages&nbsp;:</b> léger, flexible, utile pour gérer plusieurs environnements isolés.</p>
+<p><b>Limite&nbsp;:</b> vous devez installer vous-même vos outils et vos bibliothèques.</p>
+<details><summary>Afficher la méthode : comment l’utiliser</summary>
+<ol>
+<li>Installez Miniconda (l’installateur minimal du site d’Anaconda).</li>
+<li>Ouvrez un terminal : <b>Anaconda Prompt</b> sous Windows, ou le terminal habituel sous macOS / Linux. Si <code>conda</code> est introuvable, lancez <code>conda init</code> puis rouvrez le terminal.</li>
+<li>Créez un environnement et installez seulement ce dont vous avez besoin :</li></ol>
+<pre><code>conda create -n ml-project python=3.12
+conda activate ml-project
+conda install numpy pandas matplotlib scikit-learn jupyter
+conda env list            # voir tous vos environnements</code></pre>
+<ol start="4"><li>Lancez Jupyter avec <code>jupyter notebook</code>. Ajoutez un paquet plus tard avec <code>conda install nom_du_paquet</code>.</li></ol>
+<div class="note">Il n’y a pas de Navigator : tout se fait dans le terminal.</div></details>
+</div>
+
+<div class="panel" role="tabpanel">
+<h3>4. Google Colab</h3><span class="tag">En ligne, sans installation</span>
+<ul><li>Un environnement de notebooks Jupyter en ligne.</li><li>Fonctionne dans un navigateur web, sans installation locale de Python.</li><li>Donne accès au CPU et, lorsque c’est disponible, au GPU ou au TPU.</li></ul>
+<p><b>Avantages&nbsp;:</b> facile à démarrer, pratique pour partager des notebooks, utile pour les expériences de deep learning.</p>
+<p><b>Limites&nbsp;:</b> nécessite un accès à internet ; la disponibilité des environnements d’exécution et la durée des sessions sont limitées.</p>
+<details><summary>Afficher la méthode : comment l’utiliser</summary>
+<ol>
+<li>Ouvrez colab.research.google.com et connectez-vous avec un compte Google.</li>
+<li>Cliquez sur <b>Fichier → Nouveau notebook</b>, écrivez du Python dans une cellule et exécutez-la avec Maj + Entrée.</li>
+<li>Si un paquet manque, installez-le dans une cellule :</li></ol>
+<pre><code>%pip install scikit-learn</code></pre>
+<ol start="4"><li>GPU en option : <b>Exécution → Modifier le type d’exécution</b>, puis choisissez un GPU (si disponible).</li>
+<li>Fichiers : importez-les avec le panneau Fichiers à gauche (temporaire), ou montez votre Google Drive :</li></ol>
+<pre><code>from google.colab import drive
+drive.mount('/content/drive')</code></pre>
+<div class="note">Les paquets et les fichiers importés peuvent disparaître quand l’environnement d’exécution est réinitialisé. Enregistrez votre notebook dans Drive ou téléchargez-le (Fichier → Télécharger).</div></details>
+</div>
+
+<div class="nav"><button class="prev" aria-label="Environnement précédent">← Précédent</button><span class="count" aria-live="polite"></span><button class="next" aria-label="Environnement suivant">Suivant →</button></div>
+</div>
+
+<details><summary>Afficher le tableau comparatif</summary>
+<div class="scroll"><table style="min-width:760px">
+<tr><th>Critère</th><th>Python + VS Code</th><th>Anaconda</th><th>Miniconda</th><th>Google Colab</th></tr>
+<tr><td>Installation locale</td><td>Python et VS Code</td><td>Oui</td><td>Oui</td><td>Non</td></tr>
+<tr><td>Mise en place initiale</td><td>Modérée</td><td>Facile</td><td>Modérée</td><td>Très facile</td></tr>
+<tr><td>Espace disque</td><td>Faible à modéré</td><td>Élevé</td><td>Faible</td><td>Minimal en local</td></tr>
+<tr><td>Installation des paquets</td><td>Principalement pip</td><td>conda ou pip</td><td>conda ou pip</td><td>Généralement pip dans une cellule du notebook</td></tr>
+<tr><td>Environnements multiples</td><td>Oui, par ex. venv</td><td>Oui, conda</td><td>Oui, conda</td><td>Environnements hébergés séparés</td></tr>
+<tr><td>Internet nécessaire pour travailler</td><td>Pas toujours</td><td>Pas toujours</td><td>Pas toujours</td><td>Oui</td></tr>
+<tr><td>Accès au GPU</td><td>Dépend du matériel et de la configuration</td><td>Dépend du matériel et de la configuration</td><td>Dépend du matériel et de la configuration</td><td>Possible</td></tr>
+<tr><td>Meilleur usage</td><td>Coder et apprendre les pratiques de développement</td><td>Installation de data science prête à l’emploi</td><td>Environnements personnalisés et isolés</td><td>Expériences rapides et notebooks partagés</td></tr>
+</table></div></details>
+
+<div class="task"><b class="q">E1</b>Quel environnement utiliserez-vous pour ce cours, et pourquoi&nbsp;? Répondez dans une cellule markdown.
+<details><summary>Afficher l’indication</summary>
+<p><b>Python + VS Code</b> : premiers TP de Python et de ML. Vous apprenez à installer des bibliothèques, exécuter des programmes, utiliser des notebooks et comprendre l’environnement de développement.</p>
+<p><b>Anaconda</b> : une installation de data science intégrée, avec une interface graphique pour les débutants.</p>
+<p><b>Miniconda</b> : une installation conda légère, pour apprendre la gestion des paquets et des environnements sans paquets inutiles.</p>
+<p><b>Google Colab</b> : en cas de problème d’installation, ou si vous avez besoin d’un GPU. Tout le monde peut l’ouvrir dans un navigateur.</p>
+<div class="note">Choisissez <b>un seul environnement principal</b> au lieu d’installer les quatre. Python + VS Code est un bon début si vous pouvez installer des logiciels ; Colab est la solution de repli la plus simple ; utilisez Miniconda plus tard pour des environnements reproductibles et la gestion des dépendances d’un projet.</div></details></div>
+
+<div class="task"><b class="q">E2</b>Créez un environnement pour ce cours et installez <code>numpy</code>, <code>pandas</code>, <code>matplotlib</code>, <code>scikit-learn</code> et Jupyter (ou ouvrez un notebook Colab).
+<details><summary>Afficher les commandes pour chaque environnement</summary>
+<p><b>Python + VS Code</b></p>
+<pre><code>python -m venv .venv
+.venv\Scripts\activate
+python -m pip install numpy pandas matplotlib scikit-learn jupyter</code></pre>
+<p><b>Anaconda / Miniconda</b></p>
+<pre><code>conda create -n ml-project python=3.12
+conda activate ml-project
+conda install numpy pandas matplotlib scikit-learn jupyter</code></pre>
+<p><b>Google Colab</b> : rien à installer. Ces bibliothèques sont généralement déjà disponibles ; utilisez <code>%pip install nom_du_paquet</code> si l’une d’elles manque.</p></details></div>
+
+<div class="task"><b class="q">E3</b>Dans la première cellule d’un nouveau notebook, affichez les versions de Python, NumPy, Pandas et Scikit-Learn pour vérifier votre environnement.
+<details><summary>Afficher la solution</summary>
+<pre><code>import sys, numpy, pandas, sklearn
+print("Python  ", sys.version.split()[0])
+print("numpy   ", numpy.__version__)
+print("pandas  ", pandas.__version__)
+print("sklearn ", sklearn.__version__)</code></pre></details></div>
+<!-- ============ FIN COLLER 2 ============ -->
+
+<!-- ============ COLLER 3 : mettez ce <script> dans lab1_fr.html juste AVANT <script src="assets/lab.js"> ============ -->
+<script id="envs-js">
+(function(){
+  var box=document.querySelector('.envs');if(!box)return;
+  box.classList.add('js');
+  var tabs=[].slice.call(box.querySelectorAll('.tabs button')),
+      panels=[].slice.call(box.querySelectorAll('.panel')),i=0;
+  function show(n){
+    i=(n+panels.length)%panels.length;
+    panels.forEach(function(p,k){p.classList.toggle('on',k===i)});
+    tabs.forEach(function(t,k){t.setAttribute('aria-selected',k===i?'true':'false')});
+    box.querySelector('.count').textContent=(i+1)+' / '+panels.length;
+  }
+  tabs.forEach(function(t,k){t.onclick=function(){show(k)}});
+  box.querySelector('.prev').onclick=function(){show(i-1)};
+  box.querySelector('.next').onclick=function(){show(i+1)};
+  box.addEventListener('keydown',function(e){
+    if(e.target.tagName==='BUTTON'&&e.key==='ArrowRight')show(i+1);
+    if(e.target.tagName==='BUTTON'&&e.key==='ArrowLeft')show(i-1);
+  });
+  show(0);
+})();
+</script>
+<!-- ============ FIN COLLER 3 ============ -->
+</body>
+</html>
