@@ -171,9 +171,19 @@ drive.mount('/content/drive')</code></pre>
 .venv\Scripts\activate
 python -m pip install numpy pandas matplotlib scikit-learn jupyter</code></pre>
 <p><b>Anaconda / Miniconda</b></p>
-<pre><code>conda create -n ml-project python=3.12
-conda activate ml-project
-conda install numpy pandas matplotlib scikit-learn jupyter</code></pre>
+<pre><code>
+conda create -n ml-project  python=3.12       # create an environment
+conda activate ml-project           # activate it
+conda install numpy pandas matplotlib scikit-learn jupyter
+conda deactivate              # leave it
+conda env remove -n ml-project      # delete it and its packages
+
+conda install opencv          # install a package
+conda install opencv=4.6.0    # a specific version
+conda install -c conda-forge opencv   # from a specific channel
+conda update opencv
+conda remove opencv</code></pre>
+
 <p><b>Google Colab</b>: nothing to install. These libraries are usually already available; use <code>%pip install package_name</code> if one is missing.</p></details></div>
 
 <div class="task"><b class="q">E3</b>In the first cell of a new notebook, print the versions of Python, NumPy, Pandas and Scikit-Learn to check your environment.
