@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TP 1 – Python pour le Machine Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf6;--ink:#17233a;--muted:#5b6679;--blue:#054489;--yellow:#fdc913;--line:#dfe3ea;--surface:#fff;--code:#10192c;--codeink:#e8eefc;--onblue:#fff;--tint:#eef3fa}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1526;--ink:#e8eefc;--muted:#9aa8c4;--blue:#7fb2ff;--line:#26365a;--surface:#14203a;--code:#08101f;--onblue:#0d1526;--tint:#162543}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}[id]{scroll-margin-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 Lato,system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+header{background:#054489;color:#fff;padding:max(22px,env(safe-area-inset-top)) 0 24px;border-bottom:6px solid var(--yellow)}
+header h1{margin:8px 0 4px;font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.15;font-weight:900}
+header p{margin:0 0 14px;opacity:.92}
+.lang{text-align:right}
+.lang a{color:#fff;font-weight:700;text-decoration:none;border:1.5px solid rgba(255,255,255,.6);padding:3px 14px;border-radius:999px;font-size:.88rem}
+.lang a:hover{background:rgba(255,255,255,.15)}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.meta span{background:rgba(255,255,255,.14);padding:3px 12px;border-radius:999px;font-size:.85rem}
+.toc{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;padding:10px 0;margin-bottom:6px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px)}
+.toc a{color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;padding:4px 13px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface)}
+.toc a:hover,.toc a:focus-visible{border-color:var(--blue);color:var(--blue)}
+h2{font-size:1.5rem;line-height:1.25;margin:44px 0 10px;color:var(--blue);border-left:6px solid var(--yellow);padding-left:12px}
+h3{font-size:1.1rem;margin:26px 0 6px}
+p{margin:0 0 12px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--tint);padding:1px 6px;border-radius:4px}
+.goal{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--yellow);border-radius:10px;padding:14px 20px}
+.goal ul{margin:6px 0 12px;padding-left:1.2em}
+.task{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:12px 0}
+.q{display:inline-block;min-width:34px;text-align:center;background:var(--blue);color:var(--onblue);font-weight:900;font-size:.88rem;border-radius:6px;padding:0 8px;margin-right:10px}
+details{margin:8px 0}
+summary{cursor:pointer;font-weight:700;color:var(--blue);padding:2px 0}
+summary:focus-visible,.toc a:focus-visible,.cp:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+pre{position:relative;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:.87rem;line-height:1.5;margin:10px 0}
+pre code{background:none;padding:0;font-size:inherit;color:inherit}
+.cp{position:absolute;top:8px;right:8px;font:inherit;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid #3a4a70;background:rgba(255,255,255,.06);color:var(--codeink);cursor:pointer}
+.note{background:var(--tint);border-left:5px solid var(--yellow);border-radius:8px;padding:10px 16px;margin:12px 0;font-size:.95rem}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{background:var(--tint)}
+ul{padding-left:1.2em}
+footer{margin-top:50px;padding:18px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;text-align:center}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+.box{border:1.5px solid var(--blue);border-radius:8px;padding:6px 12px;background:var(--surface);font-size:.88rem;text-align:center}
+.box.io{background:var(--tint);border-style:dashed}
+.ar{font-weight:900;color:var(--blue)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.toc,.cp,.lang{display:none}details{display:block}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="lang"><a href="lab1_en.html" hreflang="en">English</a></div>
+<h1>TP 1 – Python pour le Machine Learning</h1>
+<p>Jupyter, OpenCV, Pandas, Matplotlib et Scikit-Learn</p>
+<div class="meta"><span>Cours : Machine Learning 1</span><span>Niveau : M1 BDDS</span><span>Durée : 3 heures</span><span>Enseignante : Olfa BESBES, PhD</span></div>
+</div></header>
+
+<main><div class="wrap">
+<nav class="toc" aria-label="Sommaire"><a href="#goals">Objectifs</a><a href="#p1">1 · Installation &amp; OpenCV</a><a href="#p2">2 · Pandas</a><a href="#p3">3 · Matplotlib</a><a href="#p4">4 · Scikit-Learn</a><a href="#bonus">Bonus</a><a href="#solutions">Toutes les solutions</a></nav>
+
+<h2 id="goals">Objectifs</h2>
+<div class="goal">
+<p>À la fin de ce TP, vous serez capable de :</p>
+<ul>
+<li>Créer un environnement conda, installer des paquets et lancer Jupyter depuis Anaconda Navigator.</li>
+<li>Travailler dans un Jupyter Notebook avec des cellules de code et des cellules markdown.</li>
+<li>Lire, afficher et enregistrer une image avec OpenCV.</li>
+<li>Charger, explorer, nettoyer et décrire un jeu de données avec Pandas.</li>
+<li>Tracer les principaux types de graphiques avec Matplotlib.</li>
+<li>Construire, entraîner et évaluer un pipeline Scikit-Learn.</li>
+</ul>
+<p><b>Fichiers nécessaires :</b> <code>test.jpg</code> (une image quelconque), <code>Cars.csv</code>, <code>50_Startups.csv</code> et <code>data.csv</code> (colonnes Duration, Pulse, Maxpulse, Calories ; utilisé dans les exemples Pandas), tous fournis par l'enseignante. Placez-les dans le même dossier que votre notebook.</p>
+<p><b>Livrable :</b> le notebook <code>Lab1_Introduction.ipynb</code>, avec chaque réponse dans sa propre cellule, précédée d'une cellule markdown indiquant le numéro de la question.</p>
+</div>
+<h2 id="p1">Partie 1 – Installation et premier notebook : environnement, Jupyter et OpenCV</h2>
+<p>Dans cette partie, vous préparez votre environnement de travail avec <b>Anaconda</b>, puis vous exécutez votre premier notebook. Un <em>environnement virtuel</em> conda garde les paquets de ce cours séparés des autres projets de votre machine. Placez <code>test.jpg</code> dans le même dossier que votre notebook.</p>
+
+<div class="task"><b class="q">Q1</b>Lancez l'<b>invite CMD.exe</b> depuis l'Anaconda Navigator.
+<details><summary>Afficher la solution</summary><p>Ouvrez Anaconda Navigator, allez dans <b>Environments</b>, cliquez sur la flèche verte à côté du nom de l'environnement et choisissez <b>Open Terminal</b> (ou lancez <b>Anaconda Prompt</b> depuis le menu Démarrer). L'invite commence par <code>(base)</code>.</p></details></div>
+
+<div class="task"><b class="q">Q2</b>Créez un environnement <code>ML1Labs</code> et activez-le.
+<details><summary>Afficher la solution</summary><p><code>conda create -n ML1Labs python</code><br><code>conda activate ML1Labs</code></p><p>Répondez <code>y</code> quand conda demande de continuer. L'invite commence maintenant par <code>(ML1Labs)</code>. Pour quitter l'environnement : <code>conda deactivate</code>.</p>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>conda create -n ML1Labs</code></td><td>Crée un environnement virtuel nommé <code>ML1Labs</code>. Les environnements virtuels permettent d'avoir différentes versions de paquets sur la même machine</td></tr>
+<tr><td><code>conda activate ML1Labs</code></td><td>Active l'environnement : les paquets que vous installez maintenant y sont placés</td></tr>
+<tr><td><code>conda deactivate</code></td><td>Quitte l'environnement actif</td></tr>
+<tr><td><code>conda env remove -n ML1Labs</code></td><td>Supprime l'environnement et tous les paquets qui y sont installés</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">Q3</b>Installez OpenCV avec conda.
+<details><summary>Afficher la solution</summary><p><code>conda install opencv</code></p><p>Si le paquet n'est pas trouvé, utilisez un canal précis : <code>conda install -c conda-forge opencv</code>. La commande <code>pip install opencv-python</code> fonctionne aussi.</p>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>conda install opencv</code></td><td>Installe le paquet OpenCV (le module <code>cv2</code>)</td></tr>
+<tr><td><code>conda install opencv=4.6.0</code></td><td>Installe une <b>version précise</b></td></tr>
+<tr><td><code>conda install -c conda-forge opencv</code></td><td>Installe depuis un <b>canal précis</b></td></tr>
+<tr><td><code>pip install opencv-python</code></td><td>Installateur alternatif (pip)</td></tr>
+<tr><td><code>conda update opencv</code></td><td>Met à jour le paquet</td></tr>
+<tr><td><code>conda remove opencv</code></td><td>Désinstalle le paquet</td></tr>
+</table></div></details>
+<div class="note">Les parties suivantes utilisent aussi Jupyter, Pandas, Matplotlib et Scikit-Learn. Un nouvel environnement ne les contient pas, installez-les donc maintenant : <code>conda install notebook pandas matplotlib scikit-learn</code></div></div>
+
+<div class="task"><b class="q">Q4</b>Sélectionnez l'environnement <code>ML1Labs</code> et lancez le <b>Jupyter Notebook</b> depuis l'Anaconda Navigator.
+<details><summary>Afficher la solution</summary><p>Dans Anaconda Navigator, ouvrez l'onglet <b>Home</b>. Dans la liste déroulante <b>Applications on</b>, choisissez <code>ML1Labs</code> à la place de <code>base (root)</code>. Cliquez sur <b>Launch</b> sous <b>Notebook</b> (si le bouton indique <b>Install</b>, cliquez d'abord dessus). Un onglet du navigateur s'ouvre sur l'explorateur de fichiers Jupyter.</p></details></div>
+
+<div class="task"><b class="q">Q5</b>Créez un notebook nommé <code>Lab1_Introduction.ipynb</code>.
+<details><summary>Afficher la solution</summary><p>Dans l'explorateur de fichiers Jupyter, allez dans votre dossier de TP, cliquez sur <b>New</b> puis <b>Python 3</b>. Cliquez sur le titre <code>Untitled</code> en haut et renommez-le en <code>Lab1_Introduction</code>. Le fichier est enregistré sous <code>Lab1_Introduction.ipynb</code>.</p></details></div>
+
+<div class="task"><b class="q">Q6</b>Dans une cellule de code, importez le module <code>cv2</code> et affichez sa version.
+<details><summary>Afficher la solution</summary><pre><code>import cv2
+print(cv2.__version__)</code></pre><p>En Python 3, <code>print</code> exige des parenthèses (le slide montre la forme Python 2). Exécutez la cellule avec Ctrl + Entrée.</p>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>import cv2</code></td><td>Importe le module OpenCV</td></tr>
+<tr><td><code>cv2.__version__</code></td><td>Attribut qui donne la version installée d'OpenCV</td></tr>
+<tr><td><code>print()</code></td><td>Affiche la valeur sous la cellule</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">Q7</b>Dans une cellule <b>markdown</b>, écrivez <code>Read, Display and Save an Image</code>.
+<details><summary>Afficher la solution</summary><p>Insérez une nouvelle cellule, changez son type de <b>Code</b> en <b>Markdown</b> dans la liste déroulante de la barre d'outils, et tapez <code>## Read, Display and Save an Image</code> (le <code>##</code> en fait un titre). Appuyez sur Ctrl + Entrée pour l'afficher.</p>
+<p><b>Notions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>Cellule Code / Markdown</code></td><td>Une cellule <b>code</b> exécute du Python ; une cellule <b>markdown</b> contient du texte formaté (titres, explications). Le type se choisit dans la liste déroulante de la barre d'outils</td></tr>
+<tr><td><code>## texte</code></td><td>Syntaxe markdown pour un titre</td></tr>
+<tr><td><code>Ctrl + Entrée</code></td><td>Exécute la cellule sélectionnée (menu : Cell → Run Cell)</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">Q8</b>Dans une cellule de code, testez ce code et expliquez le rôle de chaque fonction OpenCV.
+<pre class="sol"><code>import cv2
+
+img_grayscale = cv2.imread('test.jpg', 0)       # 0 = lecture en niveaux de gris
+cv2.imshow('grayscale image', img_grayscale)    # affichage dans une fenêtre
+cv2.waitKey(0)                                  # attente d'une touche
+cv2.destroyAllWindows()                         # fermeture de toutes les fenêtres
+cv2.imwrite('grayscale.jpg', img_grayscale)     # enregistrement de l'image</code></pre>
+<div class="note">Si <code>cv2.imread</code> renvoie <code>None</code>, le fichier n'a pas été trouvé : vérifiez le nom du fichier et que <code>test.jpg</code> est dans le dossier du notebook. Cliquez sur la fenêtre de l'image et appuyez sur une touche pour la fermer, sinon le notebook reste bloqué.</div>
+<details><summary>Afficher l'explication des fonctions</summary>
+<p><b>Rôle de chaque fonction OpenCV</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>cv2.imread(file, 0)</code></td><td><b>Lit</b> une image depuis un fichier. Le drapeau <code>0</code> la charge en niveaux de gris ; elle est renvoyée sous forme de tableau (ou <code>None</code> si le fichier est introuvable)</td></tr>
+<tr><td><code>cv2.imshow(name, img)</code></td><td><b>Affiche</b> une image dans une fenêtre intitulée <code>name</code></td></tr>
+<tr><td><code>cv2.waitKey(0)</code></td><td>Attend l'appui sur une touche pour fermer la fenêtre ; <code>0</code> signifie attendre indéfiniment</td></tr>
+<tr><td><code>cv2.destroyAllWindows()</code></td><td>Détruit toutes les fenêtres créées</td></tr>
+<tr><td><code>cv2.imwrite(file, img)</code></td><td><b>Écrit</b> (enregistre) l'image dans un fichier</td></tr>
+</table></div></details></div>
+<h2 id="p2">Partie 2 – Exploration et nettoyage de données avec Pandas</h2>
+<p><b>Pandas</b> est une bibliothèque Python utilisée pour travailler avec des <b>jeux de données tabulaires</b>. Elle fournit des fonctions pour <b>analyser, nettoyer, explorer</b> et <b>manipuler</b> les données. Une <b>Series</b> est un tableau à une dimension (une table à une colonne) contenant des données de n'importe quel type. Un <b>DataFrame</b> est une table avec des lignes et des colonnes. Commencez chaque exemple par <code>import pandas as pd</code>.</p>
+
+<h3>Series : étiquettes par défaut, étiquettes personnalisées, objets clé/valeur</h3>
+<pre><code>import pandas as pd
+
+sr = pd.Series([1, 5, 3])                        # étiquettes par défaut 0, 1, 2
+print(sr)
+
+sr = pd.Series([1, 5, 3], index=["x", "y", "z"]) # création de vos propres étiquettes
+print(sr)
+print(sr["x"])                                   # accès à une valeur par son étiquette -&gt; 1
+
+calories = {"day1": 300, "day2": 200, "day3": 100}
+skv = pd.Series(calories)                        # objet clé/valeur (dictionnaire) : les clés deviennent les étiquettes
+print(skv)</code></pre>
+<p>Chaque Series affiche ses étiquettes à gauche, ses valeurs à droite et son <code>dtype</code> (ici <code>int64</code>) en dessous.</p>
+
+<h3>DataFrame : une table construite à partir d'un dictionnaire</h3>
+<pre><code>mydataset = {
+  'cars': ["BMW", "Volvo", "Ford"],
+  'colors': ["White", "Red", "Black"]
+}
+df = pd.DataFrame(mydataset)    # chaque clé devient une colonne
+print(df)</code></pre>
+<p>Sans <code>index</code>, les lignes sont numérotées 0, 1, 2. L'échauffement ci-dessous ajoute des <b>index nommés</b> et localise des lignes avec <code>loc[]</code>.</p>
+
+<h3>Échauffement</h3>
+<div class="task"><b class="q">W1</b>Créez la Series <code>calories = {"day1": 300, "day2": 200, "day3": 100}</code> et affichez-la. Affichez ensuite la valeur de <code>"day2"</code>.</div>
+<div class="task"><b class="q">W2</b>Créez un DataFrame avec les colonnes <code>calories = [300, 200, 100]</code> et <code>duration = [40, 50, 60]</code>, indexé par <code>day1</code>, <code>day2</code>, <code>day3</code>. Utilisez <code>loc</code> pour afficher uniquement <code>day1</code> et <code>day2</code>.
+<details><summary>Afficher la solution</summary><pre><code>import pandas as pd
+
+sr = pd.Series({"day1": 300, "day2": 200, "day3": 100})
+print(sr)
+print(sr["day2"])
+
+data = {"calories": [300, 200, 100], "duration": [40, 50, 60]}
+df = pd.DataFrame(data, index=["day1", "day2", "day3"])
+print(df.loc[["day1", "day2"]])</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>pd.Series(data, index=[...])</code></td><td><b>Series</b> : tableau à une dimension (table à une colonne) contenant des données de tout type. <code>index</code> crée des <b>étiquettes</b></td></tr>
+<tr><td><code>pd.Series(dict)</code></td><td>Un dictionnaire (objet clé/valeur) peut être utilisé directement : les clés deviennent les étiquettes</td></tr>
+<tr><td><code>sr["day2"]</code></td><td>Récupère une valeur à partir de son étiquette</td></tr>
+<tr><td><code>pd.DataFrame(data, index=[...])</code></td><td><b>DataFrame</b> : table avec lignes et colonnes. <code>index</code> donne des <b>index nommés</b> aux lignes</td></tr>
+<tr><td><code>df.loc[[...]]</code></td><td><b>Localise des lignes</b> à partir d'une liste de noms d'index</td></tr>
+</table></div></details></div>
+
+<h3>Lire un fichier CSV ou JSON</h3>
+<pre><code>df = pd.read_csv('data.csv')     # fichier CSV -&gt; DataFrame
+print(df.to_string())
+
+df = pd.read_json('data.json')   # fichier JSON -&gt; DataFrame
+print(df.to_string())</code></pre>
+<div class="note"><b>Astuce :</b> utilisez <code>to_string()</code> pour afficher tout le DataFrame. Sans elle, Pandas n'affiche que les premières et dernières lignes.</div>
+
+<h3>Visualiser le DataFrame : <code>head()</code> et <code>tail()</code></h3>
+<pre><code>df = pd.read_csv('data.csv')
+print(df.head(3))   # 3 premières lignes, en partant du haut
+print(df.tail(3))   # 3 dernières lignes, en partant du bas</code></pre>
+<div class="scroll"><table>
+<tr><th></th><th>Duration</th><th>Pulse</th><th>Maxpulse</th><th>Calories</th></tr>
+<tr><td>0</td><td>60</td><td>110</td><td>130</td><td>409.1</td></tr>
+<tr><td>1</td><td>60</td><td>117</td><td>145</td><td>479.0</td></tr>
+<tr><td>2</td><td>60</td><td>103</td><td>135</td><td>340.0</td></tr>
+<tr><td>166</td><td>60</td><td>115</td><td>145</td><td>310.2</td></tr>
+<tr><td>167</td><td>75</td><td>120</td><td>150</td><td>320.4</td></tr>
+<tr><td>168</td><td>75</td><td>125</td><td>150</td><td>330.4</td></tr>
+</table></div>
+<p>Les trois premières lignes viennent de <code>head(3)</code>, les trois dernières de <code>tail(3)</code>. Les numéros de ligne 166 à 168 montrent que le fichier contient 169 lignes.</p>
+
+<h3>Obtenir des informations : <code>info()</code></h3>
+<pre><code>print(df.info())</code></pre>
+<pre class="out"><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 169 entries, 0 to 168
+Data columns (total 4 columns):
+ #   Column    Non-Null Count  Dtype
+---  ------    --------------  -----
+ 0   Duration  169 non-null    int64
+ 1   Pulse     169 non-null    int64
+ 2   Maxpulse  169 non-null    int64
+ 3   Calories  164 non-null    float64
+dtypes: float64(1), int64(3)
+memory usage: 5.4 KB
+None</code></pre>
+<ul>
+<li>Il y a <b>169 lignes</b> (observations) et <b>4 colonnes</b> (attributs).</li>
+<li>Le nom de chaque colonne est donné avec son <b>type de données</b>.</li>
+<li>Seule <code>Calories</code> a des <b>valeurs manquantes</b> (null) : 169 - 164 = <b>5 valeurs manquantes</b>. (Le slide écrit « 199 - 194 = 5 » ; les bons nombres sont 169 et 164.)</li>
+<li><code>info()</code> affiche elle-même son rapport et renvoie <code>None</code>, donc <code>print(df.info())</code> ajoute la dernière ligne <code>None</code>. Écrire <code>df.info()</code> suffit.</li>
+</ul>
+
+<h3>Description statistique : <code>describe()</code></h3>
+<pre><code>df.describe()</code></pre>
+<div class="scroll"><table>
+<tr><th></th><th>Duration</th><th>Pulse</th><th>Maxpulse</th><th>Calories</th></tr>
+<tr><td><b>count</b></td><td>169</td><td>169</td><td>169</td><td>164</td></tr>
+<tr><td><b>mean</b></td><td>63.846154</td><td>107.461538</td><td>134.047337</td><td>375.790244</td></tr>
+<tr><td><b>std</b></td><td>42.299949</td><td>14.510259</td><td>16.450434</td><td>266.379919</td></tr>
+<tr><td><b>min</b></td><td>15</td><td>80</td><td>100</td><td>50.3</td></tr>
+<tr><td><b>25%</b></td><td>45</td><td>100</td><td>124</td><td>250.925</td></tr>
+<tr><td><b>50%</b></td><td>60</td><td>105</td><td>131</td><td>318.6</td></tr>
+<tr><td><b>75%</b></td><td>60</td><td>111</td><td>141</td><td>387.6</td></tr>
+<tr><td><b>max</b></td><td>300</td><td>159</td><td>184</td><td>1860.4</td></tr>
+</table></div>
+<p>Lisez-la colonne par colonne : <code>count</code> est le nombre de valeurs non vides (164 pour Calories confirme 5 valeurs manquantes), <code>std</code> l'écart autour de la moyenne (<code>mean</code>), et les lignes 25 % / 50 % / 75 % sont les quartiles (50 % est la médiane). Un <code>max</code> très supérieur à la valeur à 75 %, comme 1860.4 pour Calories, signale des valeurs aberrantes possibles.</p>
+
+<h3>Nettoyage des données</h3>
+<p>Les jeux de données réels contiennent des cellules vides, des doublons, des valeurs erronées et des formats incorrects. Nettoyez-les avant toute analyse ou tout apprentissage.</p>
+
+<h3>Cellules vides : <code>dropna()</code> ou <code>fillna()</code></h3>
+<pre><code>new_df = df.dropna()            # supprime les lignes avec cellules vides : renvoie un NOUVEAU DataFrame,
+                                # le df d'origine n'est pas modifié
+df.dropna(inplace=True)         # inplace=True modifie le DataFrame d'origine df
+
+# remplacer les valeurs vides au lieu de supprimer des lignes
+m = df["Calories"].median()
+df["Calories"] = df["Calories"].fillna(m)   # remplacement par la valeur médiane</code></pre>
+<div class="note">Le slide écrit <code>df["Calories"].fillna(m, inplace=True)</code>. Dans les versions récentes de Pandas, cette forme chaînée peut ne pas modifier <code>df</code> (et affiche un avertissement) ; affectez donc le résultat comme ci-dessus.</div>
+
+<h3>Supprimer les doublons</h3>
+<pre><code>print(df.duplicated())            # True pour chaque ligne en doublon, sinon False
+print(df.duplicated().sum())      # nombre de lignes en doublon
+
+df.drop_duplicates(inplace=True)  # supprime tous les doublons</code></pre>
+
+<h3>Données erronées</h3>
+<p>Repérez les valeurs erronées avec <code>describe()</code> ou un graphique (voir plus bas), puis choisissez l'une des trois solutions. Exemple sur la colonne <code>Duration</code> avec un intervalle accepté [<code>MinValue</code>, <code>MaxValue</code>].</p>
+<pre><code>MinValue, MaxValue = 15, 120
+
+# Solution (1) : remplacer une valeur erronée par la valeur correcte
+df.loc[row_index, 'Duration'] = new_value
+
+# Solution (2) : ramener les valeurs hors intervalle à la limite la plus proche
+for x in df.index:
+    if df.loc[x, 'Duration'] &gt; MaxValue:
+        df.loc[x, 'Duration'] = MaxValue
+    elif df.loc[x, 'Duration'] &lt; MinValue:
+        df.loc[x, 'Duration'] = MinValue
+
+# Solution (3) : supprimer les lignes avec des valeurs hors intervalle
+for x in df.index:
+    if df.loc[x, 'Duration'] &gt; MaxValue or df.loc[x, 'Duration'] &lt; MinValue:
+        df.drop(x, inplace=True)</code></pre>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>df.loc[row, 'col'] = value</code></td><td>Remplace une valeur dans une ligne et une colonne données</td></tr>
+<tr><td><code>for x in df.index</code></td><td>Parcourt les étiquettes de lignes du DataFrame</td></tr>
+<tr><td><code>df.drop(x, inplace=True)</code></td><td>Supprime la ligne d'étiquette <code>x</code> du DataFrame d'origine</td></tr>
+</table></div>
+<p>Les solutions (2) et (3) sont des alternatives : choisissez-en une. Équivalents plus courts sans boucle :</p>
+<pre><code>df['Duration'] = df['Duration'].clip(MinValue, MaxValue)           # comme la solution (2)
+df = df[df['Duration'].between(MinValue, MaxValue)]                # comme la solution (3)</code></pre>
+
+<h3>Format incorrect</h3>
+<p>Par exemple une colonne de dates stockées sous forme de texte. Cela s'applique à tout jeu de données ayant une colonne <code>Date</code> (<code>data.csv</code> n'en a pas).</p>
+<pre><code># Solution (1) : corriger le format
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Solution (2) : supprimer la colonne au format incorrect
+df.drop(['Date'], axis=1, inplace=True)</code></pre>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>pd.to_datetime(col)</code></td><td>Convertit une colonne au type date-heure</td></tr>
+<tr><td><code>df.drop([...], axis=1)</code></td><td><code>axis=1</code> signifie supprimer des colonnes (des lignes avec la valeur par défaut <code>axis=0</code>)</td></tr>
+</table></div>
+
+<h3>Corrélation des données</h3>
+<p>La méthode <code>corr()</code> calcule la <b>relation</b> entre chaque paire de colonnes du jeu de données (de -1 à +1).</p>
+<pre><code>df.corr()</code></pre>
+<div class="scroll"><table>
+<tr><th></th><th>Duration</th><th>Pulse</th><th>Maxpulse</th><th>Calories</th></tr>
+<tr><td><b>Duration</b></td><td>1.000000</td><td>-0.155408</td><td>0.009403</td><td>0.922717</td></tr>
+<tr><td><b>Pulse</b></td><td>-0.155408</td><td>1.000000</td><td>0.786535</td><td>0.025121</td></tr>
+<tr><td><b>Maxpulse</b></td><td>0.009403</td><td>0.786535</td><td>1.000000</td><td>0.203813</td></tr>
+<tr><td><b>Calories</b></td><td>0.922717</td><td>0.025121</td><td>0.203813</td><td>1.000000</td></tr>
+</table></div>
+<p>Duration et Calories sont fortement liées (0.92). Pulse et Maxpulse le sont aussi (0.79). La plupart des autres paires sont proches de 0 : peu de relation linéaire. Si une colonne contient du texte, utilisez <code>df.corr(numeric_only=True)</code>.</p>
+
+<h3>Tracé : courbe</h3>
+<pre><code>import matplotlib.pyplot as plt
+
+df = pd.read_csv('data.csv')
+df.plot()        # la méthode plot() crée des graphiques : une courbe par colonne
+plt.show()</code></pre>
+<p>L'axe des x est le numéro de ligne. Duration, Pulse et Maxpulse restent faibles tandis que Calories présente de grands pics (jusqu'à environ 1860) : valeurs aberrantes possibles à examiner.</p>
+
+<h3>Tracé : nuage de points</h3>
+<pre><code># Un nuage de points (kind='scatter') montre la relation entre une colonne en x et une colonne en y
+df.plot(kind='scatter', x='Duration', y='Calories')
+plt.show()</code></pre>
+<p>Les points suivent une tendance croissante : plus la séance est longue, plus il y a de calories, ce qui est cohérent avec la corrélation de 0.92.</p>
+
+<h3>Exercice sur <code>Cars.csv</code></h3>
+<p>Écrivez un programme Pandas pour répondre aux questions suivantes.</p>
+<div class="task"><b class="q">Q1</b>Affichez les 10 premières lignes. Donnez le nombre de lignes, le nombre de colonnes et le type de données de chaque colonne.
+<details><summary>Afficher la solution</summary><pre><code>import pandas as pd
+df = pd.read_csv('Cars.csv')
+
+print(df.head(10))
+print(df.shape)      # (lignes, colonnes)
+print(df.dtypes)
+df.info()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>pd.read_csv(file)</code></td><td>Lit un fichier CSV dans un DataFrame</td></tr>
+<tr><td><code>df.head(10)</code></td><td>Visualise les 10 premières lignes (depuis le haut)</td></tr>
+<tr><td><code>df.shape</code></td><td>Donne (nombre de lignes, nombre de colonnes)</td></tr>
+<tr><td><code>df.dtypes</code></td><td>Donne le type de données de chaque colonne</td></tr>
+<tr><td><code>df.info()</code></td><td>Donne des informations : lignes et colonnes, nom, nombre de valeurs non nulles et type de chaque colonne, mémoire utilisée</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q2</b>Calculez les statistiques descriptives de chaque colonne.
+<details><summary>Afficher la solution</summary><pre><code>print(df.describe())              # colonnes numériques
+print(df.describe(include='all')) # toutes les colonnes</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>df.describe()</code></td><td>Description statistique des colonnes numériques : count, mean, std, min, 25%, 50%, 75%, max</td></tr>
+<tr><td><code>df.describe(include='all')</code></td><td>Idem, pour toutes les colonnes (count, unique, top, freq pour les colonnes de texte)</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q3</b>Vérifiez si le DataFrame contient des valeurs manquantes.
+<details><summary>Afficher la solution</summary><pre><code>print(df.isnull().values.any())</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>df.isnull()</code></td><td>Renvoie une table de <code>True</code> / <code>False</code> : <code>True</code> là où une cellule est vide (manquante)</td></tr>
+<tr><td><code>.values.any()</code></td><td>Renvoie <code>True</code> si au moins une valeur est <code>True</code>, c'est-à-dire au moins une valeur manquante</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q4</b>Comptez les valeurs manquantes de chaque colonne.
+<details><summary>Afficher la solution</summary><pre><code>print(df.isnull().sum())</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>df.isnull().sum()</code></td><td><code>isnull()</code> repère les cellules vides ; <code>sum()</code> les compte dans chaque colonne</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q5</b>Remplacez les valeurs manquantes par la médiane de leur colonne.
+<details><summary>Afficher la solution</summary><pre><code>medians = df.median(numeric_only=True)
+df = df.fillna(medians)
+print(df.isnull().sum())   # doit maintenant valoir 0 pour les colonnes numériques</code></pre>
+<p>La médiane n'existe que pour les colonnes numériques. Décidez comment traiter les colonnes de texte (par exemple avec la valeur la plus fréquente, <code>df[col].mode()[0]</code>).</p>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>df.median(numeric_only=True)</code></td><td>Calcule la médiane de chaque colonne numérique</td></tr>
+<tr><td><code>df.fillna(value)</code></td><td><b>Remplace les valeurs vides</b> (ici par la médiane de la colonne) ; renvoie un nouveau DataFrame sauf si <code>inplace=True</code></td></tr>
+<tr><td><code>df[col].mode()[0]</code></td><td>Valeur la plus fréquente d'une colonne (utilisée pour les colonnes de texte)</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q6</b>Calculez la corrélation entre les attributs et tracez leurs nuages de points. Quelles sont vos conclusions ?
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+
+print(df.corr(numeric_only=True))
+
+pd.plotting.scatter_matrix(df.select_dtypes('number'), figsize=(10, 10))
+plt.show()
+
+# une paire à la fois, par exemple (utilisez vos vrais noms de colonnes) :
+# df.plot(kind='scatter', x='Duration', y='Calories'); plt.show()</code></pre>
+<p>Pour guider vos conclusions : un coefficient proche de +1 ou -1 indique une forte relation linéaire ; proche de 0, peu ou pas de relation linéaire. Cherchez les paires d'attributs presque redondantes, et les attributs fortement liés à celui que vous voulez prédire. Corrélation n'implique pas causalité.</p>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>df.corr(numeric_only=True)</code></td><td>Calcule la <b>relation</b> entre chaque paire de colonnes (de -1 à +1)</td></tr>
+<tr><td><code>df.select_dtypes('number')</code></td><td>Garde uniquement les colonnes numériques</td></tr>
+<tr><td><code>pd.plotting.scatter_matrix(...)</code></td><td>Trace le nuage de points de chaque paire de colonnes</td></tr>
+<tr><td><code>df.plot(kind='scatter', x=..., y=...)</code></td><td>Nuage de points : montre la relation entre une colonne en x et une colonne en y</td></tr>
+<tr><td><code>plt.show()</code></td><td>Affiche la figure</td></tr>
+</table></div></details></div>
+<h2 id="p3">Partie 3 – Visualisation avec Matplotlib</h2>
+<p>Matplotlib est une <b>bibliothèque Python de tracé de graphiques</b> open source. Elle contient des outils de <b>visualisation de données</b>. La plupart se trouvent dans le sous-module <code>pyplot</code>, importé sous l'alias <code>plt</code>. La fonction <code>plot()</code> trace des points dans un diagramme. Dans un notebook, ajoutez <code>%matplotlib inline</code> si les figures n'apparaissent pas.</p>
+
+<div class="task"><b class="q">M1</b>Tracez une droite du point pt1(0, 0) au point pt2(10, 100) et donnez-lui le titre « Line from pt1(0, 0) to pt2(10, 100) ».
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+x_pts = np.array([0, 10])
+y_pts = np.array([0, 100])
+
+# Tracer une droite de pt1(0, 0) à pt2(10, 100)
+plt.plot(x_pts, y_pts)
+plt.title("Line from pt1(0, 0) to pt2(10, 100)")
+plt.show()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>np.array([...])</code></td><td>Crée un tableau de valeurs (coordonnées x, puis coordonnées y)</td></tr>
+<tr><td><code>plt.plot(x_pts, y_pts)</code></td><td>Trace les points dans un diagramme et les relie par une ligne</td></tr>
+<tr><td><code>plt.title(text)</code></td><td>Titre de la figure</td></tr>
+<tr><td><code>plt.show()</code></td><td>Affiche la figure</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M2</b>Tracez <code>[3, 8, 20, 5, 10, 1, 30]</code> avec des marqueurs en étoile de taille 30 (intérieur bleu, contour noir), une ligne rouge en pointillés d'épaisseur 3, un titre, des étiquettes sur les deux axes et une grille.
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+ypts = np.array([3, 8, 20, 5, 10, 1, 30])
+
+font1 = {'family': 'serif', 'color': 'blue', 'size': 30}
+font2 = {'family': 'serif', 'color': 'red', 'size': 20}
+
+# marqueurs de taille ms=30, couleur de remplissage bleue (mfc='b'), couleur de contour noire (mec='k')
+# style de ligne (ls='--'), color=red, linewidth=3
+plt.plot(ypts, marker='*', ms=30, mfc='b', mec='k', ls='--', color='r', linewidth=3)
+
+plt.title("MyTitle", fontdict=font1)           # titre de la figure
+plt.xlabel("Label x-axis", fontdict=font2)     # étiquette de l'axe x
+plt.ylabel("Label y-axis", fontdict=font2)     # étiquette de l'axe y
+
+# afficher la grille
+plt.grid(color='y', linestyle='--', linewidth=0.5)
+
+plt.show()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>plt.plot(ypts, ...)</code></td><td>Avec une seule liste, les valeurs sont les coordonnées y et l'axe x vaut 0, 1, 2, ...</td></tr>
+<tr><td><code>marker='*'</code></td><td>Forme des marqueurs (une étoile)</td></tr>
+<tr><td><code>ms=30</code></td><td>Taille des marqueurs</td></tr>
+<tr><td><code>mfc='b' / mec='k'</code></td><td>Couleur de remplissage (bleu) / couleur de contour (noir) du marqueur</td></tr>
+<tr><td><code>ls='--'</code></td><td>Style de ligne (pointillés)</td></tr>
+<tr><td><code>color='r', linewidth=3</code></td><td>Couleur (rouge) et épaisseur de la ligne</td></tr>
+<tr><td><code>fontdict={...}</code></td><td>Dictionnaire qui définit la police, la couleur et la taille d'un titre ou d'une étiquette</td></tr>
+<tr><td><code>plt.title / plt.xlabel / plt.ylabel</code></td><td>Titre de la figure, étiquette de l'axe x, étiquette de l'axe y</td></tr>
+<tr><td><code>plt.grid(color, linestyle, linewidth)</code></td><td>Affiche une grille et règle son apparence</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M3</b>Affichez deux graphiques côte à côte avec <code>subplot()</code>, chacun avec son propre titre, et un titre commun.
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+# graphique 1 :
+x = np.array([0, 1, 2, 3])
+y = np.array([2, 9, 2, 12])
+
+# la figure a 1 ligne, 2 colonnes
+plt.subplot(1, 2, 1)          # le premier graphique
+plt.plot(x, y)
+plt.title("Title 1")
+
+# graphique 2 :
+x = np.array([0, 1, 2, 3])
+y = np.array([5, 25, 30, 45])
+
+plt.subplot(1, 2, 2)          # le deuxième graphique
+plt.plot(x, y)
+plt.title("Title 2")
+
+plt.suptitle("MY SUPER Title")
+plt.show()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>plt.subplot(rows, cols, i)</code></td><td>Affiche plusieurs graphiques : la figure a <code>rows</code> lignes et <code>cols</code> colonnes, et <code>i</code> est le graphique en cours de tracé (ici 1 puis 2)</td></tr>
+<tr><td><code>plt.title(text)</code></td><td>Titre du sous-graphique courant</td></tr>
+<tr><td><code>plt.suptitle(text)</code></td><td>Titre commun de toute la figure</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M4</b>Nuage de points : tracez 40 points aléatoires avec des couleurs et des tailles aléatoires, et affichez la barre de couleurs.
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+# tirage de 40 entiers aléatoires dans [0, 100[
+x = np.random.randint(100, size=(40))   # valeurs de l'axe x
+y = np.random.randint(100, size=(40))   # valeurs de l'axe y
+colors = np.random.randint(100, size=(40))
+sizes = 5 * np.random.randint(100, size=(40))
+
+plt.scatter(x, y, c=colors, s=sizes, alpha=0.5, cmap='jet')
+plt.colorbar()
+plt.show()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>np.random.randint(100, size=40)</code></td><td>Tire 40 entiers aléatoires dans [0, 100[</td></tr>
+<tr><td><code>plt.scatter(x, y, c, s, alpha, cmap)</code></td><td>Trace <b>un point par observation</b>. <code>c</code> = couleurs, <code>s</code> = tailles, <code>alpha</code> = transparence, <code>cmap</code> = palette de couleurs</td></tr>
+<tr><td><code>plt.colorbar()</code></td><td>Affiche l'échelle de couleurs</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M5</b>Diagramme en barres : tracez des barres rouges de largeur 0.5 pour les valeurs <code>[2, 9, 2, 12]</code> étiquetées F1 à F4.
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.array(["F1", "F2", "F3", "F4"])
+y = np.array([2, 9, 2, 12])
+
+plt.bar(x, y, color="red", width=0.5)
+plt.show()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>plt.bar(x, y, color, width)</code></td><td>Diagramme en barres : une barre par étiquette, <code>color</code> et <code>width</code> règlent l'apparence des barres</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M6</b>Histogramme : tracez 1000 échantillons d'une loi normale (moyenne 0, écart type 0.5) en 10 classes, en rouge, avec le titre « Gaussian Distribution » et la légende « Frequency ».
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+mu, sigma = 0, 0.5                 # moyenne et écart type
+x = np.random.normal(mu, sigma, 1000)
+nbins = 10
+
+plt.hist(x, nbins, color='r')
+plt.title('Gaussian Distribution')
+plt.legend(['Frequency'])
+plt.show()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>np.random.normal(mu, sigma, 1000)</code></td><td>Tire 1000 valeurs d'une loi gaussienne</td></tr>
+<tr><td><code>plt.hist(x, nbins)</code></td><td>Histogramme : graphique montrant la <b>distribution des fréquences</b>, c'est-à-dire le nombre d'observations dans chaque classe</td></tr>
+<tr><td><code>plt.legend(['Frequency'])</code></td><td>Affiche la légende</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M7</b>Diagramme circulaire : tracez les valeurs <code>[40, 10, 20, 30]</code> (somme = 100 %) étiquetées A à D, avec une légende.
+<details><summary>Afficher la solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.array([40, 10, 20, 30])   # somme = 100 %
+L = ["A", "B", "C", "D"]
+
+plt.pie(x, labels=L)
+plt.legend()
+plt.show()</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>plt.pie(x, labels=L)</code></td><td>Diagramme circulaire : chaque valeur est la part d'une portion ; <code>labels</code> nomme les portions</td></tr>
+<tr><td><code>plt.legend()</code></td><td>Affiche la légende</td></tr>
+</table></div></details></div>
+<h2 id="p4">Partie 4 – Machine Learning avec Scikit-Learn</h2>
+<p><b>Scikit-Learn</b> (<em>Machine Learning in Python</em>) est construit sur NumPy, SciPy et Matplotlib. Il se compose de nombreux <b>sous-modules</b> utiles pour développer des projets de Machine Learning : <b>prétraitement</b>, différents types d'<b>algorithmes d'apprentissage</b>, <b>sélection de modèles</b> et <b>métriques d'évaluation</b>. Installez-le si nécessaire avec <code>conda install -c anaconda scikit-learn</code>.</p>
+<div class="scroll"><table>
+<tr><th>Famille</th><th>Ce qu'elle fait</th><th>Applications</th><th>Algorithmes</th></tr>
+<tr><td><b>Classification</b></td><td>Identifie à quelle catégorie appartient un objet</td><td>Détection de spam, reconnaissance d'images</td><td>SVM, plus proches voisins, forêt aléatoire</td></tr>
+<tr><td><b>Régression</b></td><td>Prédit un attribut à valeur continue associé à un objet</td><td>Réponse à un médicament, cours de bourse</td><td>SVR, plus proches voisins, forêt aléatoire</td></tr>
+<tr><td><b>Clustering</b></td><td>Regroupement automatique d'objets similaires en ensembles</td><td>Segmentation de clientèle, regroupement de résultats d'expériences</td><td>k-Means, clustering spectral, mean-shift</td></tr>
+<tr><td><b>Réduction de dimensionnalité</b></td><td>Réduit le nombre de variables aléatoires à considérer</td><td>Visualisation, meilleure efficacité</td><td>PCA, sélection d'attributs, factorisation matricielle non négative</td></tr>
+<tr><td><b>Sélection de modèles</b></td><td>Compare, valide et choisit les paramètres et les modèles</td><td>Meilleure précision grâce au réglage des paramètres</td><td>Grid search, validation croisée, métriques</td></tr>
+<tr><td><b>Prétraitement</b></td><td>Extraction d'attributs et normalisation</td><td>Transformer des données d'entrée comme du texte pour les algorithmes de ML</td><td>Prétraitement, extraction d'attributs</td></tr>
+</table></div>
+<p>Un <b>pipeline</b> Scikit-Learn enchaîne un prétraitement (par exemple <code>StandardScaler</code>), une extraction d'attributs facultative (par exemple <code>PCA</code>) et un algorithme d'apprentissage. Le même pipeline est ajusté sur les données d'entraînement, puis appliqué aux données de test. Cela évite la <em>fuite de données</em> (<em>data leakage</em>) : le scaler ne voit jamais l'ensemble de test quand il apprend sa moyenne et son écart type.</p>
+
+<h3>Pipeline de Machine Learning</h3>
+<p><b>Phase d'entraînement.</b> Les données d'entraînement et leurs étiquettes (apprentissage supervisé) traversent les étapes ci-dessous et produisent un <b>modèle</b>.</p>
+<div class="flow"><span class="box io">Données d'entraînement<br>+ étiquettes</span><span class="ar">→</span><span class="box">Mise à l'échelle<br>(ex. StandardScaler)</span><span class="ar">→</span><span class="box">Sélection / extraction d'attributs<br>(ex. PCA)</span><span class="ar">→</span><span class="box">Algorithme de ML<br>(ex. SVM, Random Forest)</span><span class="ar">→</span><span class="box io">Modèle</span></div>
+<p><b>Phase de test.</b> Les données de test traversent les mêmes étapes, qui donnent les <b>prédictions</b> ; leur comparaison avec les étiquettes de test donne le <b>score du modèle</b>.</p>
+<div class="flow"><span class="box io">Données de test<br>+ étiquettes</span><span class="ar">→</span><span class="box">Mise à l'échelle<br>(ex. StandardScaler)</span><span class="ar">→</span><span class="box">Sélection / extraction d'attributs<br>(ex. PCA)</span><span class="ar">→</span><span class="box">Algorithme de ML<br>(ex. SVM, Random Forest)</span><span class="ar">→</span><span class="box io">Score du modèle<br>Prédictions</span></div>
+
+<h3>Exemple guidé</h3>
+<p>Lisez-le, exécutez-le et expliquez chaque ligne. Le premier <code>print</code> affiche <code>(100, 20) (100,)</code> : 100 échantillons de 20 attributs chacun, et 100 étiquettes.</p>
+<pre class="sol" data-label="Exemple guidé"><code>from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import accuracy_score
+
+X, y = make_classification(random_state=42)  # problème aléatoire à 2 classes
+print("Dataset:", X.shape, y.shape)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)    # 80% entraînement, 20% test
+
+pipe = make_pipeline(StandardScaler(), PCA(n_components=2), LogisticRegression())
+pipe.fit(X_train, y_train)                   # mise à l'échelle + PCA + entraînement sur les données d'entraînement
+
+y_pred = pipe.predict(X_test)                # même préparation appliquée aux données de test
+print('accuracy score:', accuracy_score(y_test, y_pred))
+print(pipe.score(X_test, y_test))            # même résultat</code></pre>
+<details><summary>Afficher l'explication de chaque fonction</summary>
+<p><b>Rôle de chaque fonction</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>make_classification()</code></td><td>Génère un problème de classification aléatoire à n classes (2 par défaut) : <code>X</code> = attributs, <code>y</code> = étiquettes</td></tr>
+<tr><td><code>train_test_split(X, y, test_size=0.2)</code></td><td>Sépare les données en un ensemble d'entraînement (80 %) et un ensemble de test (20 %)</td></tr>
+<tr><td><code>make_pipeline(...)</code></td><td>Enchaîne les étapes en un seul pipeline de ML</td></tr>
+<tr><td><code>StandardScaler()</code></td><td>Prétraitement : standardise les attributs (moyenne 0, écart type 1)</td></tr>
+<tr><td><code>PCA(n_components=2)</code></td><td>Extraction d'attributs : conserve 2 composantes</td></tr>
+<tr><td><code>LogisticRegression()</code></td><td>L'algorithme d'apprentissage (un classifieur)</td></tr>
+<tr><td><code>pipe.fit(X_train, y_train)</code></td><td>Phase d'entraînement : applique la préparation des données sur les données d'entraînement, puis entraîne le modèle</td></tr>
+<tr><td><code>pipe.predict(X_test)</code></td><td>Phase de test : applique la même préparation sur les données de test et renvoie les prédictions</td></tr>
+<tr><td><code>accuracy_score(y_test, y_pred)</code></td><td>Évaluation : proportion de prédictions correctes</td></tr>
+<tr><td><code>pipe.score(X_test, y_test)</code></td><td>Raccourci qui prédit et évalue en un seul appel (exactitude pour un classifieur)</td></tr>
+</table></div></details>
+<div class="note">Le slide écrit <code>y_pred = pipe(X_test)</code>. Un pipeline n'est pas appelable : utilisez <code>pipe.predict(X_test)</code>. Notez aussi que <code>accuracy_score</code> attend <code>(y_true, y_pred)</code>, dans cet ordre. Le slide affiche également <code>accuracy_score</code> (la fonction elle-même) au lieu de la valeur <code>acc</code>. Nous avons ajouté <code>random_state=42</code> pour que tout le monde obtienne le même résultat.</div>
+
+<h3>Exercice sur <code>50_Startups.csv</code></h3>
+<p>Objectif : construire un modèle qui prédit le <b>Profit</b> d'une entreprise à partir de ses dépenses R&amp;D Spend, Administration et Marketing Spend.</p>
+<div class="task"><b class="q">Q1</b>Quelle est la tâche de Machine Learning ?</div>
+<div class="task"><b class="q">Q2</b>Quel est le type d'apprentissage ?
+<details><summary>Afficher les réponses aux Q1 et Q2</summary><p>Q1 : <b>Régression</b>, car la cible (Profit) est une valeur numérique continue.</p><p>Q2 : <b>Apprentissage supervisé</b>, car chaque exemple d'entraînement vient avec sa valeur cible connue (étiquette).</p></details></div>
+<div class="task"><b class="q">Q3</b>Affichez des informations et calculez des statistiques descriptives sur ce jeu de données.
+<details><summary>Afficher la solution</summary><pre><code>import pandas as pd
+df = pd.read_csv('50_Startups.csv')
+df.info()
+print(df.describe())
+print(df.isnull().sum())</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>pd.read_csv(file)</code></td><td>Lit le fichier CSV dans un DataFrame</td></tr>
+<tr><td><code>df.info()</code></td><td>Lignes, colonnes, type de données et nombre de valeurs non nulles de chaque colonne</td></tr>
+<tr><td><code>df.describe()</code></td><td>Statistiques descriptives : count, mean, std, min, quartiles, max</td></tr>
+<tr><td><code>df.isnull().sum()</code></td><td>Compte les valeurs manquantes de chaque colonne</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q4</b>Séparez les données en un ensemble d'entraînement de 80 % et un ensemble de test de 20 %.
+<details><summary>Afficher la solution</summary><pre><code>from sklearn.model_selection import train_test_split
+
+X = df[['R&amp;D Spend', 'Administration', 'Marketing Spend']]
+y = df['Profit']
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)</code></pre>
+<p>Vérifiez les noms exacts des colonnes avec <code>df.columns</code>. La colonne <code>State</code> est catégorielle et n'est pas utilisée ici.</p>
+<p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>df[[...]]</code></td><td>Sélectionne les colonnes d'attributs <code>X</code> (plusieurs noms de colonnes dans une liste)</td></tr>
+<tr><td><code>df['Profit']</code></td><td>Sélectionne la colonne cible <code>y</code> (la valeur à prédire)</td></tr>
+<tr><td><code>train_test_split(X, y, test_size=0.2, random_state=42)</code></td><td>Sépare en 80 % entraînement / 20 % test ; <code>random_state</code> rend la séparation reproductible</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q5</b>Construisez un pipeline qui effectue une standardisation, puis la prédiction par régression linéaire.
+<details><summary>Afficher la solution</summary><pre><code>from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+pipe = make_pipeline(StandardScaler(), LinearRegression())</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>make_pipeline(...)</code></td><td>Enchaîne la standardisation et la prédiction en un seul objet</td></tr>
+<tr><td><code>StandardScaler()</code></td><td>Standardisation : moyenne 0, écart type 1 pour chaque attribut (apprise uniquement sur les données d'entraînement)</td></tr>
+<tr><td><code>LinearRegression()</code></td><td>Algorithme de régression : prédit une valeur continue (Profit)</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q6</b>Entraînez, testez et évaluez le pipeline avec l'erreur quadratique moyenne (MSE) et le score R².
+<details><summary>Afficher la solution</summary><pre><code>from sklearn.metrics import mean_squared_error, r2_score
+
+pipe.fit(X_train, y_train)
+y_pred = pipe.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+print('MSE :', mse)
+print('RMSE:', mse ** 0.5)
+print('R2  :', r2_score(y_test, y_pred))</code></pre><p><b>Fonctions utilisées</b></p>
+<div class="scroll"><table>
+<tr><th>Fonction / nom</th><th>Rôle</th></tr>
+<tr><td><code>pipe.fit(X_train, y_train)</code></td><td><b>Entraînement</b> : standardise les données d'entraînement, puis ajuste la régression linéaire</td></tr>
+<tr><td><code>pipe.predict(X_test)</code></td><td><b>Test</b> : applique la même standardisation aux données de test et renvoie les profits prédits</td></tr>
+<tr><td><code>mean_squared_error(y_test, y_pred)</code></td><td><b>MSE</b> : moyenne des erreurs au carré (plus elle est faible, mieux c'est)</td></tr>
+<tr><td><code>mse ** 0.5</code></td><td><b>RMSE</b> : racine carrée de la MSE, dans la même unité que Profit</td></tr>
+<tr><td><code>r2_score(y_test, y_pred)</code></td><td><b>R²</b> : part de la variance expliquée par le modèle (1 = parfait)</td></tr>
+</table></div></details></div>
+
+<h2 id="bonus">Questions bonus</h2>
+<ul>
+<li>Comparez la MSE du pipeline avec et sans <code>StandardScaler</code>. Change-t-elle pour la régression linéaire ? Pourquoi ?</li>
+<li>Ajoutez la colonne <code>State</code> avec <code>OneHotEncoder</code> (via <code>ColumnTransformer</code>) et regardez si l'erreur diminue.</li>
+<li>Changez la graine de la séparation (<code>random_state</code>) pour d'autres valeurs. Quelle est la stabilité de la MSE ?</li>
+</ul>
+
+<h2 id="solutions">Solutions complètes du code</h2>
+<p>Tout le code de ce TP, regroupé par partie. Chaque bloc peut être collé dans un notebook cellule par cellule, ou exécuté en entier.</p>
+<div id="allsol"></div>
+<noscript><p>Activez JavaScript pour afficher les solutions complètes, ou ouvrez les boutons « Afficher la solution » ci-dessus.</p></noscript>
+
+</div></main>
+<footer>Horizon School of Digital Technologies · Machine Learning 1 · TP 1</footer>
+<script>
+(function(){
+  function copy(text,btn,label){
+    var done=function(){btn.textContent='Copié';setTimeout(function(){btn.textContent=label},1500)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done)}
+    else{var a=document.createElement('textarea');a.value=text;document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}
+  }
+  function copyBtn(pre,label){
+    var b=document.createElement('button');b.type='button';b.className='cp';b.textContent=label;
+    b.onclick=function(){copy(pre.querySelector('code').textContent,b,label)};pre.appendChild(b);
+  }
+  var root=document.querySelector('main .wrap'),target=document.getElementById('allsol');
+  /* 1. complete solutions, grouped by part */
+  if(target){
+    var parts=[],cur=null;
+    root.querySelectorAll('h2,pre').forEach(function(el){
+      if(el.tagName==='H2'){cur=/^Partie/.test(el.textContent)?{title:el.textContent,blocks:[]}:null;if(cur)parts.push(cur);return}
+      if(!cur||target.contains(el))return;
+      if(!(el.classList.contains('sol')||el.closest('details')))return;
+      var q=el.closest('.task'),qe=q&&q.querySelector('.q');
+      var label=el.dataset.label||(qe&&qe.textContent.trim());
+      if(label)cur.blocks.push('# ===== '+label+' =====\n'+el.querySelector('code').textContent.replace(/\s+$/,''));
+    });
+    parts.forEach(function(pt){
+      if(!pt.blocks.length)return;
+      var h=document.createElement('h3');h.textContent=pt.title;
+      var pre=document.createElement('pre'),code=document.createElement('code');
+      code.textContent=pt.blocks.join('\n\n');pre.appendChild(code);
+      target.appendChild(h);target.appendChild(pre);copyBtn(pre,'Copier le code');
+    });
+  }
+  /* 2. copy button on the other code blocks */
+  root.querySelectorAll('pre').forEach(function(pre){if(!pre.querySelector('.cp')&&!pre.classList.contains('out'))copyBtn(pre,'Copier')});
+})();
+</script>
+</body>
+</html>
