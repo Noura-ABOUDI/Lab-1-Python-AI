@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab 1 – Python for Machine Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf6;--ink:#17233a;--muted:#5b6679;--blue:#054489;--yellow:#fdc913;--line:#dfe3ea;--surface:#fff;--code:#10192c;--codeink:#e8eefc;--onblue:#fff;--tint:#eef3fa}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1526;--ink:#e8eefc;--muted:#9aa8c4;--blue:#7fb2ff;--line:#26365a;--surface:#14203a;--code:#08101f;--onblue:#0d1526;--tint:#162543}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}[id]{scroll-margin-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.65 Lato,system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+header{background:#054489;color:#fff;padding:max(22px,env(safe-area-inset-top)) 0 24px;border-bottom:6px solid var(--yellow)}
+header h1{margin:8px 0 4px;font-size:clamp(1.7rem,5vw,2.4rem);line-height:1.15;font-weight:900}
+header p{margin:0 0 14px;opacity:.92}
+.lang{text-align:right}
+.lang a{color:#fff;font-weight:700;text-decoration:none;border:1.5px solid rgba(255,255,255,.6);padding:3px 14px;border-radius:999px;font-size:.88rem}
+.lang a:hover{background:rgba(255,255,255,.15)}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.meta span{background:rgba(255,255,255,.14);padding:3px 12px;border-radius:999px;font-size:.85rem}
+.toc{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;padding:10px 0;margin-bottom:6px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px)}
+.toc a{color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;padding:4px 13px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface)}
+.toc a:hover,.toc a:focus-visible{border-color:var(--blue);color:var(--blue)}
+h2{font-size:1.5rem;line-height:1.25;margin:44px 0 10px;color:var(--blue);border-left:6px solid var(--yellow);padding-left:12px}
+h3{font-size:1.1rem;margin:26px 0 6px}
+p{margin:0 0 12px}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;background:var(--tint);padding:1px 6px;border-radius:4px}
+.goal{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--yellow);border-radius:10px;padding:14px 20px}
+.goal ul{margin:6px 0 12px;padding-left:1.2em}
+.task{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:12px 0}
+.q{display:inline-block;min-width:34px;text-align:center;background:var(--blue);color:var(--onblue);font-weight:900;font-size:.88rem;border-radius:6px;padding:0 8px;margin-right:10px}
+details{margin:8px 0}
+summary{cursor:pointer;font-weight:700;color:var(--blue);padding:2px 0}
+summary:focus-visible,.toc a:focus-visible,.cp:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+pre{position:relative;background:var(--code);color:var(--codeink);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:.87rem;line-height:1.5;margin:10px 0}
+pre code{background:none;padding:0;font-size:inherit;color:inherit}
+.cp{position:absolute;top:8px;right:8px;font:inherit;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid #3a4a70;background:rgba(255,255,255,.06);color:var(--codeink);cursor:pointer}
+.note{background:var(--tint);border-left:5px solid var(--yellow);border-radius:8px;padding:10px 16px;margin:12px 0;font-size:.95rem}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{background:var(--tint)}
+.num td,.num th{text-align:right;font-variant-numeric:tabular-nums}
+.num td:first-child,.num th:first-child{text-align:left}
+ul{padding-left:1.2em}
+figure{margin:14px 0;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+figure svg{display:block;max-width:100%;height:auto;margin:0 auto}
+figcaption{font-size:.85rem;color:var(--muted);text-align:center;margin-top:6px}
+footer{margin-top:50px;padding:18px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;text-align:center}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+.box{border:1.5px solid var(--blue);border-radius:8px;padding:6px 12px;background:var(--surface);font-size:.88rem;text-align:center}
+.box.io{background:var(--tint);border-style:dashed}
+.ar{font-weight:900;color:var(--blue)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.toc,.cp,.lang{display:none}details{display:block}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="lang"><a href="lab1_fr.html" hreflang="fr">Français</a></div>
+<h1>Lab 1 – Python for Machine Learning</h1>
+<p>Anaconda, Jupyter, OpenCV, Pandas, Matplotlib and Scikit-Learn</p>
+<div class="meta"><span>Course: Machine Learning 1</span><span>Lab 1</span><span>Teacher: Noura Aboudi</span></div>
+</div></header>
+
+<main><div class="wrap">
+<nav class="toc" aria-label="Contents"><a href="#goals">Objectives</a><a href="#p1">1 · Anaconda &amp; OpenCV</a><a href="#p2">2 · Pandas</a><a href="#p3">3 · Matplotlib</a><a href="#p4">4 · Scikit-Learn</a><a href="#bonus">Bonus</a><a href="#solutions">All solutions</a></nav>
+
+<h2 id="goals">Objectives</h2>
+<div class="goal">
+<p>By the end of this lab you will be able to:</p>
+<ul>
+<li>Create a conda environment, install packages and launch Jupyter from Anaconda Navigator.</li>
+<li>Work in a Jupyter Notebook with code and markdown cells.</li>
+<li>Read, display and save an image with OpenCV.</li>
+<li>Load, explore, clean and describe a dataset with Pandas.</li>
+<li>Draw the main plot types with Matplotlib.</li>
+<li>Build, train and evaluate a Scikit-Learn pipeline.</li>
+</ul>
+<p><b>Files needed:</b> <code>test.jpg</code> (any image), <code>Cars.csv</code>, <code>50_Startups.csv</code>, and <code>data.csv</code> (178 rows; columns Duration, Pulse, Maxpulse, Calories; used in the Pandas examples), all provided by your instructor. Put them in the same folder as your notebook.</p>
+<p><b>Deliverable:</b> the notebook <code>Lab1_Introduction.ipynb</code>, with every answer in its own cell, preceded by a markdown cell giving the question number.</p>
+</div>
+
+<h2 id="p1">Part 1 – Anaconda, Jupyter and OpenCV</h2>
+
+<h3>What is Anaconda?</h3>
+<ul>
+<li>An open-source <b>Python distribution</b>, particularly popular for data science and machine learning projects.</li>
+<li>Easy to install: download the installer from <code>repo.anaconda.com/archive</code> and follow the instructions.</li>
+<li>It includes many packages:</li>
+</ul>
+<div class="scroll"><table>
+<tr><th>Category</th><th>Examples</th></tr>
+<tr><td><b>Python packages</b></td><td>NumPy, SciPy, Pandas, Matplotlib, Scikit-Learn, …</td></tr>
+<tr><td><b>Python development environments</b></td><td>Jupyter, Spyder, PyCharm, …</td></tr>
+<tr><td><b>Platform-independent package manager</b></td><td>conda</td></tr>
+</table></div>
+
+<h3>Anaconda Navigator and Jupyter Notebook</h3>
+<ul>
+<li><b>Anaconda Navigator</b> is a desktop <b>graphical user interface (GUI)</b> that launches <b>applications</b> and manages <b>conda packages</b> and <b>environments</b> without command-line commands.</li>
+<li><b>Jupyter Notebook</b> is an open-source <b>web application</b> to <b>create and share notebooks</b> that contain code, equations, visualizations and text.</li>
+<li>A notebook is made of cells. A <b>Code</b> cell runs Python and shows its result below (<code>In [2]: 3 + 4</code> gives <code>Out[2]: 7</code>). A <b>Markdown</b> cell holds formatted text. The type is chosen in the toolbar drop-down, and <b>Ctrl + Enter</b> runs the selected cell (menu: Cell → Run Cell).</li>
+</ul>
+
+<h3>Packages and virtual environments with conda</h3>
+<div class="scroll"><table>
+<tr><th>Task</th><th>Command</th></tr>
+<tr><td>Install a package (here the OpenCV package, <code>cv2</code> module)</td><td><code>conda install opencv</code></td></tr>
+<tr><td>Install a specific version</td><td><code>conda install opencv=4.6.0</code></td></tr>
+<tr><td>Install from a specific channel</td><td><code>conda install -c conda-forge opencv</code></td></tr>
+<tr><td>Install with pip</td><td><code>pip install opencv-python</code></td></tr>
+<tr><td>Update / uninstall a package</td><td><code>conda update opencv</code> / <code>conda remove opencv</code></td></tr>
+<tr><td>Create / activate an environment</td><td><code>conda create -n TEST</code> / <code>conda activate TEST</code></td></tr>
+<tr><td>Deactivate / remove an environment and all its packages</td><td><code>conda deactivate</code> / <code>conda env remove -n TEST</code></td></tr>
+</table></div>
+<p>Virtual environments allow <b>different versions of packages</b> on the same machine. A conda environment keeps the packages of this course separate from your other projects.</p>
+
+<h3>Exercise</h3>
+<p>Put <code>test.jpg</code> in the same folder as your notebook.</p>
+
+<div class="task"><b class="q">Q1</b>Launch the <b>CMD.exe Prompt</b> from the Anaconda Navigator.
+<details><summary>Show solution</summary><p>Open Anaconda Navigator, go to <b>Environments</b>, click the green arrow next to the environment name and choose <b>Open Terminal</b> (or start <b>Anaconda Prompt</b> from the Start menu). The prompt starts with <code>(base)</code>.</p></details></div>
+
+<div class="task"><b class="q">Q2</b>Create an environment <code>ML1Labs</code> and activate it.
+<details><summary>Show solution</summary><p><code>conda create -n ML1Labs python</code><br><code>conda activate ML1Labs</code></p><p>Answer <code>y</code> when conda asks to proceed. The prompt now starts with <code>(ML1Labs)</code>. To leave the environment: <code>conda deactivate</code>.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>conda create -n ML1Labs</code></td><td>Creates a virtual environment named <code>ML1Labs</code>. Virtual environments allow different versions of packages on the same machine</td></tr>
+<tr><td><code>conda activate ML1Labs</code></td><td>Activates the environment: the packages you install now go into it</td></tr>
+<tr><td><code>conda deactivate</code></td><td>Leaves the active environment</td></tr>
+<tr><td><code>conda env remove -n ML1Labs</code></td><td>Removes the environment and all packages installed in it</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">Q3</b>Install OpenCV with conda.
+<details><summary>Show solution</summary><p><code>conda install opencv</code></p><p>If the package is not found, use a specific channel: <code>conda install -c conda-forge opencv</code>. The command <code>pip install opencv-python</code> also works.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>conda install opencv</code></td><td>Installs the OpenCV package (the <code>cv2</code> module)</td></tr>
+<tr><td><code>conda install opencv=4.6.0</code></td><td>Installs a <b>specific version</b></td></tr>
+<tr><td><code>conda install -c conda-forge opencv</code></td><td>Installs from a <b>specific channel</b></td></tr>
+<tr><td><code>pip install opencv-python</code></td><td>Alternative installer (pip)</td></tr>
+<tr><td><code>conda update opencv</code></td><td>Updates the package</td></tr>
+<tr><td><code>conda remove opencv</code></td><td>Uninstalls the package</td></tr>
+</table></div></details>
+<div class="note">The next parts also use Jupyter, Pandas, Matplotlib and Scikit-Learn. A new environment does not contain them, so install them now: <code>conda install notebook pandas matplotlib scikit-learn</code></div></div>
+
+<div class="task"><b class="q">Q4</b>Select the <code>ML1Labs</code> environment and launch the <b>Jupyter Notebook</b> from the Anaconda Navigator.
+<details><summary>Show solution</summary><p>In Anaconda Navigator, open the <b>Home</b> tab. In the <b>Applications on</b> drop-down, choose <code>ML1Labs</code> instead of <code>base (root)</code>. Click <b>Launch</b> under <b>Notebook</b> (if the button says <b>Install</b>, click it first). A browser tab opens on the Jupyter file browser.</p></details></div>
+
+<div class="task"><b class="q">Q5</b>Create a notebook named <code>Lab1_Introduction.ipynb</code>.
+<details><summary>Show solution</summary><p>In the Jupyter file browser, go to your lab folder, click <b>New</b> then <b>Python 3</b>. Click the title <code>Untitled</code> at the top and rename it to <code>Lab1_Introduction</code>. The file is saved as <code>Lab1_Introduction.ipynb</code>.</p></details></div>
+
+<div class="task"><b class="q">Q6</b>In a code cell, import the <code>cv2</code> module and print its version.
+<details><summary>Show solution</summary><pre><code>import cv2
+print(cv2.__version__)</code></pre><p>In Python 3, <code>print</code> needs parentheses. Run the cell with Ctrl + Enter.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>import cv2</code></td><td>Imports the OpenCV module</td></tr>
+<tr><td><code>cv2.__version__</code></td><td>Attribute that gives the installed version of OpenCV</td></tr>
+<tr><td><code>print()</code></td><td>Displays the value below the cell</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">Q7</b>In a <b>markdown</b> cell, write <code>Read, Display and Save an Image</code>.
+<details><summary>Show solution</summary><p>Insert a new cell, change its type from <b>Code</b> to <b>Markdown</b> in the toolbar drop-down, and type <code>## Read, Display and Save an Image</code> (the <code>##</code> makes it a heading). Press Ctrl + Enter to render it.</p>
+<p><b>Notions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>Code / Markdown cell</code></td><td>A <b>code</b> cell runs Python; a <b>markdown</b> cell holds formatted text (titles, explanations). The type is chosen in the toolbar drop-down</td></tr>
+<tr><td><code>## text</code></td><td>Markdown syntax for a heading</td></tr>
+<tr><td><code>Ctrl + Enter</code></td><td>Runs the selected cell (menu: Cell → Run Cell)</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">Q8</b>In a code cell, test this code and explain what each OpenCV function does.
+<pre class="sol"><code>import cv2
+
+img_grayscale = cv2.imread('test.jpg', 0)       # 0 = read as grayscale
+cv2.imshow('grayscale image', img_grayscale)    # display in a window
+cv2.waitKey(0)                                  # wait for a key press
+cv2.destroyAllWindows()                         # close all windows
+cv2.imwrite('grayscale.jpg', img_grayscale)     # save the image</code></pre>
+<div class="note">If <code>cv2.imread</code> returns <code>None</code>, the file was not found: check the file name and that <code>test.jpg</code> is in the notebook folder. Click on the image window and press a key to close it, otherwise the notebook stays blocked.</div>
+<details><summary>Show explanation of the functions</summary>
+<p><b>Role of each OpenCV function</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>cv2.imread(file, 0)</code></td><td><b>Reads</b> an image from a file. The flag <code>0</code> loads it in grayscale; it returns the image as an array (or <code>None</code> if the file is not found)</td></tr>
+<tr><td><code>cv2.imshow(name, img)</code></td><td><b>Displays</b> an image in a window titled <code>name</code></td></tr>
+<tr><td><code>cv2.waitKey(0)</code></td><td>Waits for a key press to close the window; <code>0</code> means wait indefinitely</td></tr>
+<tr><td><code>cv2.destroyAllWindows()</code></td><td>Destroys all the windows we created</td></tr>
+<tr><td><code>cv2.imwrite(file, img)</code></td><td><b>Writes</b> (saves) the image to a file</td></tr>
+</table></div></details></div>
+
+<h2 id="p2">Part 2 – Data exploration and cleaning with Pandas</h2>
+<p><b>Pandas</b> is a Python library used for working with <b>tabular data sets</b>. It provides functions for <b>analyzing, cleaning, exploring</b> and <b>manipulating</b> data. A <b>Series</b> is a one-dimensional array (a one-column table) holding data of any type. A <b>DataFrame</b> is a table with rows and columns. Start every example with <code>import pandas as pd</code>.</p>
+
+<h3>Series: default labels, custom labels, key/value objects</h3>
+<pre><code>import pandas as pd
+
+sr = pd.Series([1, 5, 3])                        # default labels 0, 1, 2
+print(sr)
+
+sr = pd.Series([1, 5, 3], index=["x", "y", "z"]) # create your own labels
+print(sr)
+print(sr["x"])                                   # access a value by its label -&gt; 1
+
+calories = {"day1": 300, "day2": 200, "day3": 100}
+skv = pd.Series(calories)                        # a key/value object (dictionary): keys become labels
+print(skv)</code></pre>
+<p>Each Series prints its labels on the left, its values on the right and its <code>dtype</code> (here <code>int64</code>) below.</p>
+
+<h3>DataFrame: a table built from a dictionary</h3>
+<pre><code>mydataset = {
+  'cars': ["BMW", "Volvo", "Ford"],
+  'colors': ["White", "Red", "Black"]
+}
+df = pd.DataFrame(mydataset)    # each key becomes a column
+print(df)</code></pre>
+<p>Without <code>index</code>, rows are numbered 0, 1, 2. The warm-up below adds <b>named indexes</b> and locates rows with <code>loc[]</code>.</p>
+
+<h3>Warm-up</h3>
+<div class="task"><b class="q">W1</b>Create the Series <code>calories = {"day1": 300, "day2": 200, "day3": 100}</code> and print it. Then print the value of <code>"day2"</code>.</div>
+<div class="task"><b class="q">W2</b>Create a DataFrame with columns <code>calories = [300, 200, 100]</code> and <code>duration = [40, 50, 60]</code>, indexed by <code>day1</code>, <code>day2</code>, <code>day3</code>. Use <code>loc</code> to display only <code>day1</code> and <code>day2</code>.
+<details><summary>Show solution</summary><pre><code>import pandas as pd
+
+sr = pd.Series({"day1": 300, "day2": 200, "day3": 100})
+print(sr)
+print(sr["day2"])
+
+data = {"calories": [300, 200, 100], "duration": [40, 50, 60]}
+df = pd.DataFrame(data, index=["day1", "day2", "day3"])
+print(df.loc[["day1", "day2"]])</code></pre>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>pd.Series(data, index=[...])</code></td><td><b>Series</b>: one-dimensional array (one-column table) holding data of any type. <code>index</code> creates <b>labels</b></td></tr>
+<tr><td><code>pd.Series(dict)</code></td><td>A dictionary (key/value object) can be used directly: keys become the labels</td></tr>
+<tr><td><code>sr["day2"]</code></td><td>Gets a value from its label</td></tr>
+<tr><td><code>pd.DataFrame(data, index=[...])</code></td><td><b>DataFrame</b>: table with rows and columns. <code>index</code> gives <b>named indexes</b> to the rows</td></tr>
+<tr><td><code>df.loc[[...]]</code></td><td><b>Locates rows</b> from a list of index names</td></tr>
+</table></div></details></div>
+
+<h3>Our data set: <code>data.csv</code></h3>
+<p>The examples below use <code>data.csv</code>: <b>178 observations</b> of a training session, with the features <code>Duration</code> (minutes), <code>Pulse</code>, <code>Maxpulse</code> and <code>Calories</code>. All the numbers shown come from this file, as loaded, before any cleaning.</p>
+
+<h3>Read a CSV or JSON file</h3>
+<pre><code>df = pd.read_csv('data.csv')     # CSV file -&gt; DataFrame
+print(df.to_string())
+
+df = pd.read_json('data.json')   # JSON file -&gt; DataFrame
+print(df.to_string())</code></pre>
+<div class="note"><b>Tip:</b> use <code>to_string()</code> to print the entire DataFrame. Without it Pandas shows only the first and last rows.</div>
+
+<h3>View the DataFrame: <code>head()</code> and <code>tail()</code></h3>
+<pre><code>df = pd.read_csv('data.csv')
+print(df.head(3))   # first 3 rows, starting from the top
+print(df.tail(3))   # last 3 rows, starting from the bottom</code></pre>
+<div class="scroll"><table class="num">
+<tr><th></th><th>Duration</th><th>Pulse</th><th>Maxpulse</th><th>Calories</th></tr>
+<tr><td>0</td><td>60</td><td>110</td><td>130</td><td>409.1</td></tr>
+<tr><td>1</td><td>60</td><td>117</td><td>145</td><td>479.0</td></tr>
+<tr><td>2</td><td>60</td><td>103</td><td>135</td><td>340.0</td></tr>
+<tr><td>175</td><td>60</td><td>98</td><td>126</td><td>286.0</td></tr>
+<tr><td>176</td><td>60</td><td>100</td><td>122</td><td>329.4</td></tr>
+<tr><td>177</td><td>60</td><td>111</td><td>138</td><td>400.0</td></tr>
+</table></div>
+<p>The first three rows come from <code>head(3)</code>, the last three from <code>tail(3)</code>. The row numbers 175 to 177 show that the file has 178 rows (numbered 0 to 177).</p>
+
+<h3>Get information: <code>info()</code></h3>
+<pre><code>print(df.info())</code></pre>
+<pre class="out"><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 178 entries, 0 to 177
+Data columns (total 4 columns):
+ #   Column    Non-Null Count  Dtype
+---  ------    --------------  -----
+ 0   Duration  178 non-null    int64
+ 1   Pulse     178 non-null    int64
+ 2   Maxpulse  178 non-null    int64
+ 3   Calories  173 non-null    float64
+dtypes: float64(1), int64(3)
+memory usage: 5.7 KB
+None</code></pre>
+<ul>
+<li>There are <b>178 rows</b> (observations) and <b>4 columns</b> (features).</li>
+<li>The name of each column is given with its <b>data type</b>.</li>
+<li>Only <code>Calories</code> has <b>missing values</b> (null): 178 - 173 = <b>5 missing values</b> (rows 17, 27, 91, 118 and 141).</li>
+<li><code>info()</code> prints its report itself and returns <code>None</code>, so <code>print(df.info())</code> adds the final line <code>None</code>. Writing <code>df.info()</code> is enough. Recent Pandas versions print <code>pandas.DataFrame</code> on the first line.</li>
+</ul>
+
+<h3>Statistical description: <code>describe()</code></h3>
+<pre><code>df.describe()</code></pre>
+<div class="scroll"><table class="num">
+<tr><th></th><th>Duration</th><th>Pulse</th><th>Maxpulse</th><th>Calories</th></tr>
+<tr><td><b>count</b></td><td>178.000000</td><td>178.000000</td><td>178.000000</td><td>173.000000</td></tr>
+<tr><td><b>mean</b></td><td>63.483146</td><td>107.191011</td><td>133.640449</td><td>372.289595</td></tr>
+<tr><td><b>std</b></td><td>41.264645</td><td>14.264948</td><td>16.234682</td><td>260.187717</td></tr>
+<tr><td><b>min</b></td><td>15.000000</td><td>80.000000</td><td>100.000000</td><td>50.300000</td></tr>
+<tr><td><b>25%</b></td><td>45.000000</td><td>100.000000</td><td>124.000000</td><td>253.300000</td></tr>
+<tr><td><b>50%</b></td><td>60.000000</td><td>105.000000</td><td>131.000000</td><td>317.700000</td></tr>
+<tr><td><b>75%</b></td><td>60.000000</td><td>111.000000</td><td>140.750000</td><td>387.600000</td></tr>
+<tr><td><b>max</b></td><td>300.000000</td><td>159.000000</td><td>184.000000</td><td>1860.400000</td></tr>
+</table></div>
+<p>Read it column by column: <code>count</code> is the number of non-empty values (173 for Calories confirms 5 missing), <code>std</code> the spread around the <code>mean</code>, and the 25% / 50% / 75% rows are the quartiles (50% is the median). A <code>max</code> far above the 75% value, like 1860.4 for Calories (75%: 387.6) or 300 for Duration (75%: 60), signals unusual values to inspect.</p>
+
+<h3>Cleaning data</h3>
+<p>Real data sets contain empty cells, duplicates, wrong values and wrong formats. Clean them before any analysis or learning.</p>
+
+<h3>Empty cells: <code>dropna()</code> or <code>fillna()</code></h3>
+<pre><code>new_df = df.dropna()            # remove rows with empty cells: returns a NEW DataFrame,
+                                # the original df is not changed
+df.dropna(inplace=True)         # inplace=True changes the original DataFrame df
+
+# replace empty values instead of removing rows
+m = df["Calories"].median()
+df["Calories"] = df["Calories"].fillna(m)   # replace with the median value</code></pre>
+<p>On <code>data.csv</code>, <code>dropna()</code> removes the 5 incomplete rows and keeps <b>173</b> rows. <code>fillna()</code> keeps all <b>178</b> rows and fills the 5 empty cells with the median of Calories, <b>317.7</b>.</p>
+
+<h3>Remove duplicates</h3>
+<pre><code>print(df.duplicated())            # True for every row that is a duplicate, otherwise False
+
+df.drop_duplicates(inplace=True)  # remove all duplicates
+df.info()                         # check the new number of rows</code></pre>
+<p><code>data.csv</code> contains <b>16 duplicate rows</b> (<code>True</code> in the output): rows 36, 37, 38, 40, 71, 113, 155 and the last nine rows, 169 to 177. <code>drop_duplicates()</code> keeps the first copy of each and leaves <b>162</b> rows.</p>
+
+<h3>Wrong data</h3>
+<p>Spot wrong values with <code>describe()</code> or a plot (see below), then choose one of three solutions. Example on the column <code>Duration</code> with an accepted range [<code>MinValue</code>, <code>MaxValue</code>].</p>
+<pre><code>MinValue, MaxValue = 15, 120
+
+# Solution (1): replace an erroneous value with the correct one
+df.loc[row_index, 'Duration'] = new_value
+
+# Solution (2): set out-of-range values to the nearest limit
+for x in df.index:
+    if df.loc[x, 'Duration'] &gt; MaxValue:
+        df.loc[x, 'Duration'] = MaxValue
+    elif df.loc[x, 'Duration'] &lt; MinValue:
+        df.loc[x, 'Duration'] = MinValue
+
+# Solution (3): remove the rows with out-of-range values
+for x in df.index:
+    if df.loc[x, 'Duration'] &gt; MaxValue or df.loc[x, 'Duration'] &lt; MinValue:
+        df.drop(x, inplace=True)</code></pre>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>df.loc[row, 'col'] = value</code></td><td>Replaces one value in a given row and column</td></tr>
+<tr><td><code>for x in df.index</code></td><td>Loops over the row labels of the DataFrame</td></tr>
+<tr><td><code>df.drop(x, inplace=True)</code></td><td>Removes the row with label <code>x</code> from the original DataFrame</td></tr>
+</table></div>
+<p>Solutions (2) and (3) are alternatives: choose one. With the range [15, 120], no row is below 15 but <b>13 rows</b> have a Duration above 120 (from 150 to 300 minutes). Solution (2) sets them to 120; solution (3) removes them. First decide whether these long sessions are errors or real: they are consistent with their high Calories values (see the scatter plot below), so you may well keep them.</p>
+
+<h3>Wrong format</h3>
+<p>For example a column of dates stored as text. This applies to any data set with a <code>Date</code> column (<code>data.csv</code> has none).</p>
+<pre><code># Solution (1): correct the format
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Solution (2): remove the column with the wrong format
+df.drop(['Date'], axis=1, inplace=True)</code></pre>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>pd.to_datetime(col)</code></td><td>Converts a column to the date-time type</td></tr>
+<tr><td><code>df.drop([...], axis=1)</code></td><td><code>axis=1</code> means drop columns (rows with the default <code>axis=0</code>)</td></tr>
+</table></div>
+
+<h3>Summary of the cleaning steps on <code>data.csv</code></h3>
+<div class="scroll"><table class="num">
+<tr><th>Step</th><th>Rows</th><th>Missing Calories</th><th>Duplicates</th></tr>
+<tr><td>As loaded with <code>read_csv()</code></td><td>178</td><td>5</td><td>16</td></tr>
+<tr><td><code>new_df = df.dropna()</code></td><td>173</td><td>0</td><td>–</td></tr>
+<tr><td><code>fillna(median)</code> on all 178 rows (median = 317.7)</td><td>178</td><td>0</td><td>16</td></tr>
+<tr><td>then <code>drop_duplicates()</code></td><td>162</td><td>0</td><td>0</td></tr>
+</table></div>
+
+<h3>Data correlation</h3>
+<p>The <code>corr()</code> method calculates the <b>relationship</b> between each pair of columns in the data set (from -1 to +1).</p>
+<pre><code>df.corr()</code></pre>
+<div class="scroll"><table class="num">
+<tr><th></th><th>Duration</th><th>Pulse</th><th>Maxpulse</th><th>Calories</th></tr>
+<tr><td><b>Duration</b></td><td>1.000000</td><td>-0.149185</td><td>0.014825</td><td>0.922028</td></tr>
+<tr><td><b>Pulse</b></td><td>-0.149185</td><td>1.000000</td><td>0.790206</td><td>0.035419</td></tr>
+<tr><td><b>Maxpulse</b></td><td>0.014825</td><td>0.790206</td><td>1.000000</td><td>0.212744</td></tr>
+<tr><td><b>Calories</b></td><td>0.922028</td><td>0.035419</td><td>0.212744</td><td>1.000000</td></tr>
+</table></div>
+<p>Duration and Calories are strongly related (0.92). Pulse and Maxpulse are also related (0.79). Most other pairs are close to 0: little linear relationship. These values are computed on the file as loaded; once the missing Calories are filled, the Calories coefficients change slightly (for example 0.9217 for Duration). If a column holds text, <code>corr()</code> cannot use it: remove it first with <code>df.drop(['col'], axis=1)</code>.</p>
+
+<h3>Plotting: curve</h3>
+<pre><code>import matplotlib.pyplot as plt
+
+df = pd.read_csv('data.csv')
+df.plot()        # the plot() method creates diagrams: one curve per column
+plt.show()</code></pre>
+<figure><svg role="img" aria-label="Line plot of Duration, Pulse, Maxpulse and Calories against row number" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 493.094844 273.779141" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ 
+ <defs>
+  
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 273.779141 
+L 493.094844 273.779141 
+L 493.094844 0 
+L 0 0 
+L 0 273.779141 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 39.494844 228.96 
+L 485.894844 228.96 
+L 485.894844 7.2 
+L 39.494844 7.2 
+L 39.494844 228.96 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m508f365c3c" d="M 0 0 
+L 0 3.5 
+" style="stroke: currentColor; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m508f365c3c" x="59.785753" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="59.785753" y="246.61625" transform="rotate(-0 59.785753 246.61625)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m508f365c3c" x="117.104705" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="117.104705" y="246.61625" transform="rotate(-0 117.104705 246.61625)">25</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m508f365c3c" x="174.423657" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="174.423657" y="246.61625" transform="rotate(-0 174.423657 246.61625)">50</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m508f365c3c" x="231.74261" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="231.74261" y="246.61625" transform="rotate(-0 231.74261 246.61625)">75</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m508f365c3c" x="289.061562" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="289.061562" y="246.61625" transform="rotate(-0 289.061562 246.61625)">100</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m508f365c3c" x="346.380514" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="346.380514" y="246.61625" transform="rotate(-0 346.380514 246.61625)">125</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m508f365c3c" x="403.699466" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="403.699466" y="246.61625" transform="rotate(-0 403.699466 246.61625)">150</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m508f365c3c" x="461.018418" y="228.96" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="461.018418" y="246.61625" transform="rotate(-0 461.018418 246.61625)">175</text>
+     </g>
+    </g>
+    <g id="text_9">
+     <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="262.694844" y="263.92582" transform="rotate(-0 262.694844 263.92582)">row number</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_9">
+      <defs>
+       <path id="me22485d0f4" d="M 0 0 
+L -3.5 0 
+" style="stroke: currentColor; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="220.518669" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="225.846794" transform="rotate(-0 32.494844 225.846794)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="193.207517" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="198.535642" transform="rotate(-0 32.494844 198.535642)">250</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="165.896365" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="171.22449" transform="rotate(-0 32.494844 171.22449)">500</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="138.585213" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="143.913338" transform="rotate(-0 32.494844 143.913338)">750</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_13">
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="111.274061" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="116.602186" transform="rotate(-0 32.494844 116.602186)">1000</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="83.962909" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="89.291034" transform="rotate(-0 32.494844 89.291034)">1250</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_15">
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="56.651757" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_16">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="61.979882" transform="rotate(-0 32.494844 61.979882)">1500</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#me22485d0f4" x="39.494844" y="29.340605" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_17">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="32.494844" y="34.66873" transform="rotate(-0 32.494844 34.66873)">1750</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_17">
+    <path d="M 59.785753 213.963993 
+L 64.371269 213.963993 
+L 66.664027 215.602662 
+L 68.956785 215.602662 
+L 71.249543 213.963993 
+L 73.542301 213.963993 
+L 78.127818 217.241331 
+L 80.420576 213.963993 
+L 96.469882 213.963993 
+L 98.76264 215.602662 
+L 101.055398 213.963993 
+L 103.348157 215.602662 
+L 105.640915 213.963993 
+L 107.933673 215.602662 
+L 110.226431 213.963993 
+L 112.519189 215.602662 
+L 114.811947 213.963993 
+L 128.568496 213.963993 
+L 130.861254 215.602662 
+L 133.154012 213.963993 
+L 146.91056 213.963993 
+L 149.203318 215.602662 
+L 151.496076 215.602662 
+L 153.788835 213.963993 
+L 165.252625 213.963993 
+L 167.545383 215.602662 
+L 169.838141 215.602662 
+L 172.130899 213.963993 
+L 174.423657 213.963993 
+L 176.716415 211.7791 
+L 179.009173 213.963993 
+L 181.301932 213.963993 
+L 183.59469 217.241331 
+L 185.887448 213.963993 
+L 188.180206 213.963993 
+L 190.472964 215.602662 
+L 192.765722 218.333777 
+L 195.05848 215.602662 
+L 197.351238 197.577301 
+L 199.643996 203.039532 
+L 201.936754 203.039532 
+L 204.229512 215.602662 
+L 206.522271 218.333777 
+L 208.815029 200.85464 
+L 211.107787 204.131978 
+L 213.400545 204.131978 
+L 215.693303 218.333777 
+L 217.986061 187.745287 
+L 220.278819 204.131978 
+L 222.571577 213.963993 
+L 224.864335 210.686654 
+L 227.157093 204.131978 
+L 229.449851 215.602662 
+L 231.74261 210.686654 
+L 234.035368 215.602662 
+L 236.328126 215.602662 
+L 238.620884 207.409316 
+L 240.913642 191.022625 
+L 243.2064 217.241331 
+L 245.499158 215.602662 
+L 247.791916 217.241331 
+L 250.084674 207.409316 
+L 252.377432 215.602662 
+L 254.67019 217.241331 
+L 256.962949 215.602662 
+L 259.255707 207.409316 
+L 261.548465 215.602662 
+L 263.841223 218.333777 
+L 266.133981 200.85464 
+L 268.426739 215.602662 
+L 273.012255 218.88 
+L 275.305013 218.333777 
+L 277.597771 218.333777 
+L 279.890529 217.241331 
+L 282.183288 217.787554 
+L 284.476046 217.241331 
+L 286.768804 210.686654 
+L 289.061562 218.333777 
+L 291.35432 210.686654 
+L 295.939836 210.686654 
+L 298.232594 217.241331 
+L 300.525352 217.241331 
+L 302.81811 200.85464 
+L 305.110868 217.241331 
+L 307.403626 210.686654 
+L 309.696385 197.577301 
+L 311.989143 213.963993 
+L 314.281901 215.602662 
+L 316.574659 218.88 
+L 318.867417 215.602662 
+L 321.160175 213.963993 
+L 332.623965 213.963993 
+L 334.916724 217.241331 
+L 339.50224 213.963993 
+L 350.96603 213.963993 
+L 353.258788 210.686654 
+L 355.551546 213.963993 
+L 367.015337 213.963993 
+L 369.308095 218.333777 
+L 371.600853 215.602662 
+L 376.186369 215.602662 
+L 378.479127 218.333777 
+L 380.771885 213.963993 
+L 383.064643 213.963993 
+L 385.357402 215.602662 
+L 387.65016 215.602662 
+L 389.942918 213.963993 
+L 392.235676 215.602662 
+L 394.528434 213.963993 
+L 396.821192 213.963993 
+L 399.11395 217.241331 
+L 401.406708 213.963993 
+L 408.284982 213.963993 
+L 410.577741 217.241331 
+L 412.870499 213.963993 
+L 422.041531 213.963993 
+L 424.334289 217.241331 
+L 426.627047 217.241331 
+L 428.919805 215.602662 
+L 433.505321 215.602662 
+L 435.798079 213.963993 
+L 440.383596 213.963993 
+L 442.676354 212.325324 
+L 444.969112 212.325324 
+L 447.26187 213.963993 
+L 454.140144 213.963993 
+L 456.432902 215.602662 
+L 458.72566 215.602662 
+L 461.018418 213.963993 
+L 465.603935 213.963993 
+L 465.603935 213.963993 
+" clip-path="url(#p6bff972820)" style="fill: none; stroke: #1f77b4; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 59.785753 208.501762 
+L 62.078511 207.73705 
+L 64.371269 209.266474 
+L 66.664027 208.611007 
+L 68.956785 207.73705 
+L 71.249543 209.375719 
+L 73.542301 208.501762 
+L 75.835059 209.15723 
+L 78.127818 208.611007 
+L 80.420576 209.812698 
+L 82.713334 209.266474 
+L 85.006092 209.594208 
+L 87.29885 208.938741 
+L 89.591608 209.15723 
+L 91.884366 209.812698 
+L 94.177124 209.812698 
+L 96.469882 209.594208 
+L 98.76264 210.686654 
+L 101.055398 209.266474 
+L 103.348157 209.921942 
+L 105.640915 208.720251 
+L 107.933673 209.594208 
+L 110.226431 206.31687 
+L 112.519189 209.047985 
+L 117.104705 209.594208 
+L 119.397463 210.468165 
+L 121.690221 209.266474 
+L 123.982979 209.594208 
+L 126.275737 209.375719 
+L 128.568496 210.468165 
+L 130.861254 210.686654 
+L 133.154012 209.484964 
+L 135.44677 210.358921 
+L 137.739528 208.829496 
+L 140.032286 208.064784 
+L 142.325044 209.375719 
+L 144.617802 209.594208 
+L 146.91056 209.594208 
+L 149.203318 209.15723 
+L 151.496076 210.686654 
+L 153.788835 209.812698 
+L 156.081593 209.594208 
+L 158.374351 208.392518 
+L 160.667109 208.392518 
+L 162.959867 209.703453 
+L 165.252625 208.611007 
+L 167.545383 208.392518 
+L 169.838141 208.720251 
+L 172.130899 208.392518 
+L 174.423657 208.829496 
+L 176.716415 207.081582 
+L 179.009173 208.938741 
+L 181.301932 207.627805 
+L 183.59469 205.661402 
+L 185.887448 207.300072 
+L 190.472964 207.955539 
+L 192.765722 203.804244 
+L 195.05848 207.081582 
+L 197.351238 208.720251 
+L 199.643996 208.501762 
+L 201.936754 208.611007 
+L 204.229512 207.627805 
+L 206.522271 208.501762 
+L 208.815029 210.686654 
+L 211.107787 209.047985 
+L 213.400545 208.829496 
+L 215.693303 208.938741 
+L 217.986061 208.720251 
+L 220.278819 209.921942 
+L 222.571577 208.611007 
+L 224.864335 209.594208 
+L 227.157093 209.921942 
+L 229.449851 208.064784 
+L 231.74261 209.812698 
+L 234.035368 209.047985 
+L 236.328126 208.501762 
+L 238.620884 209.594208 
+L 240.913642 209.594208 
+L 243.2064 203.148776 
+L 245.499158 204.241222 
+L 247.791916 209.266474 
+L 250.084674 209.594208 
+L 252.377432 209.594208 
+L 254.67019 204.022733 
+L 256.962949 209.375719 
+L 259.255707 209.594208 
+L 261.548465 206.426115 
+L 263.841223 211.451367 
+L 266.133981 209.484964 
+L 268.426739 208.829496 
+L 270.719497 210.686654 
+L 273.012255 211.7791 
+L 275.305013 204.131978 
+L 277.597771 204.022733 
+L 279.890529 210.140431 
+L 282.183288 203.913489 
+L 284.476046 208.611007 
+L 286.768804 210.358921 
+L 289.061562 210.140431 
+L 291.35432 210.686654 
+L 295.939836 210.686654 
+L 300.525352 210.358921 
+L 302.81811 210.686654 
+L 307.403626 210.686654 
+L 309.696385 205.552158 
+L 311.989143 209.375719 
+L 314.281901 208.829496 
+L 316.574659 206.972338 
+L 318.867417 209.594208 
+L 321.160175 208.720251 
+L 323.452933 208.720251 
+L 325.745691 207.846295 
+L 328.038449 209.921942 
+L 330.331207 209.047985 
+L 332.623965 209.266474 
+L 334.916724 208.283273 
+L 337.209482 209.594208 
+L 339.50224 207.518561 
+L 341.794998 208.829496 
+L 344.087756 208.392518 
+L 346.380514 209.812698 
+L 348.673272 209.921942 
+L 350.96603 208.611007 
+L 353.258788 209.703453 
+L 355.551546 208.064784 
+L 357.844304 209.15723 
+L 360.137063 208.829496 
+L 362.429821 209.266474 
+L 364.722579 208.938741 
+L 367.015337 209.266474 
+L 369.308095 205.661402 
+L 371.600853 207.73705 
+L 376.186369 208.174028 
+L 378.479127 205.115179 
+L 380.771885 208.720251 
+L 383.064643 209.921942 
+L 385.357402 209.594208 
+L 387.65016 207.190827 
+L 389.942918 205.661402 
+L 392.235676 208.938741 
+L 394.528434 208.829496 
+L 396.821192 208.283273 
+L 399.11395 209.266474 
+L 401.406708 208.501762 
+L 403.699466 208.938741 
+L 405.992224 208.611007 
+L 408.284982 208.611007 
+L 410.577741 204.131978 
+L 412.870499 209.047985 
+L 415.163257 208.392518 
+L 417.456015 209.921942 
+L 419.748773 209.594208 
+L 422.041531 208.064784 
+L 424.334289 211.7791 
+L 444.969112 206.863093 
+L 449.554628 209.375719 
+L 451.847386 209.594208 
+L 454.140144 209.594208 
+L 456.432902 209.15723 
+L 458.72566 210.686654 
+L 461.018418 209.812698 
+L 463.311177 209.594208 
+L 465.603935 208.392518 
+L 465.603935 208.392518 
+" clip-path="url(#p6bff972820)" style="fill: none; stroke: #ff7f0e; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_19">
+    <path d="M 59.785753 206.31687 
+L 62.078511 204.678201 
+L 64.371269 205.770647 
+L 66.664027 201.400863 
+L 68.956785 204.350467 
+L 71.249543 206.644604 
+L 73.542301 205.661402 
+L 78.127818 205.989136 
+L 80.420576 206.972338 
+L 82.713334 204.459712 
+L 85.006092 207.409316 
+L 87.29885 206.535359 
+L 89.591608 206.098381 
+L 91.884366 207.081582 
+L 94.177124 207.409316 
+L 96.469882 207.409316 
+L 98.76264 208.283273 
+L 101.055398 207.081582 
+L 103.348157 206.863093 
+L 105.640915 206.207625 
+L 107.933673 207.518561 
+L 110.226431 209.484964 
+L 112.519189 206.098381 
+L 117.104705 207.409316 
+L 119.397463 207.627805 
+L 121.690221 206.098381 
+L 123.982979 206.098381 
+L 126.275737 206.426115 
+L 128.568496 207.955539 
+L 130.861254 208.283273 
+L 133.154012 206.972338 
+L 135.44677 208.174028 
+L 137.739528 205.661402 
+L 140.032286 205.224424 
+L 142.325044 206.644604 
+L 144.617802 207.409316 
+L 146.91056 207.409316 
+L 149.203318 206.426115 
+L 151.496076 208.283273 
+L 153.788835 206.753848 
+L 156.081593 207.190827 
+L 158.374351 205.442913 
+L 160.667109 206.207625 
+L 162.959867 207.518561 
+L 165.252625 203.804244 
+L 167.545383 205.661402 
+L 169.838141 206.426115 
+L 172.130899 205.333669 
+L 174.423657 205.661402 
+L 176.716415 204.568956 
+L 179.009173 206.31687 
+L 181.301932 204.022733 
+L 183.59469 201.400863 
+L 185.887448 204.568956 
+L 188.180206 207.300072 
+L 190.472964 204.787446 
+L 192.765722 201.728597 
+L 195.05848 203.913489 
+L 197.351238 203.039532 
+L 199.643996 205.552158 
+L 201.936754 205.770647 
+L 204.229512 205.115179 
+L 206.522271 206.31687 
+L 208.815029 206.31687 
+L 211.107787 205.770647 
+L 213.400545 206.31687 
+L 217.986061 204.89669 
+L 220.278819 206.426115 
+L 222.571577 203.804244 
+L 224.864335 206.644604 
+L 227.157093 206.644604 
+L 229.449851 204.568956 
+L 231.74261 206.863093 
+L 234.035368 205.879892 
+L 236.328126 205.115179 
+L 238.620884 206.31687 
+L 240.913642 206.207625 
+L 243.2064 200.63615 
+L 245.499158 202.05633 
+L 247.791916 205.333669 
+L 252.377432 207.409316 
+L 254.67019 201.947086 
+L 256.962949 205.661402 
+L 259.255707 203.367266 
+L 261.548465 209.266474 
+L 263.841223 208.829496 
+L 266.133981 206.644604 
+L 268.426739 205.552158 
+L 270.719497 208.829496 
+L 273.012255 209.594208 
+L 275.305013 201.837841 
+L 277.597771 202.165575 
+L 279.890529 206.535359 
+L 282.183288 202.165575 
+L 284.476046 206.207625 
+L 286.768804 206.972338 
+L 289.061562 208.283273 
+L 291.35432 208.501762 
+L 293.647078 209.594208 
+L 295.939836 209.594208 
+L 298.232594 208.720251 
+L 300.525352 206.535359 
+L 302.81811 207.409316 
+L 307.403626 207.409316 
+L 309.696385 200.417661 
+L 311.989143 206.972338 
+L 314.281901 206.972338 
+L 316.574659 205.333669 
+L 318.867417 207.409316 
+L 321.160175 206.207625 
+L 323.452933 204.022733 
+L 325.745691 205.115179 
+L 328.038449 207.190827 
+L 330.331207 206.863093 
+L 332.623965 206.972338 
+L 334.916724 205.552158 
+L 337.209482 207.409316 
+L 339.50224 202.05633 
+L 341.794998 206.644604 
+L 344.087756 204.022733 
+L 346.380514 207.190827 
+L 350.96603 206.644604 
+L 353.258788 206.863093 
+L 355.551546 204.022733 
+L 357.844304 205.879892 
+L 360.137063 205.442913 
+L 362.429821 205.989136 
+L 364.722579 206.098381 
+L 367.015337 205.661402 
+L 369.308095 203.47651 
+L 371.600853 204.89669 
+L 373.893611 205.552158 
+L 376.186369 205.442913 
+L 378.479127 202.821043 
+L 380.771885 205.770647 
+L 385.357402 207.409316 
+L 387.65016 204.241222 
+L 389.942918 201.947086 
+L 392.235676 206.753848 
+L 396.821192 204.568956 
+L 399.11395 206.644604 
+L 401.406708 204.131978 
+L 403.699466 205.879892 
+L 405.992224 206.426115 
+L 408.284982 205.442913 
+L 410.577741 202.27482 
+L 412.870499 206.535359 
+L 415.163257 204.022733 
+L 417.456015 206.207625 
+L 419.748773 207.409316 
+L 422.041531 204.131978 
+L 424.334289 207.409316 
+L 426.627047 207.409316 
+L 428.919805 206.31687 
+L 431.212563 206.31687 
+L 433.505321 205.224424 
+L 435.798079 205.224424 
+L 438.090838 204.678201 
+L 440.383596 204.678201 
+L 442.676354 204.131978 
+L 444.969112 204.131978 
+L 447.26187 205.224424 
+L 449.554628 206.644604 
+L 451.847386 207.409316 
+L 454.140144 207.409316 
+L 456.432902 206.426115 
+L 458.72566 208.283273 
+L 461.018418 206.753848 
+L 463.311177 207.190827 
+L 465.603935 205.442913 
+L 465.603935 205.442913 
+" clip-path="url(#p6bff972820)" style="fill: none; stroke: #2ca02c; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_20">
+    <path d="M 59.785753 175.8267 
+L 62.078511 168.190502 
+L 64.371269 183.375502 
+L 66.664027 189.667992 
+L 68.956785 176.165358 
+L 71.249543 187.745287 
+L 73.542301 179.661186 
+L 75.835059 192.84701 
+L 78.127818 199.205046 
+L 80.420576 191.13187 
+L 82.713334 184.54442 
+L 85.006092 193.131046 
+L 87.29885 182.796506 
+L 89.591608 179.082189 
+L 91.884366 190.476402 
+L 94.177124 197.009229 
+L 96.469882 187.745287 
+M 101.055398 185.232661 
+L 103.348157 193.972229 
+L 105.640915 180.731783 
+L 107.933673 189.71169 
+L 110.226431 187.745287 
+L 112.519189 193.644496 
+L 114.811947 183.976348 
+L 117.104705 193.207517 
+L 119.397463 194.190719 
+M 123.982979 189.930179 
+L 126.275737 178.972945 
+L 128.568496 193.972229 
+L 130.861254 200.843715 
+L 133.154012 187.854531 
+L 135.44677 196.157121 
+L 137.739528 181.081366 
+L 140.032286 175.182157 
+L 142.325044 187.745287 
+L 146.91056 187.745287 
+L 149.203318 191.459603 
+L 151.496076 200.843715 
+L 153.788835 189.274711 
+L 156.081593 184.533495 
+L 158.374351 176.820826 
+L 160.667109 177.14856 
+L 162.959867 190.694891 
+L 165.252625 178.175459 
+L 167.545383 187.745287 
+L 169.838141 187.963776 
+L 172.130899 177.083013 
+L 174.423657 178.983869 
+L 176.716415 150.263462 
+L 179.009173 191.787337 
+L 181.301932 167.42579 
+L 183.59469 194.518452 
+L 185.887448 171.282124 
+L 188.180206 175.400646 
+L 190.472964 187.199064 
+L 192.765722 195.78569 
+L 195.05848 185.45115 
+L 197.351238 70.198088 
+L 199.643996 107.516046 
+L 201.936754 127.333018 
+L 204.229512 183.266258 
+L 206.522271 206.163928 
+L 208.815029 133.079285 
+L 211.107787 125.104428 
+L 213.400545 131.375069 
+L 215.693303 208.458064 
+L 217.986061 56.629908 
+L 220.278819 98.710931 
+L 222.571577 178.175459 
+L 224.864335 144.047443 
+L 227.157093 116.386709 
+L 229.449851 187.308308 
+L 231.74261 158.992106 
+L 234.035368 193.098272 
+L 236.328126 187.745287 
+L 238.620884 165.852667 
+L 240.913642 31.634742 
+L 243.2064 185.64779 
+L 245.499158 182.938524 
+L 247.791916 204.011809 
+L 250.084674 165.896365 
+L 252.377432 195.905859 
+L 254.67019 187.745287 
+L 256.962949 194.955431 
+L 259.255707 111.263136 
+L 261.548465 194.081474 
+L 263.841223 215.023665 
+L 266.133981 154.96098 
+M 270.719497 209.015212 
+L 273.012255 215.001816 
+L 275.305013 206.600906 
+L 277.597771 195.457956 
+L 279.890529 206.51351 
+L 282.183288 193.841136 
+L 284.476046 199.958834 
+L 286.768804 154.524001 
+L 289.061562 212.030363 
+L 291.35432 165.896365 
+L 295.939836 165.852667 
+L 298.232594 210.391694 
+L 300.525352 206.972338 
+L 302.81811 133.090209 
+L 305.110868 211.101784 
+L 307.403626 165.863592 
+L 309.696385 17.28 
+L 311.989143 184.992323 
+L 314.281901 190.476402 
+L 316.574659 206.950489 
+L 318.867417 195.905859 
+L 321.160175 180.360351 
+L 323.452933 182.09734 
+L 325.745691 172.123308 
+L 328.038449 190.214215 
+M 332.623965 184.172988 
+L 334.916724 199.33614 
+L 337.209482 209.517737 
+L 339.50224 183.73601 
+L 341.794998 182.840204 
+L 344.087756 180.262031 
+L 346.380514 190.91338 
+L 348.673272 190.443628 
+L 350.96603 178.787229 
+L 353.258788 169.566984 
+L 355.551546 178.56874 
+L 357.844304 183.102391 
+L 360.137063 181.463722 
+L 362.429821 183.921725 
+L 364.722579 184.74106 
+L 367.015337 183.484747 
+L 369.308095 199.871438 
+L 371.600853 185.811657 
+L 373.893611 185.778884 
+L 376.186369 186.87133 
+L 378.479127 196.222668 
+L 380.771885 177.913272 
+M 385.357402 193.163819 
+L 387.65016 183.878028 
+L 389.942918 169.151854 
+L 392.235676 190.935229 
+L 394.528434 176.820826 
+L 396.821192 180.983045 
+L 399.11395 200.308417 
+L 401.406708 175.793927 
+L 403.699466 183.047769 
+L 405.992224 181.933474 
+L 408.284982 179.661186 
+L 410.577741 190.389006 
+L 412.870499 184.686438 
+L 415.163257 180.262031 
+L 417.456015 190.978927 
+L 419.748773 190.978927 
+L 422.041531 178.699833 
+L 424.334289 194.201643 
+L 431.212563 191.022625 
+L 435.798079 188.750337 
+L 440.383596 186.630992 
+L 444.969112 184.424251 
+L 447.26187 175.182157 
+L 449.554628 187.745287 
+L 454.140144 187.745287 
+L 456.432902 191.459603 
+L 458.72566 200.843715 
+L 461.018418 189.274711 
+L 463.311177 184.533495 
+L 465.603935 176.820826 
+L 465.603935 176.820826 
+" clip-path="url(#p6bff972820)" style="fill: none; stroke: #d62728; stroke-width: 1.5; stroke-linecap: square"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 39.494844 228.96 
+L 39.494844 7.2 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 485.894844 228.96 
+L 485.894844 7.2 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 39.494844 228.96 
+L 485.894844 228.96 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 39.494844 7.2 
+L 485.894844 7.2 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="legend_1">
+    <g id="patch_7">
+     <path d="M 392.754062 91.238281 
+L 478.194844 91.238281 
+Q 480.394844 91.238281 480.394844 89.038281 
+L 480.394844 14.9 
+Q 480.394844 12.7 478.194844 12.7 
+L 392.754062 12.7 
+Q 390.554062 12.7 390.554062 14.9 
+L 390.554062 89.038281 
+Q 390.554062 91.238281 392.754062 91.238281 
+L 392.754062 91.238281 
+z
+" style="fill: none; opacity: 0.8; stroke: currentColor; stroke-linejoin: miter"/>
+    </g>
+    <g id="line2d_21">
+     <path d="M 394.954062 23.90625 
+L 405.954062 23.90625 
+L 416.954062 23.90625 
+" style="fill: none; stroke: #1f77b4; stroke-width: 1.5; stroke-linecap: square"/>
+    </g>
+    <g id="text_18">
+     <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: currentColor" x="425.754062" y="27.75625" transform="rotate(-0 425.754062 27.75625)">Duration</text>
+    </g>
+    <g id="line2d_22">
+     <path d="M 394.954062 42.71582 
+L 405.954062 42.71582 
+L 416.954062 42.71582 
+" style="fill: none; stroke: #ff7f0e; stroke-width: 1.5; stroke-linecap: square"/>
+    </g>
+    <g id="text_19">
+     <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: currentColor" x="425.754062" y="46.56582" transform="rotate(-0 425.754062 46.56582)">Pulse</text>
+    </g>
+    <g id="line2d_23">
+     <path d="M 394.954062 61.525391 
+L 405.954062 61.525391 
+L 416.954062 61.525391 
+" style="fill: none; stroke: #2ca02c; stroke-width: 1.5; stroke-linecap: square"/>
+    </g>
+    <g id="text_20">
+     <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: currentColor" x="425.754062" y="65.375391" transform="rotate(-0 425.754062 65.375391)">Maxpulse</text>
+    </g>
+    <g id="line2d_24">
+     <path d="M 394.954062 80.334961 
+L 405.954062 80.334961 
+L 416.954062 80.334961 
+" style="fill: none; stroke: #d62728; stroke-width: 1.5; stroke-linecap: square"/>
+    </g>
+    <g id="text_21">
+     <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: currentColor" x="425.754062" y="84.184961" transform="rotate(-0 425.754062 84.184961)">Calories</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p6bff972820">
+   <rect x="39.494844" y="7.2" width="446.4" height="221.76"/>
+  </clipPath>
+ </defs>
+</svg><figcaption>df.plot() on data.csv: one curve per column, 178 rows</figcaption></figure>
+<p>The x-axis is the row number. Duration, Pulse and Maxpulse stay low while Calories shows large spikes (up to 1860.4), mostly between rows 60 and 110, where the long sessions are. The flat gaps in the Calories curve are the 5 missing values.</p>
+
+<h3>Plotting: scatter</h3>
+<pre><code># A scatter plot (kind='scatter') shows the relationship between an x-axis and a y-axis
+df.plot(kind='scatter', x='Duration', y='Calories')
+plt.show()</code></pre>
+<figure><svg role="img" aria-label="Scatter plot of Calories against Duration" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 426.704414 284.867141" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ 
+ <defs>
+  
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 284.867141 
+L 426.704414 284.867141 
+L 426.704414 0 
+L 0 0 
+L 0 284.867141 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 56.804414 240.048 
+L 419.504414 240.048 
+L 419.504414 7.2 
+L 56.804414 7.2 
+L 56.804414 240.048 
+z
+" style="fill: none"/>
+   </g>
+   <g id="PathCollection_1">
+    <defs>
+     <path id="mb59246a390" d="M 0 2.236068 
+C 0.593012 2.236068 1.161816 2.000462 1.581139 1.581139 
+C 2.000462 1.161816 2.236068 0.593012 2.236068 0 
+C 2.236068 -0.593012 2.000462 -1.161816 1.581139 -1.581139 
+C 1.161816 -2.000462 0.593012 -2.236068 0 -2.236068 
+C -0.593012 -2.236068 -1.161816 -2.000462 -1.581139 -1.581139 
+C -2.000462 -1.161816 -2.236068 -0.593012 -2.236068 0 
+C -2.236068 0.593012 -2.000462 1.161816 -1.581139 1.581139 
+C -1.161816 2.000462 -0.593012 2.236068 0 2.236068 
+z
+" style="stroke: #1f77b4"/>
+    </defs>
+    <g clip-path="url(#p8a1bd3dec2)">
+     <use xlink:href="#mb59246a390" x="125.352979" y="187.504559" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="179.330186" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="195.585377" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="202.32134" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="187.867085" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="191.609287" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="205.724406" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="212.530536" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="203.888388" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="196.836676" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="206.028459" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="194.965574" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.989485" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="203.186725" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="210.179965" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="197.573422" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="206.928927" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="192.755336" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="202.368118" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="206.578095" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="196.228568" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="206.11032" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="207.162814" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="202.602006" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.872541" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="206.928927" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="214.284693" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.380073" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="209.267803" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="193.129557" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="186.814591" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="204.239219" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="214.284693" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="201.900343" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="196.824981" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="188.568748" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="188.919579" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="203.420612" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.018851" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="200.497017" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="188.849413" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.884235" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="148.491735" y="160.139706" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="204.59005" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="178.51158" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="207.513646" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="182.639696" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="187.048478" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="199.67841" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="208.870194" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="197.807309" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="298.893649" y="74.431584" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="241.046759" y="114.379591" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="241.046759" y="135.593199" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="195.468433" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="219.979857" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="264.185515" y="141.744444" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="229.477381" y="133.207546" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="229.477381" y="139.920121" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="222.435677" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="403.01805" y="59.907162" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="229.477381" y="104.95392" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.018851" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="153.485603" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="229.477381" y="123.875429" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="199.795354" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="169.483517" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="205.993376" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="194.769247" y="176.827589" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="368.309916" y="33.150417" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="198.017808" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="195.117601" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="217.676063" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="194.769247" y="176.874366" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="208.998832" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="207.981421" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="194.769247" y="118.390764" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="207.045871" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="229.464" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="264.185515" y="165.16829" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="223.03209" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="73.290778" y="229.440611" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="220.447632" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="208.519363" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="220.354077" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="84.860156" y="206.788594" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="213.337448" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="164.700515" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="226.259739" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="176.874366" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="176.874366" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="176.827589" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="224.505582" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="220.845241" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="264.185515" y="141.756139" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="225.265717" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="176.839283" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="298.893649" y="17.784" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="197.316145" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="203.186725" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="73.290778" y="220.821852" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="208.998832" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="192.357727" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="194.217134" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="183.540164" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="202.90606" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="196.439067" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="212.670868" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="223.570032" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="195.971291" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="195.012352" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="192.252478" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="203.6545" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="203.151642" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.673736" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="160.061113" y="180.803678" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.439849" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="195.293017" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="193.53886" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="196.170096" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="197.047174" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="195.702321" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="213.243893" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="198.193224" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="198.158141" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="199.327579" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="79.075467" y="209.337969" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="189.738186" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="206.063543" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="196.123318" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="180.359292" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="203.677889" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="188.568748" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="193.024307" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="213.711668" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="187.469476" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="195.234545" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="194.041718" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="191.609287" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="203.09317" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="196.988703" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="192.252478" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="203.724666" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="203.724666" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="190.580181" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="207.174509" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="90.644845" y="206.063543" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="204.894104" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="203.771444" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="202.496756" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="201.339012" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="199.070302" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="142.707046" y="197.877475" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="142.707046" y="196.708037" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="186.814591" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="200.263129" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="204.239219" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="107.998912" y="214.284693" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="201.900343" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="196.824981" style="fill: #1f77b4; stroke: #1f77b4"/>
+     <use xlink:href="#mb59246a390" x="125.352979" y="188.568748" style="fill: #1f77b4; stroke: #1f77b4"/>
+    </g>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m8edecd3edd" d="M 0 0 
+L 0 3.5 
+" style="stroke: currentColor; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m8edecd3edd" x="113.783601" y="240.048" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="113.783601" y="257.70425" transform="rotate(-0 113.783601 257.70425)">50</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m8edecd3edd" x="171.630491" y="240.048" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="171.630491" y="257.70425" transform="rotate(-0 171.630491 257.70425)">100</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m8edecd3edd" x="229.477381" y="240.048" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="229.477381" y="257.70425" transform="rotate(-0 229.477381 257.70425)">150</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m8edecd3edd" x="287.324271" y="240.048" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="287.324271" y="257.70425" transform="rotate(-0 287.324271 257.70425)">200</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m8edecd3edd" x="345.17116" y="240.048" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="345.17116" y="257.70425" transform="rotate(-0 345.17116 257.70425)">250</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m8edecd3edd" x="403.01805" y="240.048" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="403.01805" y="257.70425" transform="rotate(-0 403.01805 257.70425)">300</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="238.154414" y="275.01382" transform="rotate(-0 238.154414 275.01382)">Duration</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7">
+      <defs>
+       <path id="m0e03d61972" d="M 0 0 
+L -3.5 0 
+" style="stroke: currentColor; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="235.346274" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="240.674399" transform="rotate(-0 49.804414 240.674399)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="206.11032" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="211.438445" transform="rotate(-0 49.804414 211.438445)">250</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="176.874366" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="182.202491" transform="rotate(-0 49.804414 182.202491)">500</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="147.638412" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="152.966537" transform="rotate(-0 49.804414 152.966537)">750</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="118.402459" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="123.730584" transform="rotate(-0 49.804414 123.730584)">1000</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="89.166505" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="94.49463" transform="rotate(-0 49.804414 94.49463)">1250</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_13">
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="59.930551" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="65.258676" transform="rotate(-0 49.804414 65.258676)">1500</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m0e03d61972" x="56.804414" y="30.694597" style="fill: currentColor; stroke: currentColor; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: currentColor" x="49.804414" y="36.022722" transform="rotate(-0 49.804414 36.022722)">1750</text>
+     </g>
+    </g>
+    <g id="text_16">
+     <text style="font-size: 11px; font-family: 'Inter', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle; fill: currentColor" x="17.85625" y="123.624" transform="rotate(-90 17.85625 123.624)">Calories</text>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 56.804414 240.048 
+L 56.804414 7.2 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 419.504414 240.048 
+L 419.504414 7.2 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 56.804414 240.048 
+L 419.504414 240.048 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 56.804414 7.2 
+L 419.504414 7.2 
+" style="fill: none; stroke: currentColor; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p8a1bd3dec2">
+   <rect x="56.804414" y="7.2" width="362.7" height="232.848"/>
+  </clipPath>
+ </defs>
+</svg><figcaption>Calories against Duration (173 points: the 5 rows without Calories are not drawn)</figcaption></figure>
+<p>The points follow a rising trend: the longer the session, the more calories, which agrees with the correlation of 0.92. The 13 points above 120 minutes are the long sessions seen earlier.</p>
+
+<h3>Exercise on <code>Cars.csv</code></h3>
+<p>Write a Pandas program to answer the following questions.</p>
+<div class="task"><b class="q">Q1</b>Show the first 10 rows. Get the number of rows, the number of columns and the datatype of each column.
+<details><summary>Show solution</summary><pre><code>import pandas as pd
+df = pd.read_csv('Cars.csv')
+
+print(df.head(10))
+df.info()</code></pre>
+<p>The first line of <code>info()</code> gives the number of rows (<code>RangeIndex: ... entries</code>), then the number of columns (<code>total ... columns</code>) and, for each column, its name, non-null count and data type.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>pd.read_csv(file)</code></td><td>Reads a CSV file into a DataFrame</td></tr>
+<tr><td><code>df.head(10)</code></td><td>Views the first 10 rows (from the top)</td></tr>
+<tr><td><code>df.info()</code></td><td>Gets information: rows and columns, name, non-null count and data type of each column, memory usage</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q2</b>Compute the descriptive statistics of each column.
+<details><summary>Show solution</summary><pre><code>print(df.describe())</code></pre>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>df.describe()</code></td><td>Statistical description of the numeric columns: count, mean, std, min, 25%, 50%, 75%, max</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q3</b>Check whether the DataFrame has any missing values.
+<details><summary>Show solution</summary><pre><code>df.info()</code></pre>
+<p>Compare the <code>Non-Null Count</code> of each column with the number of entries (<code>RangeIndex</code>). A column whose count is smaller than the number of rows has missing values. The <code>count</code> row of <code>df.describe()</code> shows the same thing.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>df.info()</code></td><td>Gives the number of rows and, for each column, the number of non-null values</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q4</b>Count the missing values in each column.
+<details><summary>Show solution</summary><pre><code>df.info()</code></pre>
+<p>For each column: number of missing values = number of entries - <code>Non-Null Count</code>. (On <code>data.csv</code>: Calories has 178 - 173 = 5.)</p></details></div>
+<div class="task"><b class="q">Q5</b>Replace the missing values with the median of their column.
+<details><summary>Show solution</summary><pre><code>for col in df.columns:
+    m = df[col].median()
+    df[col] = df[col].fillna(m)
+
+df.info()      # every Non-Null Count now equals the number of rows</code></pre>
+<p>The median only exists for numeric columns: if <code>Cars.csv</code> has a text column, skip it (for example fill it with its most frequent value instead).</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>df[col].median()</code></td><td>Computes the median of a column</td></tr>
+<tr><td><code>df[col].fillna(m)</code></td><td><b>Replaces empty values</b> by <code>m</code>; returns a new Series, so assign it back to <code>df[col]</code></td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q6</b>Compute the correlation between features and plot their scatter diagram. What are your conclusions?
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+
+print(df.corr())
+
+# one scatter plot per pair of features (use your real column names)
+df.plot(kind='scatter', x='column_1', y='column_2')
+plt.show()</code></pre>
+<p>If <code>corr()</code> fails because of a text column, remove it first: <code>df.drop(['column'], axis=1, inplace=True)</code>.</p>
+<p>Guide for your conclusions: a coefficient close to +1 or -1 means a strong linear relationship; close to 0 means little or no linear relationship. Look for pairs of features that are almost redundant, and for features strongly related to the one you may want to predict. Correlation does not imply causation.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>df.corr()</code></td><td>Calculates the <b>relationship</b> between each pair of columns (from -1 to +1)</td></tr>
+<tr><td><code>df.plot(kind='scatter', x=..., y=...)</code></td><td>Scatter plot: shows the relationship between an x-axis and a y-axis column</td></tr>
+<tr><td><code>df.drop([...], axis=1)</code></td><td>Removes a column</td></tr>
+<tr><td><code>plt.show()</code></td><td>Displays the figure</td></tr>
+</table></div></details></div>
+
+<h2 id="p3">Part 3 – Visualization with Matplotlib</h2>
+<p>Matplotlib is an open-source <b>graph plotting library</b> in Python. It contains <b>data visualization</b> utilities. Most of them live under the <code>pyplot</code> submodule, imported under the alias <code>plt</code>. The <code>plot()</code> function draws points in a diagram.</p>
+
+<div class="task"><b class="q">M1</b>Draw a line from point pt1(0, 0) to point pt2(10, 100) and give it the title "Line from pt1(0, 0) to pt2(10, 100)".
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+x_pts = np.array([0, 10])
+y_pts = np.array([0, 100])
+
+# Draw a line from pt1(0, 0) to pt2(10, 100)
+plt.plot(x_pts, y_pts)
+plt.title("Line from pt1(0, 0) to pt2(10, 100)")
+plt.show()</code></pre><p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>np.array([...])</code></td><td>Creates an array of values (x coordinates, then y coordinates)</td></tr>
+<tr><td><code>plt.plot(x_pts, y_pts)</code></td><td>Draws the points in a diagram and joins them with a line</td></tr>
+<tr><td><code>plt.title(text)</code></td><td>Title of the figure</td></tr>
+<tr><td><code>plt.show()</code></td><td>Displays the figure</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M2</b>Plot <code>[3, 8, 20, 5, 10, 1, 30]</code> with star markers of size 30 (blue face, black edge), a red dashed line of width 3, a title, labels on both axes and a grid.
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+ypts = np.array([3, 8, 20, 5, 10, 1, 30])
+
+font1 = {'family': 'serif', 'color': 'blue', 'size': 30}
+font2 = {'family': 'serif', 'color': 'red', 'size': 20}
+
+# markers of size ms=30, marker face color blue (mfc='b'), marker edge color black (mec='k')
+# line style (ls='--'), color=red, linewidth=3
+plt.plot(ypts, marker='*', ms=30, mfc='b', mec='k', ls='--', color='r', linewidth=3)
+
+plt.title("MyTitle", fontdict=font1)           # title of figure
+plt.xlabel("Label x-axis", fontdict=font2)     # label for x-axis
+plt.ylabel("Label y-axis", fontdict=font2)     # label for y-axis
+
+# show grid
+plt.grid(color='y', linestyle='--', linewidth=0.5)
+
+plt.show()</code></pre><p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>plt.plot(ypts, ...)</code></td><td>With a single list, the values are the y coordinates and the x-axis is 0, 1, 2, ...</td></tr>
+<tr><td><code>marker='*'</code></td><td>Shape of the markers (a star)</td></tr>
+<tr><td><code>ms=30</code></td><td>Marker size</td></tr>
+<tr><td><code>mfc='b' / mec='k'</code></td><td>Marker face color (blue) / marker edge color (black)</td></tr>
+<tr><td><code>ls='--'</code></td><td>Line style (dashed)</td></tr>
+<tr><td><code>color='r', linewidth=3</code></td><td>Line color (red) and width</td></tr>
+<tr><td><code>fontdict={...}</code></td><td>Dictionary that sets the font family, color and size of a title or label</td></tr>
+<tr><td><code>plt.title / plt.xlabel / plt.ylabel</code></td><td>Title of the figure, label of the x-axis, label of the y-axis</td></tr>
+<tr><td><code>plt.grid(color, linestyle, linewidth)</code></td><td>Shows a grid and sets its look</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M3</b>Display two plots side by side with <code>subplot()</code>, each with its own title, and a common title.
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+# plot 1:
+x = np.array([0, 1, 2, 3])
+y = np.array([2, 9, 2, 12])
+
+# the figure has 1 row, 2 columns
+plt.subplot(1, 2, 1)          # the first plot
+plt.plot(x, y)
+plt.title("Title 1")
+
+# plot 2:
+x = np.array([0, 1, 2, 3])
+y = np.array([5, 25, 30, 45])
+
+plt.subplot(1, 2, 2)          # the second plot
+plt.plot(x, y)
+plt.title("Title 2")
+
+plt.suptitle("MY SUPER Title")
+plt.show()</code></pre><p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>plt.subplot(rows, cols, i)</code></td><td>Displays multiple plots: the figure has <code>rows</code> rows and <code>cols</code> columns, and <code>i</code> is the plot being drawn (here 1 then 2)</td></tr>
+<tr><td><code>plt.title(text)</code></td><td>Title of the current subplot</td></tr>
+<tr><td><code>plt.suptitle(text)</code></td><td>Common title of the whole figure</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M4</b>Scatter plot: draw 40 random points with random colors and sizes, and show the color bar.
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+# sample 40 random integers in [0, 100[
+x = np.random.randint(100, size=(40))   # x-axis values
+y = np.random.randint(100, size=(40))   # y-axis values
+colors = np.random.randint(100, size=(40))
+sizes = 5 * np.random.randint(100, size=(40))
+
+plt.scatter(x, y, c=colors, s=sizes, alpha=0.5, cmap='jet')
+plt.colorbar()
+plt.show()</code></pre><p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>np.random.randint(100, size=40)</code></td><td>Samples 40 random integers in [0, 100[</td></tr>
+<tr><td><code>plt.scatter(x, y, c, s, alpha, cmap)</code></td><td>Plots <b>one dot for each observation</b>. <code>c</code> = colors, <code>s</code> = sizes, <code>alpha</code> = transparency, <code>cmap</code> = color map</td></tr>
+<tr><td><code>plt.colorbar()</code></td><td>Shows the color scale</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M5</b>Bar plot: draw red bars of width 0.5 for the values <code>[2, 9, 2, 12]</code> labelled F1 to F4.
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.array(["F1", "F2", "F3", "F4"])
+y = np.array([2, 9, 2, 12])
+
+plt.bar(x, y, color="red", width=0.5)
+plt.show()</code></pre><p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>plt.bar(x, y, color, width)</code></td><td>Bar plot: one bar per label, <code>color</code> and <code>width</code> set the look of the bars</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M6</b>Histogram: draw 1000 samples of a normal distribution (mean 0, standard deviation 0.5) in 10 bins, in red, with the title "Gaussian Distribution" and the legend "Frequency".
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+mu, sigma = 0, 0.5                 # mean and standard deviation
+x = np.random.normal(mu, sigma, 1000)
+nbins = 10
+
+plt.hist(x, nbins, color='r')
+plt.title('Gaussian Distribution')
+plt.legend(['Frequency'])
+plt.show()</code></pre><p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>np.random.normal(mu, sigma, 1000)</code></td><td>Samples 1000 values of a Gaussian distribution</td></tr>
+<tr><td><code>plt.hist(x, nbins)</code></td><td>Histogram: a graph showing the <b>frequency distribution</b>, i.e. the number of observations within each bin</td></tr>
+<tr><td><code>plt.legend(['Frequency'])</code></td><td>Shows the legend</td></tr>
+</table></div></details></div>
+
+<div class="task"><b class="q">M7</b>Pie chart: draw the values <code>[40, 10, 20, 30]</code> (sum = 100 %) labelled A to D, with a legend.
+<details><summary>Show solution</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.array([40, 10, 20, 30])   # sum = 100 %
+L = ["A", "B", "C", "D"]
+
+plt.pie(x, labels=L)
+plt.legend()
+plt.show()</code></pre><p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>plt.pie(x, labels=L)</code></td><td>Pie chart: each value is the share of a slice; <code>labels</code> names the slices</td></tr>
+<tr><td><code>plt.legend()</code></td><td>Shows the legend</td></tr>
+</table></div></details></div>
+
+<h2 id="p4">Part 4 – Machine learning with Scikit-Learn</h2>
+<p><b>Scikit-Learn</b> (<em>Machine Learning in Python</em>) offers simple and efficient tools for predictive data analysis, built on NumPy, SciPy and Matplotlib. It is open source and commercially usable (BSD license). It consists of many <b>submodules</b> useful to develop machine learning projects: <b>preprocessing</b>, different types of <b>machine learning algorithms</b>, <b>model selection</b> and <b>evaluation metrics</b>. Install it if needed with <code>conda install -c anaconda scikit-learn</code>.</p>
+<div class="scroll"><table>
+<tr><th>Family</th><th>What it does</th><th>Applications</th><th>Algorithms</th></tr>
+<tr><td><b>Classification</b></td><td>Identifies which category an object belongs to</td><td>Spam detection, image recognition</td><td>SVM, nearest neighbors, random forest</td></tr>
+<tr><td><b>Regression</b></td><td>Predicts a continuous-valued attribute associated with an object</td><td>Drug response, stock prices</td><td>SVR, nearest neighbors, random forest</td></tr>
+<tr><td><b>Clustering</b></td><td>Automatic grouping of similar objects into sets</td><td>Customer segmentation, grouping experiment outcomes</td><td>k-Means, spectral clustering, mean-shift</td></tr>
+<tr><td><b>Dimensionality reduction</b></td><td>Reduces the number of random variables to consider</td><td>Visualization, increased efficiency</td><td>PCA, feature selection, non-negative matrix factorization</td></tr>
+<tr><td><b>Model selection</b></td><td>Compares, validates and chooses parameters and models</td><td>Improved accuracy via parameter tuning</td><td>Grid search, cross validation, metrics</td></tr>
+<tr><td><b>Preprocessing</b></td><td>Feature extraction and normalization</td><td>Transforming input data such as text for use with ML algorithms</td><td>Preprocessing, feature extraction</td></tr>
+</table></div>
+<p>A Scikit-Learn <b>pipeline</b> chains preprocessing (for example <code>StandardScaler</code>), optional feature extraction (for example <code>PCA</code>) and a learning algorithm. The same pipeline is fitted on the training data, then applied to the test data. This avoids <em>data leakage</em>: the scaler never sees the test set when it learns its mean and standard deviation.</p>
+
+<h3>Machine learning pipeline</h3>
+<p><b>Training phase.</b> The training data and the training labels (supervised learning) go through the steps below and produce a <b>model</b>.</p>
+<div class="flow"><span class="box io">Training data<br>+ Training labels</span><span class="ar">→</span><span class="box">Feature scaling<br>(e.g. StandardScaler)</span><span class="ar">→</span><span class="box">Feature selection / extraction<br>(e.g. PCA)</span><span class="ar">→</span><span class="box">ML algorithm<br>(e.g. SVM, Random Forest)</span><span class="ar">→</span><span class="box io">Model</span></div>
+<p><b>Testing phase.</b> The test data go through the same steps, which give the <b>predictions</b>; comparing them with the test labels gives the <b>model score</b>.</p>
+<div class="flow"><span class="box io">Test data<br>+ Test labels</span><span class="ar">→</span><span class="box">Feature scaling<br>(e.g. StandardScaler)</span><span class="ar">→</span><span class="box">Feature selection / extraction<br>(e.g. PCA)</span><span class="ar">→</span><span class="box">ML algorithm<br>(e.g. SVM, Random Forest)</span><span class="ar">→</span><span class="box io">Model score<br>Predictions</span></div>
+
+<h3>Worked example</h3>
+<p>Read it, run it, and explain each line. The first print shows <code>Dataset: (100, 20) (100,)</code>: 100 samples with 20 features each, and 100 labels.</p>
+<pre class="sol" data-label="Worked example"><code>from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.metrics import accuracy_score
+
+X, y = make_classification(random_state=42)  # random 2-class problem
+print("Dataset:", X.shape, y.shape)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)    # 80% train, 20% test
+
+pipe = make_pipeline(StandardScaler(), PCA(n_components=2), LogisticRegression())
+pipe.fit(X_train, y_train)                   # scale + PCA + train on training data
+
+y_pred = pipe.predict(X_test)                # same preparation applied to test data
+print('accuracy score:', accuracy_score(y_test, y_pred))
+print(pipe.score(X_test, y_test))            # same result</code></pre>
+<p>With <code>random_state=42</code> in <code>make_classification</code>, everyone gets the same data and the same output: <code>accuracy score: 0.7</code>, then <code>0.7</code> again.</p>
+<details><summary>Show explanation of each function</summary>
+<p><b>Role of each function</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>make_classification()</code></td><td>Generates a random n-class (by default 2) classification problem: <code>X</code> = features, <code>y</code> = labels</td></tr>
+<tr><td><code>train_test_split(X, y, test_size=0.2)</code></td><td>Splits the data into an 80% training set and a 20% testing set</td></tr>
+<tr><td><code>make_pipeline(...)</code></td><td>Chains the steps into one ML pipeline</td></tr>
+<tr><td><code>StandardScaler()</code></td><td>Preprocessing: standardizes the features (mean 0, standard deviation 1)</td></tr>
+<tr><td><code>PCA(n_components=2)</code></td><td>Feature extraction: keeps 2 components</td></tr>
+<tr><td><code>LogisticRegression()</code></td><td>The learning algorithm (a classifier)</td></tr>
+<tr><td><code>pipe.fit(X_train, y_train)</code></td><td>Training phase: applies the data preparation on the training data, then trains the model</td></tr>
+<tr><td><code>pipe.predict(X_test)</code></td><td>Testing phase: applies the same data preparation on the testing data and returns the predictions</td></tr>
+<tr><td><code>accuracy_score(y_test, y_pred)</code></td><td>Evaluation: proportion of correct predictions</td></tr>
+<tr><td><code>pipe.score(X_test, y_test)</code></td><td>Shortcut that predicts and evaluates in one call (accuracy for a classifier)</td></tr>
+</table></div></details>
+
+<h3>Exercise on <code>50_Startups.csv</code></h3>
+<p>Goal: build a model that predicts the <b>Profit</b> of a company from its R&amp;D Spend, Administration cost and Marketing Spend.</p>
+<div class="task"><b class="q">Q1</b>What is the Machine Learning task?</div>
+<div class="task"><b class="q">Q2</b>What is the type of learning?
+<details><summary>Show answers to Q1 and Q2</summary><p>Q1: <b>Regression</b>, because the target (Profit) is a continuous numeric value.</p><p>Q2: <b>Supervised learning</b>, because each training example comes with its known target value (label).</p></details></div>
+<div class="task"><b class="q">Q3</b>Show information and compute descriptive statistics about this dataset.
+<details><summary>Show solution</summary><pre><code>import pandas as pd
+df = pd.read_csv('50_Startups.csv')
+df.info()
+print(df.describe())</code></pre>
+<p>Check the missing values as in the previous exercise: compare each <code>Non-Null Count</code> with the number of entries.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>pd.read_csv(file)</code></td><td>Reads the CSV file into a DataFrame</td></tr>
+<tr><td><code>df.info()</code></td><td>Rows, columns, data type and non-null count of each column</td></tr>
+<tr><td><code>df.describe()</code></td><td>Descriptive statistics: count, mean, std, min, quartiles, max</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q4</b>Split the data into an 80% training set and a 20% testing set.
+<details><summary>Show solution</summary><pre><code>from sklearn.model_selection import train_test_split
+
+X = df[['R&amp;D Spend', 'Administration', 'Marketing Spend']]
+y = df['Profit']
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)</code></pre>
+<p>Check the exact column names in the output of <code>df.info()</code>. The column <code>State</code> is categorical and is not used here.</p>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>df[[...]]</code></td><td>Selects the feature columns <code>X</code> (several column names in a list)</td></tr>
+<tr><td><code>df['Profit']</code></td><td>Selects the target column <code>y</code> (the value to predict)</td></tr>
+<tr><td><code>train_test_split(X, y, test_size=0.2, random_state=42)</code></td><td>Splits into 80% training / 20% testing; <code>random_state</code> makes the split reproducible</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q5</b>Build a pipeline that performs standardization, then prediction with Linear Regression.
+<details><summary>Show solution</summary><pre><code>from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+pipe = make_pipeline(StandardScaler(), LinearRegression())</code></pre>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>make_pipeline(...)</code></td><td>Chains standardization and prediction in one object</td></tr>
+<tr><td><code>StandardScaler()</code></td><td>Standardization: mean 0, standard deviation 1 for each feature (learned on the training data only)</td></tr>
+<tr><td><code>LinearRegression()</code></td><td>Regression algorithm: predicts a continuous value (Profit)</td></tr>
+</table></div></details></div>
+<div class="task"><b class="q">Q6</b>Train, test and evaluate the pipeline with the Mean Squared Error (MSE).
+<details><summary>Show solution</summary><pre><code>from sklearn.metrics import mean_squared_error
+
+pipe.fit(X_train, y_train)
+y_pred = pipe.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+print('MSE :', mse)</code></pre>
+<p><b>Functions used</b></p>
+<div class="scroll"><table>
+<tr><th>Function / name</th><th>Role</th></tr>
+<tr><td><code>pipe.fit(X_train, y_train)</code></td><td><b>Train</b>: standardizes the training data, then fits the Linear Regression</td></tr>
+<tr><td><code>pipe.predict(X_test)</code></td><td><b>Test</b>: applies the same standardization to the test data and returns the predicted profits</td></tr>
+<tr><td><code>mean_squared_error(y_test, y_pred)</code></td><td><b>MSE</b>: average of the squared errors (the lower, the better)</td></tr>
+</table></div></details></div>
+
+<h2 id="bonus">Bonus questions</h2>
+<ul>
+<li>Compare the MSE of the pipeline with and without <code>StandardScaler</code> (<code>make_pipeline(LinearRegression())</code>). Does it change for Linear Regression? Why?</li>
+<li>Add a <code>PCA(n_components=2)</code> step between the scaler and the regression. Does the MSE decrease?</li>
+<li>Change the split seed (<code>random_state</code>) to other values. How stable is the MSE?</li>
+</ul>
+
+<h2 id="solutions">Complete code solutions</h2>
+<p>All the code of this lab, grouped by part. Each block can be pasted into a notebook cell by cell, or run as a whole.</p>
+<div id="allsol"></div>
+<noscript><p>Enable JavaScript to display the complete solutions, or open the "Show solution" toggles above.</p></noscript>
+
+</div></main>
+<footer>Horizon School of Digital Technologies · Machine Learning 1 · Lab 1</footer>
+<script>
+(function(){
+  function copy(text,btn,label){
+    var done=function(){btn.textContent='Copied';setTimeout(function(){btn.textContent=label},1500)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done)}
+    else{var a=document.createElement('textarea');a.value=text;document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}
+  }
+  function copyBtn(pre,label){
+    var b=document.createElement('button');b.type='button';b.className='cp';b.textContent=label;
+    b.onclick=function(){copy(pre.querySelector('code').textContent,b,label)};pre.appendChild(b);
+  }
+  var root=document.querySelector('main .wrap'),target=document.getElementById('allsol');
+  /* 1. complete solutions, grouped by part */
+  if(target){
+    var parts=[],cur=null;
+    root.querySelectorAll('h2,pre').forEach(function(el){
+      if(el.tagName==='H2'){cur=/^Part/.test(el.textContent)?{title:el.textContent,blocks:[]}:null;if(cur)parts.push(cur);return}
+      if(!cur||target.contains(el))return;
+      if(!(el.classList.contains('sol')||el.closest('details')))return;
+      var q=el.closest('.task'),qe=q&&q.querySelector('.q');
+      var label=el.dataset.label||(qe&&qe.textContent.trim());
+      if(label)cur.blocks.push('# ===== '+label+' =====\n'+el.querySelector('code').textContent.replace(/\s+$/,''));
+    });
+    parts.forEach(function(pt){
+      if(!pt.blocks.length)return;
+      var h=document.createElement('h3');h.textContent=pt.title;
+      var pre=document.createElement('pre'),code=document.createElement('code');
+      code.textContent=pt.blocks.join('\n\n');pre.appendChild(code);
+      target.appendChild(h);target.appendChild(pre);copyBtn(pre,'Copy code');
+    });
+  }
+  /* 2. copy button on the other code blocks */
+  root.querySelectorAll('pre').forEach(function(pre){if(!pre.querySelector('.cp')&&!pre.classList.contains('out'))copyBtn(pre,'Copy')});
+})();
+</script>
+</body>
+</html>
